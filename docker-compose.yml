@@ -1,0 +1,44 @@
+version: '3.0'
+
+services:
+  web:
+    image: nginx:latest
+    restart: always
+    ports:
+    - "80:80"
+    - "443:443"
+    links:
+    - "php"
+    - "db"
+    env_file:
+    - "./.env"
+    volumes:
+    - ./src:/src/:rw,delegated
+    - ./etc/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+    - ENVIRONMENT="development"
+  php:
+    build: .
+    restart: always
+    volumes:
+    - ./src:/src/:rw,delegated
+    - ./etc/php.ini:/usr/local/etc/php/conf.d/00_mvc.ini:ro
+    - ~/.ssh:/root/.ssh:ro
+    env_file:
+    - "./.env"
+  db:
+    image: mysql:5.6.41
+    ports:
+    - "3306:3306"
+    volumes:
+    - db-data:/var/lib/mysql/data
+    env_file:
+    - "./.env"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+    - "8580:80"
+    links:
+    - "db"
+volumes:
+  db-data:
