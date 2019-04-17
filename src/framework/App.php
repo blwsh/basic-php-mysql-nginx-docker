@@ -2,6 +2,11 @@
 
 namespace Framework;
 
+use Exception;
+use Framework\Exceptions\InvalidRequestMethod;
+use ReflectionClass;
+use ReflectionException;
+
 /**
  * Class App
  * @package Framework
@@ -24,9 +29,26 @@ class App
     private $dispatcher;
 
     /**
+     * @var App
+     */
+    private static $instance;
+
+    public function __invoke()
+    {
+        return self::getInstance();
+    }
+
+    /**
      * App constructor.
      */
-    public function __construct() { }
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new app;
+        }
+
+        return self::$instance;
+    }
 
     /**
      * @return mixed
@@ -76,6 +98,11 @@ class App
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * @return int
+     * @throws InvalidRequestMethod
+     * @throws ReflectionException
+     */
     public function handle()
     {
         try {
@@ -84,6 +111,41 @@ class App
             return http_response_code(404);
         }
 
-        dd($resolvedRoute);
+        $controllerMethod = (explode('@', $resolvedRoute));
+
+        $controller = 'App\\Controllers\\' . $controllerMethod[0];
+        $method = $controllerMethod[1];
+
+        /** @var Controller $instance */
+        $reflection = new ReflectionClass($controller);
+
+        if ($reflection->hasMethod($method)) {
+            $methodReflection = $reflection->getMethod($method);
+            echo $methodReflection->invoke($reflection->newInstance());
+        } else {
+            throw new InvalidRequestMethod();
+        }
+    }
+
+    /**
+     * Disable the cloning of this class.
+     *
+     * @return void
+     * @throws Exception
+     */
+    final public function __clone()
+    {
+        throw new Exception('Feature disabled.');
+    }
+
+    /**
+     * Disable the wakeup of this class.
+     *
+     * @return void
+     * @throws Exception
+     */
+    final public function __wakeup()
+    {
+        throw new Exception('Feature disabled.');
     }
 }

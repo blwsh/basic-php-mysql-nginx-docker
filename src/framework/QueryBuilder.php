@@ -81,9 +81,9 @@ class QueryBuilder
 
         $whereString = implode(' ', $this->where);
 
-        $groupString = 'GROUP BY ' .implode(', ', $this->groupBy);
+        $groupString = 'GROUP BY ' . implode(', ', $this->groupBy);
 
-        $orderString = 'ORDER BY ' .implode(', ', $this->orderBy);
+        $orderString = 'ORDER BY ' . implode(', ', $this->orderBy);
 
         return implode(' ', [
             $actionString,

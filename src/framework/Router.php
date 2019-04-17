@@ -39,7 +39,6 @@ class Router
                     if (preg_match('/\{\w+(\(\[.+]\))*\}/', $route, $matches)) {
                         if (count($matches) > 1) {
                             array_shift($matches);
-                            dump($matches);
                         }
                     }
                 }

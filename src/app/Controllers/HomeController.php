@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use Framework\App;
+
 class HomeController
 {
     public function index() {
-        return 'Hello';
+        dd(App::getInstance()->getRouter());
     }
 }
