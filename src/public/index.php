@@ -8,7 +8,7 @@ require_once '../autoloader/bootstrap.php';
 /**
  * Start the app.
  */
-$app = Framework\App::getInstance();
+$app = app();
 
 /**
  * Set the connection for the app.
