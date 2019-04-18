@@ -49,14 +49,14 @@ class App
      *
      * @return App
      */
-    public function __callStatic($function, $args) {
-        return $this->$function(...$args);
+    public static function __callStatic($function, $args) {
+        return self::getInstance()->$function(...$args);
     }
 
     /**
      * App constructor.
      * 
-     * @return void
+     * @return App
      */
     public static function getInstance()
     {
