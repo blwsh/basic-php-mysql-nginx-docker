@@ -33,13 +33,30 @@ class App
      */
     private static $instance;
 
+    /**
+     * @return App
+     */
     public function __invoke()
     {
         return self::getInstance();
     }
+    
+    /**
+     * Allows you to call App methods without first having to call
+     * getInstance. 
+     *
+     * e.g: Instead of App::getInstance()->getConnection() just do App::getConnection()
+     *
+     * @return App
+     */
+    public function __callStatic($function, $args) {
+        return $this->$function(...$args);
+    }
 
     /**
      * App constructor.
+     * 
+     * @return void
      */
     public static function getInstance()
     {
@@ -51,7 +68,7 @@ class App
     }
 
     /**
-     * @return mixed
+     * @return Connection
      */
     public function getConnection()
     {
@@ -59,7 +76,7 @@ class App
     }
 
     /**
-     * @param mixed $connection
+     * @param Connection $connection
      */
     public function setConnection(Connection $connection)
     {
@@ -99,7 +116,8 @@ class App
     }
 
     /**
-     * @return int
+     * @return void
+     *
      * @throws InvalidRequestMethod
      * @throws ReflectionException
      */
@@ -131,6 +149,7 @@ class App
      * Disable the cloning of this class.
      *
      * @return void
+     *
      * @throws Exception
      */
     final public function __clone()
@@ -142,6 +161,7 @@ class App
      * Disable the wakeup of this class.
      *
      * @return void
+     *
      * @throws Exception
      */
     final public function __wakeup()
