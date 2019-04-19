@@ -12,7 +12,7 @@ class Model {
     protected $connection;
 
     /**
-     * @var PDO
+     * @var \PDO
      */
     protected $instance;
 
@@ -71,6 +71,10 @@ class Model {
      */
     public function get() {
         return $this->instance->query("SELECT * FROM " . $this->getConnectionTable());
+    }
+
+    public function find() {
+
     }
 
     /**

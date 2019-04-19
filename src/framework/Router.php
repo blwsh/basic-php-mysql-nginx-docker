@@ -2,6 +2,9 @@
 
 namespace Framework;
 
+use function dump;
+use function preg_match_all;
+
 /**
  * Class Router
  * @package Framework
@@ -36,18 +39,16 @@ class Router
                 if ($path === '/') {
                     return self::$routes[$method]['/'];
                 } else {
-                    if (preg_match('/\{\w+(\(\[.+]\))*\}/', $route, $matches)) {
-                        if (count($matches) > 1) {
-                            array_shift($matches);
-                        }
+                    if (preg_match_all('/\/.*(\/|$)/', $route, $matches)) {
+                        dump($matches);
                     }
                 }
             }
-
-            exit;
         } else {
             throw new Exceptions\InvalidRequestMethod();
         }
+
+        exit;
     }
 
     /**

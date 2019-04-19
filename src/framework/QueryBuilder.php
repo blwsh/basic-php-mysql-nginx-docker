@@ -2,6 +2,10 @@
 
 namespace Framework;
 
+use function array_filter;
+use Framework\Framework\OrBeforeWhereException;
+use PDO;
+
 /**
  * Class QueryBuilder
  */
@@ -11,6 +15,11 @@ class QueryBuilder
      * @var Connection
      */
     protected $connection;
+
+    /**
+     * @var \PDO
+     */
+    protected $instance;
 
     /**
      * @var
@@ -30,12 +39,17 @@ class QueryBuilder
     /**
      * @var array
      */
-    protected $from = [];
+    protected $inserts = [];
 
     /**
      * @var array
      */
     protected $where = [];
+
+    /**
+     * $var values
+     */
+    protected $values = [];
 
     /**
      * @var array
@@ -45,12 +59,22 @@ class QueryBuilder
     /**
      * @var array
      */
-    protected $orderBy = [];
+    protected $groupBy = [];
 
     /**
      * @var array
      */
-    protected $groupBy = [];
+    protected $orderBy = [];
+
+    /**
+     * @var
+     */
+    protected $limit;
+
+    /**
+     * @var array
+     */
+    protected $safeOperators = ["=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"];
 
     /**
      * QueryBuilder constructor.
@@ -60,6 +84,7 @@ class QueryBuilder
      */
     public function __construct(Connection $connection, $table) {
         $this->connection = $connection;
+        $this->instance = &$this->connection->getInstance();
         $this->table = $table;
     }
 
@@ -67,46 +92,49 @@ class QueryBuilder
      * @return string
      */
     public function toString() {
+        // Construct the action string. Can be SELECT, INSERT, UPDATE or DELETE
         $actionString = $this->action;
 
-        if ($this->action === 'SELECT') {
-            $selectString = $this->action === 'SELECT' ? empty($this->select) ? '*' : implode(', ', $this->select) : null;
-        } else {
-            $selectString = null;
-        }
+        // Construct the select string.
+        $selectString = $actionString === 'SELECT' ? empty($this->select) ? '*' : implode(', ', $this->select) : null;
 
-        $fromString = 'FROM ' . $this->connection->getName() . '.' . $this->table;
+        // Construct from string. Only does if the action is select or delete.
+        $fromString = ($actionString === 'SELECT' || $actionString === 'DELETE' ? 'FROM ' : null) . $this->connection->getName() . '.' . $this->table;
 
+        // Construct join string.
         $joinString = implode(' ', $this->joins);
 
-        $whereString = implode(' ', $this->where);
+        // Construct where string and append values for prepared statement.
+        $whereString = implode(' ', array_map(
+            function($where) {
+                if (!is_null($where['value'])) {
+                    $this->values[] = $where['value'];
+                }
 
-        $groupString = 'GROUP BY ' . implode(', ', $this->groupBy);
+                return implode(' ', [$where['statement'], $where['key'], $where['comparator'], is_null($where['value'])  ? null : '?']);
+            },
+        $this->where));
 
-        $orderString = 'ORDER BY ' . implode(', ', $this->orderBy);
+        // Construct the group by string.
+        $groupString = $this->groupBy ? 'GROUP BY ' . implode(', ', $this->groupBy) : null;
 
-        return implode(' ', [
+        // Construct the order by string.
+        $orderString = $this->orderBy ? 'ORDER BY ' . implode(', ', $this->orderBy) : null;
+
+        // Construct the limit string.
+        $limitString = $this->limit ? 'LIMIT ' . $this->limit : null;
+
+        // Construct the entire query string.
+        return implode(' ', array_filter([
             $actionString,
             $selectString,
             $fromString,
             $joinString,
             $whereString,
             $groupString,
-            $orderString
-        ]);
-    }
-
-    /**
-     * @param null $select
-     *
-     * @return string
-     */
-    public function get($select = null) {
-        if ($select) {
-            $this->select($select);
-        }
-
-        return $this->connection->getInstance()->exec($this->toString());
+            $orderString,
+            $limitString
+        ]));
     }
 
     /**
@@ -127,31 +155,112 @@ class QueryBuilder
     }
 
     /**
-     * @return $this
+     * @param null $select
+     *
+     * @return array
+     */
+    public function get($select = null) {
+        if ($select) {
+            $this->select($select);
+        }
+
+        $statement = $this->instance->prepare($this->toString());
+        $statement->execute($this->values);
+
+        return $statement->fetchAll(PDO::FETCH_CLASS);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function insert(array $data) {
+        $this->action = 'INSERT INTO';
+
+        foreach ($data as $key => $value) {
+            $this->inserts[] = [
+                'key'   => $key,
+                'value' => $value
+            ];
+        }
+
+        dd($this->toString());
+
+        $prepared = $this->instance->prepare($this->toString());
+        $prepared->execute([]);
+
+        return $prepared;
+    }
+
+    /**
+     * @return bool
      */
     public function delete() {
         $this->action = 'DELETE';
-        return $this;
+
+        return $this->connection->exec($this->toString());
     }
 
+    /**
+     * @param      $table
+     * @param      $key
+     * @param      $operator
+     * @param      $value
+     * @param null $type
+     *
+     * @return $this
+     */
     public function join($table, $key, $operator, $value, $type = null) {
         $this->joins[] = ltrim("$type JOIN $table ON `$key` $operator `$value`");
 
         return $this;
     }
 
+    /**
+     * @param $table
+     * @param $key
+     * @param $operator
+     * @param $value
+     *
+     * @return QueryBuilder
+     */
     public function innerJoin($table, $key, $operator, $value) {
         return $this->join($table, $key, $operator, $value, 'INNER');
     }
 
+    /**
+     * @param $table
+     * @param $key
+     * @param $operator
+     * @param $value
+     *
+     * @return QueryBuilder
+     */
     public function leftJoin($table, $key, $operator, $value) {
         return $this->join($table, $key, $operator, $value,'LEFT');
     }
 
+    /**
+     * @param $table
+     * @param $key
+     * @param $operator
+     * @param $value
+     *
+     * @return QueryBuilder
+     */
     public function rightJoin($table, $key, $operator, $value) {
         return $this->join($table, $key, $operator, $value,'RIGHT');
     }
 
+    /**
+     * @param $table
+     * @param $key
+     * @param $operator
+     * @param $value
+     *
+     * @return QueryBuilder
+     */
     public function fullJoin($table, $key, $operator, $value) {
         return $this->join($table, $key, $operator, $value,'FULL OUTER JOIN');
     }
@@ -165,10 +274,18 @@ class QueryBuilder
      * @return QueryBuilder
      */
     public function where($where, $comparator = '=', $isOr = false, $excludeValue = false) {
+        if (!in_array($comparator, $this->safeOperators)) $this;
+
         $isFirst = $isOr ? true : empty($this->where);
 
         foreach ($where as $key => $value) {
-            array_push($this->where, (!$isFirst ? 'AND ' : ($isOr ? 'OR' : 'WHERE') . ' ') . "`$key` $comparator" . ($excludeValue ? null : " `$value`"));
+            $this->where[] = [
+                'statement'  => ($isFirst ? ($isOr ? 'OR' : 'WHERE') : 'AND'),
+                'key'        => $key,
+                'comparator' => $comparator,
+                'value'      => $excludeValue ? null : $value,
+            ];
+
             $isFirst = false;
         }
 
@@ -181,6 +298,8 @@ class QueryBuilder
      * @return QueryBuilder
      */
     public function whereNotNull($where) {
+        if (is_string($where)) $where = [$where];
+
         return $this->where(array_flip($where), 'IS NOT NULL', false, true);
     }
 
@@ -191,7 +310,11 @@ class QueryBuilder
      * @return QueryBuilder
      */
     public function orWhere($where, $comparator = '=') {
-        return $this->where($where, $comparator, true);
+        if (!empty($this->where)) {
+            return $this->where($where, $comparator, true);
+        }
+
+        return $this;
     }
 
     /**
@@ -200,7 +323,13 @@ class QueryBuilder
      * @return QueryBuilder
      */
     public function orWhereNotNull($where) {
-        return $this->where(array_flip($where), 'IS NOT NULL', true, true);
+        if (is_string($where)) $where = [$where];
+
+        if (!empty($this->where)) {
+            return $this->where(array_flip($where), 'IS NOT NULL', true, true);
+        }
+
+        return $this;
     }
 
     /**
@@ -228,6 +357,13 @@ class QueryBuilder
         }
 
         return $this;
+    }
+
+    /**
+     * @param int $limit
+     */
+    public function limit(int $limit) {
+        $this->limit = $limit;
     }
 
     /**

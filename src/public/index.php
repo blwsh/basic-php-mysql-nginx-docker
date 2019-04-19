@@ -27,7 +27,14 @@ $app->setConnection(
  */
 $app->setRouter(new Framework\Router());
 
+$builder = new \Framework\QueryBuilder(app()->getConnection(), 'test');
+
+echo $builder->insert(['Name' => 'Ben Watson']);
+
+echo($builder);
+exit;
+
 /**
  * Handle the request.
  */
-return $app->handle();
+$app->handle();
