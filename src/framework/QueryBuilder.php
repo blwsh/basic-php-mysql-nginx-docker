@@ -214,6 +214,13 @@ class QueryBuilder
     }
 
     /**
+     * @return Object
+     */
+    public function first() {
+        return $this->limit(1)->get()[0];
+    }
+
+    /**
      * @param array $data
      *
      * @return bool
@@ -421,9 +428,13 @@ class QueryBuilder
 
     /**
      * @param int $limit
+     *
+     * @return QueryBuilder
      */
     public function limit(int $limit) {
         $this->limit = $limit;
+
+        return $this;
     }
 
     /**

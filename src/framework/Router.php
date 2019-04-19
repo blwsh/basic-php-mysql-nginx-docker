@@ -40,15 +40,12 @@ class Router
                     return self::$routes[$method]['/'];
                 } else {
                     if (preg_match_all('/\/.*(\/|$)/', $route, $matches)) {
-                        dump($matches);
                     }
                 }
             }
         } else {
             throw new Exceptions\InvalidRequestMethod();
         }
-
-        exit;
     }
 
     /**

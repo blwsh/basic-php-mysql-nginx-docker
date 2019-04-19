@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Models\Film;
+
 class HomeController
 {
     public function index() {
-        dd(app()->getRouter());
+        dd((new Film())->get());
     }
 }
