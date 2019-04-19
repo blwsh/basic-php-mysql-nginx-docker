@@ -2,9 +2,8 @@
 
 namespace Framework;
 
-use function array_filter;
-use Framework\Framework\OrBeforeWhereException;
 use PDO;
+use PDOStatement;
 
 /**
  * Class QueryBuilder
@@ -20,6 +19,11 @@ class QueryBuilder
      * @var \PDO
      */
     protected $instance;
+
+    /**
+     * @var PDOStatement
+     */
+    protected $prepared;
 
     /**
      * @var
@@ -40,6 +44,16 @@ class QueryBuilder
      * @var array
      */
     protected $inserts = [];
+
+    /**
+     * @var array
+     */
+    protected $updates = [];
+
+    /**
+     * @var array
+     */
+    protected $deletes = [];
 
     /**
      * @var array
@@ -91,7 +105,7 @@ class QueryBuilder
     /**
      * @return string
      */
-    public function toString() {
+    public function build() {
         // Construct the action string. Can be SELECT, INSERT, UPDATE or DELETE
         $actionString = $this->action;
 
@@ -104,6 +118,17 @@ class QueryBuilder
         // Construct join string.
         $joinString = implode(' ', $this->joins);
 
+        // Construct the update string.
+        $updateString = $this->updates ?  'SET ' . implode(', ', array_map(function($insert) {
+            if ($insert['value']) {
+                $this->values[] = $insert['value'];
+
+                return $insert['key'] . ' = ?';
+            }
+
+            return null;
+        }, $this->updates)) : null;
+
         // Construct where string and append values for prepared statement.
         $whereString = implode(' ', array_map(
             function($where) {
@@ -115,6 +140,17 @@ class QueryBuilder
             },
         $this->where));
 
+        // Construct the inserts string.
+        $insertString = $this->inserts ?  '(' . implode(', ', array_map(function($insert) {
+            if ($insert['value']) {
+                $this->values[] = $insert['value'];
+
+                return $insert['key'];
+            }
+
+            return null;
+        }, $this->inserts)) . ')' : null;
+
         // Construct the group by string.
         $groupString = $this->groupBy ? 'GROUP BY ' . implode(', ', $this->groupBy) : null;
 
@@ -124,13 +160,19 @@ class QueryBuilder
         // Construct the limit string.
         $limitString = $this->limit ? 'LIMIT ' . $this->limit : null;
 
+        // Construct the values string
+        $valuesString = $actionString === 'INSERT INTO' ? 'VALUES (' . implode(', ', array_map(function() { return "?"; }, $this->values)) . ')' : null;
+
         // Construct the entire query string.
         return implode(' ', array_filter([
             $actionString,
             $selectString,
             $fromString,
             $joinString,
+            $updateString,
             $whereString,
+            $insertString,
+            $valuesString,
             $groupString,
             $orderString,
             $limitString
@@ -164,10 +206,11 @@ class QueryBuilder
             $this->select($select);
         }
 
-        $statement = $this->instance->prepare($this->toString());
-        $statement->execute($this->values);
+        $prepared = $this->instance->prepare($this->build());
 
-        return $statement->fetchAll(PDO::FETCH_CLASS);
+        $this->prepared = $prepared->execute($this->values);
+
+        return $prepared->fetchAll(PDO::FETCH_CLASS);
     }
 
     /**
@@ -185,12 +228,29 @@ class QueryBuilder
             ];
         }
 
-        dd($this->toString());
+        $this->prepared = $prepared = $this->instance->prepare($this->build());
 
-        $prepared = $this->instance->prepare($this->toString());
-        $prepared->execute([]);
+        return $prepared->execute($this->values);
+    }
 
-        return $prepared;
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
+    public function update($data) {
+        $this->action = 'UPDATE';
+
+        foreach ($data as $key => $value) {
+            $this->updates[] = [
+                'key'   => $key,
+                'value' => $value
+            ];
+        }
+
+        $this->prepared = $prepared = $this->instance->prepare($this->build());
+
+        return $prepared->execute($this->values);
     }
 
     /**
@@ -199,7 +259,7 @@ class QueryBuilder
     public function delete() {
         $this->action = 'DELETE';
 
-        return $this->connection->exec($this->toString());
+        return $this->instance->exec($this->build());
     }
 
     /**
@@ -274,7 +334,7 @@ class QueryBuilder
      * @return QueryBuilder
      */
     public function where($where, $comparator = '=', $isOr = false, $excludeValue = false) {
-        if (!in_array($comparator, $this->safeOperators)) $this;
+        if (!in_array($comparator, $this->safeOperators)) return $this;
 
         $isFirst = $isOr ? true : empty($this->where);
 
@@ -392,6 +452,6 @@ class QueryBuilder
      */
     public function __toString()
     {
-        return $this->toString();
+        return $this->prepared;
     }
 }
