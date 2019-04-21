@@ -1,0 +1,28 @@
+{
+  "name": "basic-php-docker",
+  "version": "1.0.0",
+  "description": "Basic PHP Docker ===",
+  "main": "index.js",
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UniBen/basic-php-mysql-nginx-docker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UniBen/basic-php-mysql-nginx-docker/issues"
+  },
+  "homepage": "https://github.com/UniBen/basic-php-mysql-nginx-docker#readme"
+}

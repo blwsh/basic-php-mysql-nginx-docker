@@ -1,6 +1,6 @@
 <header class="site-header">
-    <div class="header__logo">
-        <img src="" alt="MVC Framework" class="header__logo__img">
+    <div class="header__logo display--circle bg-primary">
+        <img src="https://www.hud.ac.uk/media/universityofhuddersfield/styleassets/images/2016homepageimages/uoh-logo-2019-white.svg" alt="MVC Framework" class="header__logo__img">
     </div>
 
     <nav class="header__nav">
@@ -12,9 +12,9 @@
     </nav>
 
     <div class="header__actions">
-        <ul class="actions">
-            <li><a href="/account">Account</a></li>
-            <li><a href="/basket">Basket</a></li>
+        <ul class="nav nav--actions">
+            <li class="nav__item"><a href="/account" title="Account">👤</a></li>
+            <li class="nav__item"><a href="/basket" title="Basket">🛒</a></li>
         </ul>
     </div>
 </header>

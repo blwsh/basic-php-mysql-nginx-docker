@@ -10,6 +10,20 @@ function app() {
     return App::getInstance();
 }
 
+function env($key = null) {
+    if ($key) {
+        if (isset($_ENV[$key])) return $_ENV[$key];
+    } else {
+        return false;
+    }
+
+    return $_ENV;
+}
+
+function isDebug() {
+    return env('ENVIRONMENT') === 'development';
+}
+
 /**
  * Dumps data.
  *
