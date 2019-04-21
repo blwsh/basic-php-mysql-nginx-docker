@@ -1,4 +1,4 @@
-<content title="Home" template="layout.default">
+<content title="<?php echo $hello ?>" template="layout.default">
     <div class="slider">
         <div class="slide">
             <img src="" alt="">

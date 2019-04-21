@@ -31,22 +31,24 @@ class View
     {
         $this->file = $file;
         $this->vars = $vars;
+        $this->path = $this->path = '/src/resources/views/' . dot($this->file) . '.php';
     }
 
     /**
+     * @return string
+     *
      * @throws ViewNotFoundException
      */
     public function render() {
-        $this->path = '/src/resources/views/' . dot($this->file) . '.php';
-
-        if (is_file($filename = '/src/resources/views/' . dot($this->file) . '.php')) {
+        if (is_file($this->path)) {
             extract($this->vars);
-            ob_start(); include $filename; $this->renderedContents = ob_get_clean();
+            ob_start(); include $this->path; $this->renderedContents = ob_get_clean();
 
             if (preg_match('/\<content\ .*\>\n(.+\n*)+<\/content\>/', $this->renderedContents, $matches)) {
                 if (preg_match('/\<content.+\>/', $this->renderedContents, $contentTag)) {
-                    $title = $template = null;
                     $contentTag = $contentTag[0];
+                    $template = null;
+                    $title = null;
 
                     if (preg_match('/template=\"([^"^\n]+)\"/', $contentTag, $matches)) {
                         $template = $matches[1];
@@ -69,17 +71,12 @@ class View
                         $this->renderedContents = str_replace('<yield value="title"></yield>', $title, $this->renderedContents);
                     }
                 }
-            } else if (!$this->isTemplate) {
-                return new Exception('Views should have a content tag as root element with attribute template.');
             }
 
             return $this->renderedContents;
         } else {
-            throw new ViewNotFoundException('Unable to find view with name ' . $this->file . '.php (Path: ' . $this->path .')');
+            throw new ViewNotFoundException('Unable to find view with name ' . $this->file . ' at path ' . $this->path .')');
         }
-    }
-
-    public function identifyTemplate($file) {
 
     }
 
@@ -99,5 +96,13 @@ class View
         $this->isTemplate = $isTemplate;
     }
 
-
+    /**
+     * @return Exception|false|mixed|string
+     *
+     * @throws ViewNotFoundException
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

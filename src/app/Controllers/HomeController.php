@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use function view;
+
 class HomeController
 {
     public function index() {
