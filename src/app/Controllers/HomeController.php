@@ -3,13 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Film;
-use function get_class;
-use function gettype;
 
 class HomeController
 {
     public function index() {
         $films = Film::get();
+
+        Film::
 
         dd([
             gettype($films),

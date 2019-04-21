@@ -22,7 +22,6 @@ services:
     restart: always
     volumes:
     - ./src:/src/:rw,delegated
-    - ./vendor:/vendor/:rw,delegated
     - ./etc/php.ini:/usr/local/etc/php/conf.d/00_mvc.ini:ro
     - ~/.ssh:/root/.ssh:ro
     env_file:

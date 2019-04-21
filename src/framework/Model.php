@@ -2,9 +2,6 @@
 
 namespace Framework;
 
-use function array_map;
-use function closedir;
-use function get_called_class;
 use ReflectionClass;
 use ReflectionException;
 
@@ -79,6 +76,10 @@ class Model {
         }
     }
 
+    public function where($data,  $comparator = '=') {
+        return $this->builder->where($data, $comparator);
+    }
+
     /**
      * @return Object|Model
      */
@@ -120,7 +121,7 @@ class Model {
     /**
      * @return Model|Model[]
      */
-    public static function get() {
+    public function get() {
         $results = array_map(function($data) {
             $model = self::query();
             $model->fill($data);
@@ -159,7 +160,7 @@ class Model {
      *
      * @return Model
      */
-    public static function create(array $data) {
+    public function create(array $data) {
         $model = self::query();
 
         if ($model->insert($data)) {
