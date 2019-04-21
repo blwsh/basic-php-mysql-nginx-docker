@@ -4,10 +4,6 @@ namespace Framework;
 
 use Exception;
 use Framework\Exceptions\ViewNotFoundException;
-use function htmlentities;
-use function preg_match;
-use function preg_replace;
-use function str_replace;
 
 class View
 {
