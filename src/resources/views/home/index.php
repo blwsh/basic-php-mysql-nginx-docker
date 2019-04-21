@@ -1,4 +1,4 @@
-<content title="Home" template="default">
+<content title="Home" template="layout.default">
     <div class="slider">
         <div class="slide">
             <img src="" alt="">

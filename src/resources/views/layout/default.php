@@ -4,16 +4,15 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@title</title>
 
-    @include('layout.head')
+    <title>
+        <yield value="title"></yield>
+    </title>
 </head>
 <body>
-    @include('layout.header');
+    <?php view('layout.header') ?>
     <main class="app">
-        @content
+        <yiled value="content"></yiled>
     </main>
-    @include('layout.footer');
-    @include('layout.scripts')
 </body>
 </html>

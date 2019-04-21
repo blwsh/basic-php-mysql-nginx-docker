@@ -41,6 +41,15 @@ function display($data) {
 }
 
 /**
+ * @param string $string
+ *
+ * @return mixed
+ */
+function dot(string $string) {
+    return str_replace('.', '/', $string);
+}
+
+/**
  * Tries to strip the namespace from a class and just return the name.
  *
  * @param $class
@@ -53,4 +62,8 @@ function getClassName($class) {
     } catch (ReflectionException $e) {
         return $class;
     }
+}
+
+function view(string $name, array $data = []) {
+    return new \Framework\View($name, $data);
 }

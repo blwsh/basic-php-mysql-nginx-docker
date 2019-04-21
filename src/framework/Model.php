@@ -41,7 +41,7 @@ class Model {
      */
     public function __construct($table = null) {
         // Create connection
-        $this->connection = new Connection('magento', 'db', 'root', 'root');
+        $this->connection = App::getInstance()->getConnection();
 
         // Instantiate builder for the model.
         $this->builder = new QueryBuilder($this->connection, $this->table);
@@ -121,7 +121,7 @@ class Model {
     /**
      * @return Model|Model[]
      */
-    public function get() {
+    public static function get() {
         $results = array_map(function($data) {
             $model = self::query();
             $model->fill($data);

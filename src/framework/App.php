@@ -3,6 +3,10 @@
 namespace Framework;
 
 use Exception;
+use function get_class;
+use function is_a;
+use function is_object;
+use function json_encode;
 use ReflectionClass;
 use ReflectionException;
 use Framework\Traits\Singleton;
@@ -105,7 +109,15 @@ class App
 
         if ($reflection->hasMethod($method)) {
             $methodReflection = $reflection->getMethod($method);
-            echo $methodReflection->invoke($reflection->newInstance());
+
+            $result = $methodReflection->invoke($reflection->newInstance());
+
+            if (is_a($result, View::class)) {
+                echo $result->render();
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode($result);
+            }
         } else {
             throw new InvalidRequestMethod();
         }
