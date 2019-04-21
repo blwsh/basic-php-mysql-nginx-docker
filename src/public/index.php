@@ -27,8 +27,6 @@ $app->setConnection(
  */
 $app->setRouter(new Framework\Router());
 
-$builder = new \Framework\QueryBuilder(app()->getConnection(), 'test');
-
 /**
  * Handle the request.
  */

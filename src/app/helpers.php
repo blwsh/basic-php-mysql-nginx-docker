@@ -16,7 +16,9 @@ function app() {
  * @param mixed $data
  */
 function dump($data) {
-    echo "<pre>".print_r($data,true)."</pre>";
+    echo "<pre>";
+    var_export($data);
+    echo "</pre>";
 }
 
 /**
@@ -36,4 +38,19 @@ function dd($data) {
  */
 function display($data) {
     echo "<div style='border: 1px solid; padding: 10px; margin: 10px; font-family: monospace; line-height: 1.5;' '>$data</div>";
+}
+
+/**
+ * Tries to strip the namespace from a class and just return the name.
+ *
+ * @param $class
+ *
+ * @return string
+ */
+function getClassName($class) {
+    try {
+        return (new ReflectionClass($class))->getShortName();
+    } catch (ReflectionException $e) {
+        return $class;
+    }
 }

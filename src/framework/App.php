@@ -3,16 +3,20 @@
 namespace Framework;
 
 use Exception;
-use Framework\Exceptions\InvalidRequestMethod;
 use ReflectionClass;
 use ReflectionException;
+use Framework\Traits\Singleton;
+use Framework\Exceptions\InvalidRequestMethod;
 
 /**
  * Class App
+ *
  * @package Framework
  */
 class App
 {
+    use Singleton;
+
     /**
      * @var Connection
      */
@@ -27,45 +31,6 @@ class App
      * @var Dispatcher
      */
     private $dispatcher;
-
-    /**
-     * @var App
-     */
-    private static $instance;
-
-    /**
-     * @return App
-     */
-    public function __invoke()
-    {
-        return self::getInstance();
-    }
-    
-    /**
-     * Allows you to call App methods without first having to call
-     * getInstance. 
-     *
-     * e.g: Instead of App::getInstance()->getConnection() just do App::getConnection()
-     *
-     * @return App
-     */
-    public static function __callStatic($function, $args) {
-        return self::getInstance()->$function(...$args);
-    }
-
-    /**
-     * App constructor.
-     * 
-     * @return App
-     */
-    public static function getInstance()
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new app;
-        }
-
-        return self::$instance;
-    }
 
     /**
      * @return Connection
@@ -126,9 +91,10 @@ class App
         try {
             $resolvedRoute = $this->router::resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
         } catch (Exceptions\InvalidRequestMethod $e) {
-            return http_response_code(404);
+            http_response_code(404);
         }
 
+        /** @var string $resolvedRoute */
         $controllerMethod = (explode('@', $resolvedRoute));
 
         $controller = 'App\\Controllers\\' . $controllerMethod[0];
