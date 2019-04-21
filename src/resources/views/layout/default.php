@@ -10,7 +10,7 @@
     </title>
 </head>
 <body>
-    <?php echo view('layout.header') ?>
+    <?= view('layout.header') ?>
     <main class="app">
         <yiled value="content"></yiled>
     </main>

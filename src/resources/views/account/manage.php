@@ -1,4 +1,4 @@
 <div>
     Hello, world.
-    <?php echo "TEST"; ?>
+    <?= "TEST"; ?>
 </div>

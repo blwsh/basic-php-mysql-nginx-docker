@@ -1,3 +1,3 @@
 <footer class="site-footer">
-    &copy; MVC <?php echo date('Y') ?>
+    &copy; MVC <?= date('Y') ?>
 </footer>
