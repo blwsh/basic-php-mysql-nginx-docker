@@ -5,7 +5,7 @@ namespace App\Commands;
 use Exception;
 use Framework\Command;
 
-class GetImages extends Command
+class GetBanners extends Command
 {
     public function handle()
     {
@@ -16,8 +16,6 @@ class GetImages extends Command
         // Get films
         foreach (array_map(function($model) { return $model->filmtitle; }, \App\Models\Film::get()) as $filmName) {
             $this->info("Getting $filmName");
-
-            dd("https://api.themoviedb.org/$apiVersion/search/movie?query=$filmName&api_key=$apiKey");
 
             try {
                 $ch = curl_init();
