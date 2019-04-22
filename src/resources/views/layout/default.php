@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href=//www.hud.ac.uk/media/recruitment/styleassets/assets/icons/favicon.ico>
 
     <!-- Title -->
-    <title><yield value="title"></yield></title>
+    <title><yield value="title"></yield> -  <?= config('site') ?></title>
 
     <!-- Other -->
     <?= view('layout.head') ?>

@@ -24,8 +24,8 @@ class View
     /**
      * View constructor.
      *
-     * @param       $file
-     * @param array $vars
+     * @param              $file
+     * @param array|object $vars
      */
     public function __construct($file, $vars = [])
     {
@@ -41,7 +41,7 @@ class View
      */
     public function render() {
         if (is_file($this->path)) {
-            extract($this->vars);
+            extract((array) $this->vars);
             ob_start(); include $this->path; $this->renderedContents = ob_get_clean();
 
             if (preg_match('/\<content\ .*\>\n(.+\n*)+<\/content\>/', $this->renderedContents, $matches)) {

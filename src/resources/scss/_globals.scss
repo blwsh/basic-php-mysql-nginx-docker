@@ -46,14 +46,16 @@ a {
 .btn {
     display: inline-block;
     background-color: $primary;
+    color: $lightgrey;
     padding: 1rem;
     text-align: center;
     letter-spacing: 1.2px;
     font-weight: 200;
-    color: $grey;
     border-radius: .25rem;
+    transition: background-color .5s ease, color .5s ease;
 
     &--active, &:hover {
+        background-color: $secondary;
         color: $white;
     }
 

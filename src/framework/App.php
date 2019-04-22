@@ -3,10 +3,6 @@
 namespace Framework;
 
 use Exception;
-use function get_class;
-use function is_a;
-use function is_object;
-use function json_encode;
 use ReflectionClass;
 use ReflectionException;
 use Framework\Traits\Singleton;

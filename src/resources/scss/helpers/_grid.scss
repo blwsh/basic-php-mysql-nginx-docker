@@ -1,11 +1,15 @@
 .row {
     display: flex;
+    justify-content: stretch;
     flex-wrap: wrap;
     overflow: hidden;
     margin: 0 -1rem;
 }
 
 .col {
+    display: flex;
+    justify-content: stretch;
+
     @for $i from 1 through $grid-columns {
         &--#{$i}\/#{$grid-columns} {
             flex-basis: percentage($i / $grid-columns);

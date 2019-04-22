@@ -5,6 +5,7 @@ $grid-columns: 12;
 $primary: #2A3136;
 $secondary: #736B82;
 $grey: #96A6AC;
+$lightgrey: lighten($grey, 10%);
 $blue: #59A0EF;
 $white: #F4F7F7;
 $purple: $secondary;

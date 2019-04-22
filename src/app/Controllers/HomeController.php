@@ -2,11 +2,13 @@
 
 namespace App\Controllers;
 
-use function view;
+use App\Models\Film;
 
 class HomeController
 {
     public function index() {
-        return view('home.index', ['hello' => 'test']);
+        return view('home.index', [
+            'films' => Film::get()
+        ]);
     }
 }

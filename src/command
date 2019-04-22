@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Autoload.
+ */
+
+require_once __DIR__ .'/autoloader/bootstrap.php';
+
+/**
+ * Start the app.
+ */
+$app = app();
+
+/**
+ * Set the connection for the app.
+ */
+$app->setConnection(
+    new Framework\Connection(
+        'magento',
+        'db',
+        'root',
+        'root'
+    )
+);
+
+$commandsNamespace = 'App\\Commands\\';
+
+if (count($argv) < 2) {
+    echo "Missing command. Example: php command {command} {...args}\n";
+    return;
+}
+
+try {
+    $reflection = new ReflectionClass($commandsNamespace . $argv[1]);
+
+    $command = $reflection->newInstance();
+
+    $method = $reflection->getMethod('handle');
+
+    $method->invoke($command, count($argv) ? array_slice($argv, 2) : null);
+} catch (ReflectionException $e) {
+    echo "Command not found. ($commandsNamespace" . "$argv[1]) \n";
+}

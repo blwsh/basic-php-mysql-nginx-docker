@@ -3,7 +3,7 @@
 /**
  * Autoload.
  */
-require_once '../autoloader/bootstrap.php';
+require_once __DIR__ .'/../autoloader/bootstrap.php';
 
 /**
  * Start the app.
