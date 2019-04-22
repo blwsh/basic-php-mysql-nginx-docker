@@ -1,8 +1,10 @@
 .site-header {
     display: flex;
+    background-color: #fff;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
+    opacity: 0.9;
 
     .header__logo {
         padding: 10px;

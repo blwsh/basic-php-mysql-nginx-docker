@@ -9,7 +9,7 @@ const autoPrefix   =  require('gulp-autoprefixer');
 gulp.task('serve', ['sass'], () => {
     browserSync.init();
     gulp.watch("resources/scss/**/*.scss", ['sass']);
-    gulp.watch("resources/js/*.js").on('change', browserSync.reload);
+    gulp.watch("public/assets/js/*.js").on('change', browserSync.reload);
 });
 
 // Compile sass into CSS & auto-inject into browsers

@@ -1,0 +1,16 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    margin: 0 -1rem;
+}
+
+.col {
+    @for $i from 1 through $grid-columns {
+        &--#{$i}\/#{$grid-columns} {
+            flex-basis: percentage($i / $grid-columns);
+            width: percentage($i / $grid-columns);
+            padding: 0 1rem;
+        }
+    }
+}

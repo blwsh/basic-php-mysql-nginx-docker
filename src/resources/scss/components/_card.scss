@@ -1,0 +1,53 @@
+.card {
+    display: block;
+    background-color: $white;
+    color: $primary;
+    border: 1px solid darken($white, 10%);
+    margin: 0 0 1rem 0;
+    border-radius: .5rem;
+    overflow: hidden;
+
+    &:hover, &:focus, &:visited {
+        color: inherit;
+        outline: none;
+    }
+
+    > * {
+        &:not(.card__img):not(.card__btn) {
+            padding: .5rem;
+            margin: .5rem;
+        }
+    }
+
+    &__img {
+        background-color: darken($white, 5%);
+        text-align: center;
+
+        img {
+            display: inline-block;
+            margin-bottom: -4px;
+        }
+    }
+
+    &__title {
+        font-size: 1.75rem;
+        line-height: 1;
+    }
+
+    .card__description {
+        font-size: .75rem;
+        text-align: justify-all;
+    }
+
+    &__rating {
+        letter-spacing: 2px;
+        color: $grey;
+    }
+
+    &__btn {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        display: block;
+    }
+
+}

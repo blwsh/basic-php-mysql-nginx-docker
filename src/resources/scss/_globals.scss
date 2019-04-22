@@ -1,7 +1,16 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 body {
     // Reset
     padding: 0;
     margin: 0;
+    overflow-x: hidden;
 
     // Brand
     font-family: 'Fira Sans', sans-serif;
@@ -14,12 +23,42 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: 1.1px;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 a {
     color: $blue;
     text-decoration: none;
     transition: .5s ease;
     &:hover {
         color: darken($blue, 25%);
+    }
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    background-color: $primary;
+    padding: 1rem;
+    text-align: center;
+    letter-spacing: 1.2px;
+    font-weight: 200;
+    color: $grey;
+    border-radius: .25rem;
+
+    &--active, &:hover {
+        color: $white;
+    }
+
+    &--blocl {
+        display: block;
     }
 }
 
@@ -35,4 +74,8 @@ a {
     display: block;
     border-radius: 100%;
     overflow: hidden;
+}
+
+.disabled {
+    opacity: 0.5;
 }
