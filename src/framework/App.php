@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use const E_ERROR;
 use Exception;
 use Framework\Traits\Singleton;
 
@@ -102,7 +103,7 @@ class App
         session_start();
 
         // Enable error reporting
-        ini_set('display_errors',1); error_reporting(E_CORE_ERROR);
+        ini_set('display_errors',1); error_reporting(E_ERROR);
     }
 
     /**

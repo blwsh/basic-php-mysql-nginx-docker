@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: $white;
+    background-color: lighten($white, 5%);
     color: $primary;
     border: 1px solid darken($white, 10%);
     margin: 0 0 1rem 0;

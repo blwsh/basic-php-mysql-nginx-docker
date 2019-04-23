@@ -10,6 +10,7 @@
             <ul class="nav">
                 <li class="nav__item"><a href="/">Home</a></li>
                 <li class="nav__item"><a href="/films">Films</a></li>
+                <li class="nav__item"><a href="/shops">Shops</a></li>
                 <li class="nav__item"><a href="/about">About</a></li>
             </ul>
         </nav>

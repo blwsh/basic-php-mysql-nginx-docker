@@ -6,10 +6,12 @@ use Framework\Router;
 Router::get('/', 'HomeController@index');
 
 // Pages
+Router::get('/shops', 'PagesController@shops');
 Router::get('/about', 'PagesController@about');
 
 // Basket
 Router::get('/basket/get', 'BasketController@get');
+Router::post('/basket/add', 'BasketController@add');
 
 // Films
 Router::get('/films', 'Filmscontroller@index');

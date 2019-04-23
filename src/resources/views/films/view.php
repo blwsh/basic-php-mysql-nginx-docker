@@ -6,6 +6,11 @@
                 <h1 class="title title--divider"><?= $film->filmtitle ?></h1>
                 <p class="rating" title="<?= $rating; ?> stars"><?= str_repeat('★', $rating) ?><span class="disabled"><?= str_repeat('★', 5 - $rating) ?></span> (<?= $rating ?>)</p>
                 <p><?= $film->filmdescription ?></p>
+
+                <form action="/basket/add" method="post">
+                    <input type="hidden" name="filmid" value="<?= $film->filmid ?>">
+                    <button class="btn">Add to basket</button>
+                </form>
             </div>
         </div>
         <div class="col--4/12">
