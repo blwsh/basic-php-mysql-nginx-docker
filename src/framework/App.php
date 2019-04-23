@@ -3,10 +3,7 @@
 namespace Framework;
 
 use Exception;
-use ReflectionClass;
-use ReflectionException;
 use Framework\Traits\Singleton;
-use Framework\Exceptions\InvalidRequestMethod;
 
 /**
  * Class App
@@ -28,7 +25,7 @@ class App
     private $router;
 
     /**
-     * @var Dispatcher
+     * @var Dispatch
      */
     private $dispatcher;
 
@@ -65,7 +62,7 @@ class App
     }
 
     /**
-     * @return Dispatcher
+     * @return Dispatch
      */
     public function getDispatcher()
     {
@@ -73,7 +70,7 @@ class App
     }
 
     /**
-     * @param Dispatcher $dispatcher
+     * @param Dispatch $dispatcher
      */
     public function setDispatcher($dispatcher)
     {
@@ -83,40 +80,29 @@ class App
     /**
      * @return void
      *
-     * @throws InvalidRequestMethod
-     * @throws ReflectionException
+     * @throws Exceptions\ControllerMethodNotFoundException
+     * @throws Exceptions\FailedRouteResolveException
+     * @throws \ReflectionException
      */
     public function handle()
     {
+        $this->boot();
+
         try {
-            $resolvedRoute = $this->router::resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+            new Dispatch(
+                $this->router::resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'])
+            );
         } catch (Exceptions\InvalidRequestMethod $e) {
             http_response_code(404);
         }
+    }
 
-        /** @var string $resolvedRoute */
-        $controllerMethod = (explode('@', $resolvedRoute));
+    public function boot() {
+        // Start session
+        session_start();
 
-        $controller = 'App\\Controllers\\' . $controllerMethod[0];
-        $method = $controllerMethod[1];
-
-        /** @var Controller $instance */
-        $reflection = new ReflectionClass($controller);
-
-        if ($reflection->hasMethod($method)) {
-            $methodReflection = $reflection->getMethod($method);
-
-            $result = $methodReflection->invoke($reflection->newInstance());
-
-            if (is_a($result, View::class)) {
-                echo $result->render();
-            } else {
-                header('Content-Type: application/json');
-                echo json_encode($result);
-            }
-        } else {
-            throw new InvalidRequestMethod();
-        }
+        // Enable error reporting
+        ini_set('display_errors',1); error_reporting(E_CORE_ERROR);
     }
 
     /**

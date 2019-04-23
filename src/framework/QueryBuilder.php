@@ -26,9 +26,14 @@ class QueryBuilder
     protected $prepared;
 
     /**
-     * @var
+     * @var string
      */
     protected $table;
+
+    /**
+     * @var Model
+     */
+    public $model;
 
     /**
      * @var string
@@ -95,11 +100,16 @@ class QueryBuilder
      *
      * @param Connection $connection
      * @param            $table
+     * @param Model|null $model
      */
-    public function __construct(Connection $connection, $table) {
+    public function __construct(Connection $connection, $table, Model &$model = null) {
         $this->connection = $connection;
-        $this->instance = &$this->connection->getInstance();
+        $this->instance = $this->connection->getInstance();
         $this->table = $table;
+
+        if ($model) {
+            $this->model = $model;
+        }
     }
 
     /**
@@ -210,11 +220,17 @@ class QueryBuilder
 
         $this->prepared = $prepared->execute($this->values);
 
-        return $prepared->fetchAll(PDO::FETCH_CLASS);
+        $results = $prepared->fetchAll(PDO::FETCH_CLASS);
+
+        if ($this->model) {
+            return $this->model::fillArray($results);
+        }
+
+        return $results;
     }
 
     /**
-     * @return Object
+     * @return Model|Object
      */
     public function first() {
         return $this->limit(1)->get()[0];
@@ -400,11 +416,23 @@ class QueryBuilder
     }
 
     /**
-     * @param $columns
+     * @param string $key
+     * @param array  $values
      *
      * @return QueryBuilder
      */
-    public function groupBy($columns) {
+    public function whereIn(string $key, array $values) {
+        $this->where(['test'], 'IN');
+
+        return $this;
+    }
+
+    /**
+     * @param array $columns
+     *
+     * @return QueryBuilder
+     */
+    public function groupBy(array $columns) {
         foreach ($columns as $column) {
             if (!in_array($column, $this->groupBy)) $this->groupBy[] = "$column";
         }
@@ -418,7 +446,7 @@ class QueryBuilder
      *
      * @return QueryBuilder
      */
-    public function orderBy($columns, $order = 'DESC') {
+    public function orderBy(array $columns, string $order = 'DESC') {
         foreach ($columns as $column) {
             if (!in_array($column, $this->orderBy)) $this->orderBy[] = "$column $order";
         }
@@ -459,10 +487,18 @@ class QueryBuilder
     }
 
     /**
+     * @return PDOStatement
+     */
+    public function toString()
+    {
+        return $this->prepared;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
     {
-        return $this->prepared;
+        return $this->toString();
     }
 }

@@ -2,11 +2,16 @@
 
 namespace Framework;
 
-use ReflectionClass;
-use ReflectionException;
-
 /**
  * Class Model
+ * This model acts as a Data Access Object. Static methods such as get, create
+ * and delete may be called on classes which extend this one. Each model has a
+ * table property which must be set as it determines what table should be used
+ * for the particular data access object.
+ *
+ * Setting what table a model uses is usually done by extending and overriding
+ * the protected $table property but can also be passed in to the class upon
+ * construction.
  */
 class Model {
     /**
@@ -40,14 +45,14 @@ class Model {
      * @param null $table
      */
     public function __construct($table = null) {
+        //  Set table for model
+        $this->table = $table ? $table : $this->table ? $this->table : $table = strtolower(get_called_class());
+
         // Create connection
         $this->connection = App::getInstance()->getConnection();
 
         // Instantiate builder for the model.
-        $this->builder = new QueryBuilder($this->connection, $this->table);
-
-        //  Set table for model
-        $this->table = $table ? $table : $this->table ? $this->table : $table = strtolower(get_called_class());
+        $this->builder = new QueryBuilder($this->connection, $this->table, $this);
     }
 
     /**
@@ -60,44 +65,42 @@ class Model {
     }
 
     /**
-     * @return string
-     */
-    private function getConnectionTable() {
-        return $this->connection->getName() . '.' . $this->table;
-    }
-
-    /**
      * @param $data
      */
     public function fill($data) {
-
         foreach ($data as $key => $value) {
             $this->attributes[$key] = $value;
         }
     }
 
-    public function where($data,  $comparator = '=') {
-        return $this->builder->where($data, $comparator);
+    /**
+     * @param array $data
+     *
+     * @return Model[]
+     */
+    public static function fillArray(array $data) {
+        return array_map(function($data) {
+            $model = new static;
+            $model->fill($data);
+            return $model;
+        }, $data);
     }
 
     /**
-     * @return Object|Model
+     * @param        $data
+     * @param string $comparator
+     *
+     * @return QueryBuilder
+     */
+    public static function where($data,  $comparator = '=') {
+        return self::query()->where($data, $comparator);
+    }
+
+    /**
+     * @return QueryBuilder
      */
     public static function query() {
-        try {
-            return (new ReflectionClass(get_called_class()))->newInstance();
-        } catch (ReflectionException $e) {
-            // Do nothing.
-        }
-    }
-
-    /**
-     * @param $data
-     *
-     * @return bool
-     */
-    public function insert($data) {
-        return $this->builder->insert($data);
+        return (new static)->builder;
     }
 
     /**
@@ -119,27 +122,26 @@ class Model {
     }
 
     /**
+     * @param $data
+     *
+     * @return bool
+     */
+    public static function insert($data) {
+        return self::query()->insert($data);
+    }
+
+    /**
      * @return Model|Model[]
      */
     public static function get() {
-        $results = array_map(function($data) {
-            $model = self::query();
-            $model->fill($data);
-            return $model;
-        }, self::query()->builder->get());
-
-        return $results;
+        return self::query()->get();
     }
 
     /**
      * @return Model
      */
-    public function first() {
-        $data = $this->builder->first();
-
-        $this->fill($data);
-
-        return $this;
+    public static function first() {
+        return self::query()->first();
     }
 
     /**
@@ -147,12 +149,9 @@ class Model {
      *
      * @return Model
      */
-    public function find($id) {
-        $data = $this->builder->where(['id', $id])->first();
-
-        $this->fill($data);
-
-        return $this;
+    public static function find($id) {
+        $builder = self::query();
+        return self::query()->where([$builder->model->primaryKey ?? 'id' => $id])->first();
     }
 
     /**
@@ -160,10 +159,10 @@ class Model {
      *
      * @return Model
      */
-    public function create(array $data) {
-        $model = self::query();
+    public static function create(array $data) {
+        $model = new static;
 
-        if ($model->insert($data)) {
+        if (self::query()->insert($data)) {
             $model->fill($data);
         }
 

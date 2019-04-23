@@ -33,7 +33,12 @@
         img {
             display: inline-block;
             margin-bottom: -4px;
+
+            &[src=""] {
+                display: none;
+            }
         }
+
     }
 
     &__title {

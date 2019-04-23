@@ -6,7 +6,8 @@
             <?= view('components.card', [
                 'title' => $data->filmtitle,
                 'description' => $data->filmdescription,
-                'img' => '/assets/img/films/' . slug($data->filmtitle ?? 'placeholder') .'.jpg',
+                'slug' => '/films/' . $data->filmid,
+                'img' => 'https://res.cloudinary.com/dvsvyssoa/image/upload/w_300,q_auto/v1555973011/mvc/films/' . slug($data->filmtitle ?? 'placeholder') . '.jpg',
                 'rating' => rand(1, 5),
                 'button_label' => 'Order now',
                 'overlay' => true
@@ -16,3 +17,4 @@
     </div>
 </div>
 <?php endif; ?>
+

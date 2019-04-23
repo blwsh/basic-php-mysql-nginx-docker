@@ -11,30 +11,30 @@ function app() {
 }
 
 /**
- * @param      $array
- * @param      $key
- * @param null $default
+ * @param array $data
+ * @param       $key
+ * @param null  $default
  *
  * @return mixed
  */
-function get($array, $key, $default = null)
+function get(array $data, $key, $default = null)
 {
-    if (is_null($key)) return $array;
+    if (!is_string($key) || empty($key) || !count($data)) return $default;
 
-    if (isset($array[$key])) return $array[$key];
+    if (strpos($key, '.') !== false) {
+        $keys = explode('.', $key);
+        foreach ($keys as $innerKey) {
+            if (!array_key_exists($innerKey, $data)) {
+                return $default;
+            }
 
-    foreach (explode('.', $key) as $segment)
-    {
-        if ( ! is_array($array) ||
-            ! array_key_exists($segment, $array))
-        {
-            return value($default);
+            $data = $data[$innerKey];
         }
 
-        $array = $array[$segment];
+        return $data;
     }
 
-    return $array;
+    return array_key_exists($key, $data) ? $data[$key] : $default;
 }
 
 /**
@@ -44,7 +44,7 @@ function get($array, $key, $default = null)
  *
  * @return mixed
  */
-function set(&$array, $key, $value)
+function set(array &$array, $key, $value)
 {
     if (is_null($key)) return $array = $value;
 
@@ -99,7 +99,7 @@ function isDebug() {
  */
 function dump($data) {
     echo "<pre>";
-    var_export($data);
+    var_dump($data);
     echo "</pre>";
 }
 

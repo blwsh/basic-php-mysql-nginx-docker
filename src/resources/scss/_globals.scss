@@ -12,9 +12,19 @@ body {
     margin: 0;
     overflow-x: hidden;
 
+    // Height
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .app {
+        flex: 1 1 auto;
+    }
+
     // Brand
     font-family: 'Fira Sans', sans-serif;
-    background: $white;
+    background: $white url("/assets/img/white-codelines.svg") top center;
     color: $primary;
 }
 
@@ -80,4 +90,18 @@ a {
 
 .disabled {
     opacity: 0.5;
+}
+
+.img-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    img {
+        &:last-child {
+            position: absolute;
+            box-shadow: 0 0 50px 50px rgba($primary, .5);
+            z-index: 1;
+        }
+    }
 }

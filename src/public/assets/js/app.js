@@ -17,7 +17,7 @@ class Slider {
         } else if (typeof el === "object") {
             this.el = el;
         } else {
-            throw new Error("Element not specified");
+            throw new Error("Slider element not specified.");
         }
 
         this.currentSlide = 1;
@@ -141,8 +141,62 @@ class Slider {
     }
 }
 
+class Basket {
+    static basketRequestUrl = '/basket/get';
+
+    constructor(buttonElement, containerElement) {
+        // Set button element.
+        if (typeof buttonElement === "string") {
+            this.buttonElement = document.querySelector(buttonElement);
+        } else if (typeof buttonElement === "object") {
+            this.buttonElement = buttonElement;
+        } else {
+            throw new Error("Basket button element not specified.");
+        }
+
+        // Set container element
+        if (typeof containerElement === "string") {
+            this.containerElement = document.querySelector(containerElement);
+        } else if (typeof containerElement === "object") {
+            this.containerElement = containerElement;
+        } else {
+            throw new Error("Basket container element not specified.");
+        }
+
+        this.constructBasket();
+        this.bindEvents();
+    }
+
+    constructBasket() {
+        this.containerElement.classList.add('basket');
+        this.containerElement.style.display = 'none'
+        this.populateBasket();
+    }
+
+    populateBasket() {
+        fetch(Basket.basketRequestUrl)
+            .then(data => {
+                console.log(data);
+            });
+    }
+
+    bindEvents() {
+        this.buttonElement.onclick = () => {
+            this.containerElement.style.display =
+                this.containerElement.style.display === 'none' ?
+                    'block' :
+                    'none';
+        }
+    }
+}
+
 /**
  * App code.
  */
 
-new Slider('#home-slider');
+new Basket('#basket-button', '#basket-container');
+
+if (document.querySelector('#home-slider')) {
+    new Slider('#home-slider');
+}
+

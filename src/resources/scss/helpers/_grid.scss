@@ -18,3 +18,11 @@
         }
     }
 }
+
+.offset {
+    @for $i from 1 through $grid-columns {
+        &--#{$i}\/#{$grid-columns} {
+            padding-left: percentage($i / $grid-columns);
+        }
+    }
+}
