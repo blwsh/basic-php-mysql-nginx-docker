@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Enable error reporting
+ */
+ini_set('display_errors',1); error_reporting(E_ALL);
+
+/**
  * Autoload.
  */
 require_once __DIR__ .'/../autoloader/bootstrap.php';
