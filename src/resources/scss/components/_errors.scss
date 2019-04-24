@@ -1,0 +1,12 @@
+.errors {
+    font-size: .8rem;
+    color: $error;
+    display: block;
+    list-style-type: none;
+    padding: 0;
+    margin: .5rem 0;
+
+    &:empty, &:blank {
+        display: none;
+    }
+}

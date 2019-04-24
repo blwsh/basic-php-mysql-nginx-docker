@@ -8,7 +8,8 @@ class HomeController
 {
     public function index() {
         return view('home.index', [
-            'films' => Film::get()
+            'films' => Film::limit(12)->get(),
+            'classics' => Film::limit(4)->get()
         ]);
     }
 }

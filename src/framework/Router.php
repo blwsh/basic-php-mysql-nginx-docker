@@ -3,7 +3,6 @@
 namespace Framework;
 
 use function array_combine;
-use function count;
 use Framework\Exceptions\FailedRouteResolveException;
 
 /**
@@ -30,7 +29,7 @@ class Router
      *
      * @return mixed
      * @throws Exceptions\InvalidRequestMethod
-     * @throws Exceptions\FailedRouteResolveException
+     * @throws FailedRouteResolveException
      */
     public static function resolve($method, $uri)
     {

@@ -1,0 +1,48 @@
+.basket {
+    display: block;
+    max-height: 400px;
+    background-color: lighten($white, 5%);
+    border: 1px solid $lightgrey;
+    border-top: none;
+    padding: 1rem;
+    box-shadow: 5px 5px 5px rgba($grey, .25), inset 0 5px 5px 0px rgba($lightgrey, .5);
+    overflow-y: scroll;
+    z-index: 1;
+
+    &__item {
+        width: 100%;
+        display: table-row;
+        justify-content: space-between;
+
+        > * {
+            display: table-cell;
+            padding: 2px;
+        }
+
+        &__name {
+            width: 99%;
+        }
+
+        &__quantity {
+        }
+
+        &__controls {
+            font-weight: 600;
+            display: flex;
+
+            button {
+                background-color: $secondary;
+                color: $white;
+                margin: 0 5px;
+                border: none;
+                width: 20px;
+                height: 20px;
+                font-weight: 700;
+                line-height: 1;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
+
+}

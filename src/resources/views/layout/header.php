@@ -1,6 +1,6 @@
 <div class="header-container">
     <header class="site-header">
-        <div class="header__logo display--circle bg-primary">
+        <div class="header__logo display--circle bg--primary">
             <a href="/">
                 <img src="https://www.hud.ac.uk/media/universityofhuddersfield/styleassets/images/2016homepageimages/uoh-logo-2019-white.svg" alt="MVC Framework" class="header__logo__img">
             </a>

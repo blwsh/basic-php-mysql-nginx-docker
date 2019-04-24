@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use Exception;
+use App\Models\Film;
 use Framework\Command;
 
 class GetImages extends Command
@@ -14,7 +15,7 @@ class GetImages extends Command
         $apiKey     = config('themoviedb_key');
 
         // Get films
-        foreach (array_map(function($model) { return $model->filmtitle; }, \App\Models\Film::get()) as $filmName) {
+        foreach (array_map(function($model) { return $model->filmtitle; }, Film::get()) as $filmName) {
             $this->info("Getting $filmName");
 
             try {
@@ -35,7 +36,5 @@ class GetImages extends Command
         }
 
         curl_close($ch);
-
-
     }
 }

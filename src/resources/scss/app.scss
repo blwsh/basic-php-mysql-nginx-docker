@@ -4,16 +4,24 @@
 @import "globals";
 
 // Helpers
+@import "helpers/general";
 @import "helpers/flex";
 @import "helpers/grid";
+@import "helpers/typography";
 
 // Layout
-@import "layout/header";
-@import "layout/footer";
+@import 'layout/forms';
+@import 'layout/headings';
 
 // Components
+@import "components/header";
+@import "components/footer";
+@import "components/basket";
+@import "components/btn";
 @import "components/nav";
 @import "components/card";
 @import "components/slider";
 @import "components/products";
 @import "components/films";
+@import "components/login";
+@import "components/errors";

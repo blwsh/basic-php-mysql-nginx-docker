@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use function array_merge;
 use Exception;
 use Framework\Exceptions\ViewNotFoundException;
 
@@ -77,7 +78,10 @@ class View
         } else {
             throw new ViewNotFoundException('Unable to find view with name ' . $this->file . ' at path ' . $this->path .')');
         }
+    }
 
+    public function inject(array $data) {
+        $this->vars = array_merge($this->vars, $data);
     }
 
     /**

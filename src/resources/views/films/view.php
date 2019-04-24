@@ -2,14 +2,14 @@
 <content title="<?= $filmtitle ?>" template="layout.default">
     <div class="row">
         <div class="col--8/12 offset--1/12">
-            <div class="container">
+            <div class="container bg--white mt mb br">
                 <h1 class="title title--divider"><?= $film->filmtitle ?></h1>
                 <p class="rating" title="<?= $rating; ?> stars"><?= str_repeat('★', $rating) ?><span class="disabled"><?= str_repeat('★', 5 - $rating) ?></span> (<?= $rating ?>)</p>
                 <p><?= $film->filmdescription ?></p>
 
                 <form action="/basket/add" method="post">
                     <input type="hidden" name="filmid" value="<?= $film->filmid ?>">
-                    <button class="btn">Add to basket</button>
+                    <button type="submit" class="btn" data-basket-add="<?= $film->filmid ?>">Add to basket &#187;</button>
                 </form>
             </div>
         </div>

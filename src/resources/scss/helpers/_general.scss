@@ -1,0 +1,46 @@
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.content {
+    background-color: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.mt {
+    margin-top: 1rem;
+}
+
+.mb {
+    margin-bottom: 1rem;
+}
+
+.br {
+    border-radius: .25rem;
+}
+
+.bg--white {
+    background-color: #fff;
+}
+
+.bg--primary {
+    background-color: $primary;
+}
+
+.bg--secondary {
+    background-color: $secondary;
+}
+
+.display--circle {
+    display: block;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.disabled {
+    opacity: 0.5;
+}

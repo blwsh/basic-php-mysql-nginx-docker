@@ -4,6 +4,7 @@ namespace Framework;
 
 use Framework\Exceptions\ControllerMethodNotFoundException;
 use ReflectionClass;
+use function response;
 
 class Dispatch {
     /**
@@ -13,6 +14,7 @@ class Dispatch {
      *
      * @throws \ReflectionException
      * @throws ControllerMethodNotFoundException
+     * @throws Exceptions\ViewNotFoundException
      */
     function __construct(Route $route) {
         /** @var Controller $instance */
@@ -21,17 +23,11 @@ class Dispatch {
         if ($reflection->hasMethod($route->getMethod())) {
             $methodReflection = $reflection->getMethod($route->getMethod());
 
-            // Build request
             $request = Request::capture($route->getArgs());
 
             $result = $methodReflection->invoke($reflection->newInstance(), $request);
 
-            if (is_a($result, View::class)) {
-                echo $result->render();
-            } else {
-                header('Content-Type: application/json');
-                echo json_encode($result, JSON_PRETTY_PRINT);
-            }
+            echo response($result, 200);
         } else {
             throw new ControllerMethodNotFoundException("The controller method ($controller()->$method()) could not be found.");
         }

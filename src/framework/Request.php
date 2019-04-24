@@ -3,6 +3,10 @@
 namespace Framework;
 
 
+use function is_null;
+use function putenv;
+use function set;
+
 /**
  * Class Request
  * @package Framework
@@ -91,12 +95,15 @@ class Request
 
     /**
      * @param string $key = null
+     * @param null   $value
      *
      * @return mixed
      */
-    public function server(string $key = null)
+    public function server(string $key, $value = null)
     {
-        if ($key) {
+        if (!is_null($value)) {
+
+        } else if ($key) {
             return get($this->server, $key);
         }
 
@@ -104,13 +111,16 @@ class Request
     }
 
     /**
-     * @param string $key = null
+     * @param string $key
+     * @param null   $value
      *
      * @return mixed
      */
-    public function files(string $key = null)
+    public function files(string $key, $value = null)
     {
-        if ($key) {
+        if (!is_null($value)) {
+
+        } else if ($key) {
             return get($this->files, $key);
         }
 
@@ -119,12 +129,15 @@ class Request
 
     /**
      * @param string $key = null
+     * @param null   $value
      *
      * @return mixed
      */
-    public function session(string $key = null)
+    public function session(string $key, $value = null)
     {
-        if ($key) {
+        if (!is_null($value)) {
+            return set($this->session, $key, $value);
+        } else if ($key) {
             return get($this->session, $key);
         }
 
@@ -133,12 +146,15 @@ class Request
 
     /**
      * @param string $key = null
+     * @param        $value
      *
      * @return mixed
      */
-    public function cookies(string $key = null)
+    public function cookies(string $key, $value)
     {
-        if ($key) {
+        if (!is_null($value)) {
+            return set($this->cookies, $key, $value);
+        } else if ($key) {
             return get($this->cookies, $key);
         }
 

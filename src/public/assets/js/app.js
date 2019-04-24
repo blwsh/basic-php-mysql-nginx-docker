@@ -144,6 +144,10 @@ class Slider {
 class Basket {
     static basketRequestUrl = '/basket/get';
 
+    static basketAddRequesttUrl = '/basket/add';
+
+    static basketRemoveRequestUrl = '/basket/remove';
+
     constructor(buttonElement, containerElement) {
         // Set button element.
         if (typeof buttonElement === "string") {
@@ -167,26 +171,138 @@ class Basket {
         this.bindEvents();
     }
 
+    show() {
+        this.containerElement.style.display = 'block';
+    }
+
+    hide() {
+        this.containerElement.style.display = 'none';
+    }
+
+    toggle() {
+        this.containerElement.style.display === 'none' ? this.show() : this.hide()
+    }
+
     constructBasket() {
         this.containerElement.classList.add('basket');
-        this.containerElement.style.display = 'none'
+        this.containerElement.style.display = 'none';
         this.populateBasket();
     }
 
     populateBasket() {
-        fetch(Basket.basketRequestUrl)
-            .then(data => {
-                console.log(data);
-            });
+        const basketRequest = new XMLHttpRequest();
+
+        basketRequest.open("GET", Basket.basketRequestUrl);
+        basketRequest.send();
+
+        basketRequest.onreadystatechange = (e) => {
+            if (basketRequest.readyState === 4 && basketRequest.status === 200) {
+                this.resetBasket();
+
+                if (basketRequest.responseText) {
+                    const basketData = JSON.parse(basketRequest.responseText);
+
+                    basketData.forEach(item => {
+                        this.addItem(item);
+                    })
+                } else {
+                    this.containerElement.innerText = 'Your basket is currently empty.'
+                }
+            }
+        }
+    }
+
+    resetBasket() {
+        this.containerElement.innerHTML = null;
+    }
+
+    addItem(data) {
+        // Create basket item row
+
+        const el = document.createElement('div');
+        el.classList.add('basket__item');
+
+        // Name
+
+        const nameEl = document.createElement('div');
+        nameEl.innerText = data.item.attributes.filmtitle;
+        nameEl.classList.add('basket__item__name');
+        el.append(nameEl);
+
+        // Quantity
+
+        const quantityEl = document.createElement('div');
+        quantityEl.innerText = data.quantity;
+        quantityEl.classList.add('basket__item__quantity');
+        el.append(quantityEl);
+
+        // Basket row controls
+
+        const controlsEl = document.createElement('div');
+        controlsEl.classList.add('basket__item__controls');
+
+        // Add buttons
+
+        const buttons = [
+            { 'label': '-', 'action': Basket.basketRemoveRequestUrl },
+            { 'label': '+', 'action': Basket.basketAddRequesttUrl }
+        ];
+
+        buttons.forEach(button => {
+
+            // Hidden input
+
+            const inputEl = document.createElement('input');
+            inputEl.value = data.item.attributes.filmid;
+            inputEl.name = 'filmid';
+            inputEl.type = 'hidden';
+
+            // Add form & button
+
+            const formEl = document.createElement('form');
+            formEl.action =  button.action;
+            formEl.method = 'post';
+
+            const buttonEl = document.createElement('button');
+            buttonEl.innerText = button.label;
+            buttonEl.type = 'submit';
+
+            buttonEl.onclick = (e) => {
+                e.preventDefault();
+                this.updateRequest(button.action, data.item.attributes.filmid);
+            };
+
+            formEl.append(inputEl);
+            formEl.append(buttonEl);
+            controlsEl.append(formEl);
+        }) ;
+
+
+        // Add buttons to form controls container
+
+        el.append(controlsEl);
+
+        // Add row to container
+
+        this.containerElement.append(el);
+    }
+
+    updateRequest(action, id) {
+        const basketRequest = new XMLHttpRequest();
+
+        basketRequest.open("POST", action);
+        basketRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        basketRequest.send('filmid=' + id);
+
+        basketRequest.onreadystatechange = () => {
+            if (basketRequest.readyState === 4 && basketRequest.status === 200) {
+                this.populateBasket();
+            }
+        }
     }
 
     bindEvents() {
-        this.buttonElement.onclick = () => {
-            this.containerElement.style.display =
-                this.containerElement.style.display === 'none' ?
-                    'block' :
-                    'none';
-        }
+        this.buttonElement.onclick = () => this.toggle();
     }
 }
 
@@ -194,7 +310,25 @@ class Basket {
  * App code.
  */
 
-new Basket('#basket-button', '#basket-container');
+const basket = new Basket('#basket-button', '#basket-container');
+
+const basketBtns = document.querySelectorAll('[data-basket-add]');
+
+if (basketBtns) {
+    basketBtns.forEach(btn => {
+        btn.onclick = e => {
+            console.log(btn.getAttribute('data-basket-add'));
+            e.preventDefault();
+
+            basket.updateRequest(
+                Basket.basketAddRequesttUrl,
+                btn.getAttribute('data-basket-add')
+            );
+
+            basket.show();
+        }
+    })
+}
 
 if (document.querySelector('#home-slider')) {
     new Slider('#home-slider');

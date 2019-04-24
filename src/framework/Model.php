@@ -2,13 +2,12 @@
 
 namespace Framework;
 
-/**
+use App\Models\Product;/**
  * Class Model
  * This model acts as a Data Access Object. Static methods such as get, create
  * and delete may be called on classes which extend this one. Each model has a
  * table property which must be set as it determines what table should be used
  * for the particular data access object.
- *
  * Setting what table a model uses is usually done by extending and overriding
  * the protected $table property but can also be passed in to the class upon
  * construction.
@@ -96,6 +95,20 @@ class Model {
         return self::query()->where($data, $comparator);
     }
 
+    public static function join($table, $key, $operator, $value, $type = null) {
+        return self::query()->join($table, $key, $operator, $value, $type = null);
+    }
+
+    /**
+     * @param       $key
+     * @param array $values
+     *
+     * @return QueryBuilder
+     */
+    public static function whereIn($key,  array $values) {
+        return self::query()->whereIn($key, $values);
+    }
+
     /**
      * @return QueryBuilder
      */
@@ -145,11 +158,11 @@ class Model {
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
      * @return Model
      */
-    public static function find($id) {
+    public static function find(int $id) {
         $builder = self::query();
         return self::query()->where([$builder->model->primaryKey ?? 'id' => $id])->first();
     }
@@ -167,5 +180,14 @@ class Model {
         }
 
         return $model;
+    }
+
+    /**
+     * @param int $int
+     *
+     * @return QueryBuilder
+     */
+    public static function limit(int $int) {
+        return self::query()->limit($int);
     }
 }

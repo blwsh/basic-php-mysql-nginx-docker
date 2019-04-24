@@ -2,6 +2,7 @@
     "require": {
         "ext-pdo": "*",
         "ext-json": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-openssl": "*"
     }
 }

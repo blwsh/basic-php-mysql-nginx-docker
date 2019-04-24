@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use function implode;
 use PDO;
 use PDOStatement;
 
@@ -93,7 +94,7 @@ class QueryBuilder
     /**
      * @var array
      */
-    protected $safeOperators = ["=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"];
+    protected $safeOperators = ["=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "LIKE", 'IN'];
 
     /**
      * QueryBuilder constructor.
@@ -146,7 +147,7 @@ class QueryBuilder
                     $this->values[] = $where['value'];
                 }
 
-                return implode(' ', [$where['statement'], $where['key'], $where['comparator'], is_null($where['value'])  ? null : '?']);
+                return implode(' ', [$where['statement'], $where['key'], $where['comparator'], is_null($where['value'])  ? null : $where['raw'] ? ($where['value']) : '?']);
             },
         $this->where));
 
@@ -295,7 +296,7 @@ class QueryBuilder
      * @return $this
      */
     public function join($table, $key, $operator, $value, $type = null) {
-        $this->joins[] = ltrim("$type JOIN $table ON `$key` $operator `$value`");
+        $this->joins[] = ltrim("$type JOIN $table ON $key $operator $value");
 
         return $this;
     }
@@ -353,10 +354,11 @@ class QueryBuilder
      * @param string $comparator
      * @param bool   $isOr
      * @param bool   $excludeValue
+     * @param bool   $isRawValue
      *
      * @return QueryBuilder
      */
-    public function where($where, $comparator = '=', $isOr = false, $excludeValue = false) {
+    public function where($where, $comparator = '=', $isOr = false, $excludeValue = false, $isRawValue = false) {
         if (!in_array($comparator, $this->safeOperators)) return $this;
 
         $isFirst = $isOr ? true : empty($this->where);
@@ -367,6 +369,7 @@ class QueryBuilder
                 'key'        => $key,
                 'comparator' => $comparator,
                 'value'      => $excludeValue ? null : $value,
+                'raw'        => $isRawValue
             ];
 
             $isFirst = false;
@@ -422,8 +425,7 @@ class QueryBuilder
      * @return QueryBuilder
      */
     public function whereIn(string $key, array $values) {
-        $this->where(['test'], 'IN');
-
+        $this->where([$key => '(' . implode(', ', $values) . ')'], 'IN', false, false, true);
         return $this;
     }
 

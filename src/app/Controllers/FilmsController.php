@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use function abort;
 use App\Models\Film;
 use Framework\Controller;
 use Framework\Request;
@@ -13,7 +14,11 @@ class FilmsController extends Controller
     }
 
     public function view(Request $request) {
-        return view('films.view', ['film' => Film::find($request->get('filmid')), 'rating' => rand(1, 5)]);
+        if ($film = Film::find($request->get('filmid'))) {
+            return view('films.view', ['film' => $film, 'rating' => rand(1, 5)]);
+        }
+
+        abort();
     }
 
     public function create() {

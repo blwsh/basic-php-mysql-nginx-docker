@@ -1,0 +1,25 @@
+.btn {
+    display: inline-block;
+    background-color: $primary;
+    color: $lightgrey;
+    padding: 1rem;
+    text-align: center;
+    letter-spacing: 1.2px;
+    font-weight: 200;
+    border-radius: .25rem;
+    cursor: pointer;
+    transition: background-color .5s ease, color .5s ease;
+
+    &--active, &:hover {
+        background-color: $secondary;
+        color: $white;
+    }
+
+    &--block {
+        display: block;
+    }
+
+    &--wide {
+        padding: 1rem 4rem;
+    }
+}

@@ -96,6 +96,8 @@ class App
         } catch (Exceptions\InvalidRequestMethod $e) {
             http_response_code(404);
         }
+
+        exit;
     }
 
     public function boot() {

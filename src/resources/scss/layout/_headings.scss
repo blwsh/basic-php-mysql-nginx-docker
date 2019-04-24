@@ -1,0 +1,8 @@
+.title {
+    color: $primary;
+
+    &--divider {
+        border-bottom: 2px solid $lightgrey;
+        padding-bottom: .5rem;
+    }
+}

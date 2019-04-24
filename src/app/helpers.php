@@ -11,6 +11,78 @@ function app() {
 }
 
 /**
+ * @return \Framework\Request
+ */
+function request() {
+    return \Framework\Request::capture();
+};
+
+/**
+ * @param     $response
+ * @param int $code
+ *
+ * @return false|string
+ * @throws \Framework\Exceptions\ViewNotFoundException
+ */
+function response($response, $code = 200) {
+    // Inject flash data in to view
+    if ($response instanceof \Framework\View) {
+        if ($_SESSION['_flash'] && !is_null($_SESSION['_flash'])) {
+            $response->inject($_SESSION['_flash']);
+            unset($_SESSION['_flash']);
+        }
+
+        // Render the view
+        return $response->render();
+    } else if($response) {
+        return jsonResponse($response, $code);
+    }
+}
+
+/**
+ * @param null $data
+ * @param int  $code
+ *
+ * @return false|string
+ */
+function jsonResponse ($data = null, $code = 200)
+{
+    header_remove();
+
+    $status = [200 => '200 OK', 400 => '400 Bad Request', 422 => 'Unprocessable Entity', 500 => '500 Internal Server Error'];
+
+    header('Status: '.$status[$code]);
+    header("Cache-Control: no-transform,public,max-age=0,s-maxage=0");
+    header('Content-Type: application/json');
+
+    http_response_code($code);
+
+    return json_encode($data ?? []);
+}
+
+function abort($code = 404) {
+    http_response_code($code);
+    echo view('pages.404');
+    exit;
+}
+
+function redirect(string $to, int $responseCode = 200) {
+    header("Location: $to", true, $responseCode);
+    exit;
+}
+
+/**
+ * Sets header location to REFERER
+ *
+ * @param int   $responseCode
+ * @param array $data
+ */
+function back(int $responseCode = 302, $data = []) {
+    $_SESSION['_flash'] = $data;
+    redirect($_SERVER['HTTP_REFERER'] ?? '/', $responseCode ?? 302);
+}
+
+/**
  * @param array $data
  * @param       $key
  * @param null  $default
@@ -67,7 +139,11 @@ function set(array &$array, $key, $value)
     return $array;
 }
 
-
+/**
+ * @param null $key
+ *
+ * @return mixed
+ */
 function config($key = null) {
     $config = require '/src/config.php';
 
@@ -78,6 +154,11 @@ function config($key = null) {
     return $config;
 }
 
+/**
+ * @param null $key
+ *
+ * @return bool
+ */
 function env($key = null) {
     if ($key) {
         if (isset($_ENV[$key])) return $_ENV[$key];
@@ -88,6 +169,9 @@ function env($key = null) {
     return $_ENV;
 }
 
+/**
+ * @return bool
+ */
 function isDebug() {
     return env('ENVIRONMENT') === 'development';
 }
@@ -131,6 +215,11 @@ function dot(string $string) {
     return str_replace('.', '/', $string);
 }
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function slug($string) {
     return strtolower(
         trim(
@@ -154,6 +243,12 @@ function getClassName($class) {
     }
 }
 
+/**
+ * @param string $name
+ * @param array  $data
+ *
+ * @return \Framework\View
+ */
 function view(string $name, $data = []) {
     return new \Framework\View($name, $data);
 }

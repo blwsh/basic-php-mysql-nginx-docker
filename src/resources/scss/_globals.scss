@@ -18,14 +18,16 @@ body {
     flex-direction: column;
     justify-content: space-between;
 
+    // Brand
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    background: $white url("/assets/img/white-codelines.svg") top center;
+    color: $primary;
+
     .app {
         flex: 1 1 auto;
     }
-
-    // Brand
-    font-family: 'Fira Sans', sans-serif;
-    background: $white url("/assets/img/white-codelines.svg") top center;
-    color: $primary;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -33,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: 1.1px;
 }
 
-img {
+img, video {
     max-width: 100%;
     height: auto;
 }
@@ -47,61 +49,47 @@ a {
     }
 }
 
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1rem;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
-.btn {
-    display: inline-block;
+thead {
     background-color: $primary;
-    color: $lightgrey;
-    padding: 1rem;
-    text-align: center;
-    letter-spacing: 1.2px;
-    font-weight: 200;
-    border-radius: .25rem;
-    transition: background-color .5s ease, color .5s ease;
+    color: $white;
+}
 
-    &--active, &:hover {
-        background-color: $secondary;
-        color: $white;
-    }
+th, td {
+    font-weight: 400;
+    text-align: left;
+    padding: 5px;
 
-    &--blocl {
-        display: block;
+    * {
+        margin: 0;
     }
 }
 
-.bg-primary {
-    background-color: $primary;
-}
-
-.bg-secondary {
-    background-color: $secondary;
-}
-
-.display--circle {
-    display: block;
-    border-radius: 100%;
-    overflow: hidden;
-}
-
-.disabled {
-    opacity: 0.5;
+ol, ul {
+    list-style: none;
 }
 
 .img-overlay {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
-    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 40px 10px rgba($primary, .5);
+    z-index: -1;
+
     img {
         &:last-child {
             position: absolute;
-            box-shadow: 0 0 50px 50px rgba($primary, .5);
+            box-shadow: 0 0 40px 40px rgba($primary, .5);
             z-index: 1;
         }
     }
+
+
 }
