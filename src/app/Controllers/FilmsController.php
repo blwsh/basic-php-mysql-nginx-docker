@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use function abort;
 use App\Models\Film;
 use Framework\Controller;
 use Framework\Request;
@@ -14,8 +13,14 @@ class FilmsController extends Controller
     }
 
     public function view(Request $request) {
-        if ($film = Film::find($request->get('filmid'))) {
-            return view('films.view', ['film' => $film, 'rating' => rand(1, 5)]);
+        if ($film = Film
+            ::join('fss_Rating', 'fss_Film.ratid', '=', 'fss_Rating.ratid')
+            ->where(['filmid' => $request->get('filmid')])
+            ->first()
+        ) {
+            $related = Film::limit(4)->orderBy(['RAND()'])->get();
+
+            return view('films.view', ['film' => $film, 'related' => $related, 'rating' => rand(1, 5)]);
         }
 
         abort();

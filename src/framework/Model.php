@@ -2,7 +2,7 @@
 
 namespace Framework;
 
-use App\Models\Product;/**
+/**
  * Class Model
  * This model acts as a Data Access Object. Static methods such as get, create
  * and delete may be called on classes which extend this one. Each model has a
@@ -163,8 +163,7 @@ class Model {
      * @return Model
      */
     public static function find(int $id) {
-        $builder = self::query();
-        return self::query()->where([$builder->model->primaryKey ?? 'id' => $id])->first();
+        return self::query()->find($id);
     }
 
     /**

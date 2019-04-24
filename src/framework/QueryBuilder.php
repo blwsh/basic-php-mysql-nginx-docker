@@ -237,6 +237,10 @@ class QueryBuilder
         return $this->limit(1)->get()[0];
     }
 
+    public function find($id) {
+        return $this->where([$builder->model->primaryKey ?? 'id' => $id])->first();
+    }
+
     /**
      * @param array $data
      *

@@ -1,0 +1,30 @@
+.img-overlay {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 0 40px 10px rgba($primary, .5);
+    z-index: 0;
+
+    img {
+        transition: transform 5s ease-in-out;
+
+        &:last-child {
+            position: absolute;
+            box-shadow: 0 0 40px 40px rgba($primary, .5);
+            z-index: 1;
+        }
+
+    }
+
+    &:hover {
+        img:first-child {
+            transform: scale(1.05);
+        }
+
+        img:last-child {
+            transform: scale(.95);
+        }
+    }
+}

@@ -73,23 +73,3 @@ th, td {
 ol, ul {
     list-style: none;
 }
-
-.img-overlay {
-    display: flex;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    box-shadow: 0 0 40px 10px rgba($primary, .5);
-    z-index: -1;
-
-    img {
-        &:last-child {
-            position: absolute;
-            box-shadow: 0 0 40px 40px rgba($primary, .5);
-            z-index: 1;
-        }
-    }
-
-
-}
