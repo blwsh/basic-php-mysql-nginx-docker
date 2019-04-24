@@ -1,6 +1,6 @@
 /.env
 /.idea
 /.vscode
-
+/src/config.php
 node_modules/
 vendor/

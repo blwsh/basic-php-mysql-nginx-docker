@@ -140,15 +140,18 @@ function set(array &$array, $key, $value)
 }
 
 /**
- * @param null $key
+ * @param string $key
+ * @param mixed  $default
  *
  * @return mixed
  */
-function config($key = null) {
+function config(string $key = null, $default = null) {
     $config = require '/src/config.php';
 
     if ($key) {
         return get($config, $key);
+    } else if (is_null($default)) {
+        return $default;
     }
 
     return $config;
