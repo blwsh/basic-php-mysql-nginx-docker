@@ -4,23 +4,25 @@
 
     .site-header {
         display: flex;
+        flex-direction: column;
         background-color: #fff;
         justify-content: space-between;
         align-items: center;
         padding: 1rem 2rem;
 
+        @media only screen and (min-width: map-get($breakpoints, md)) {
+            flex-direction: row;
+        }
+
         .header__logo {
+            flex: 0 0 auto;
+            width: 75px;
             padding: 10px;
 
             &__img {
                 display: block;
-                width: 75px;
-                height: 75px;
+                padding: 25px 5px;
             }
-        }
-
-        .header__nav {
-
         }
     }
 

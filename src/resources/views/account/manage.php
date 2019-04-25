@@ -30,6 +30,15 @@
             <h2>Purchases</h2>
             <?= view('components.payments', ['payments' => $payments]) ?>
 
+            <h2>Addresses</h2>
+            <?php foreach ($addresses as $address): ?>
+            <address>
+                <?= $address->addstreeet ?>
+                <?= $address->addcity ?>
+                <?= $address->addpostcode ?>
+            </address>
+            <?php endforeach; ?>
+
             <h2>Account actions</h2>
             <form action="<?= url('/auth/logout') ?>" method="post">
                 <button type="submit" class="btn">Logout</button>

@@ -15,6 +15,11 @@
         color: $white;
     }
 
+    &--sm {
+        font-size: .9rem;
+        padding: .5rem;
+    }
+
     &--block {
         display: block;
     }

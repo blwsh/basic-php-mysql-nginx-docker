@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Address;
 use App\Models\Customer;
 use App\Models\OnlinePayment;
 use Framework\Controller;
@@ -10,6 +11,8 @@ class AccountController extends Controller
 {
     public function manage() {
         if ($customer = Customer::current()) {
+            $addresses = Address::where(['addid' => $customer->personid])->limit(5)->get();
+
             $payments = OnlinePayment
                 ::where(['custid' => $customer->custid])
                 ->join('fss_Payment', 'fss_OnlinePayment.payid', '=', 'fss_Payment.payid')
@@ -20,11 +23,12 @@ class AccountController extends Controller
                 ->get();
 
             return view('account.manage', [
-                'customer' => $customer,
-                'payments' => $payments
+                'customer'  => $customer,
+                'payments'  => $payments,
+                'addresses' => $addresses
             ]);
         } else {
-            redirect('/login');
+            redirect(url('/login'));
         }
     }
 }

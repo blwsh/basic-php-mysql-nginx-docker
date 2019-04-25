@@ -66,7 +66,7 @@ function abort($code = 404) {
     exit;
 }
 
-function redirect(string $to, int $responseCode = 200) {
+function redirect(string $to, int $responseCode = 302) {
     header("Location: $to", true, $responseCode);
     exit;
 }

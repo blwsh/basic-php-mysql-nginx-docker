@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\Basket;
 use App\Models\BasketItem;
-use App\Models\Film;
+use function back;
 use Framework\Request;
 use Framework\Controller;
 
@@ -15,68 +16,34 @@ use Framework\Controller;
 class BasketController extends Controller
 {
     /**
-     * @param Request $request
-     *
-     * @return mixed
+     * @return BasketItem[]
      */
-    public function get(Request $request) {
-        $basketItems = array_keys($_SESSION['basket']);
-        $itemCounts = $_SESSION['basket'];
-
-
-        if ($basketItems) {
-            return array_map(function($film) use ($itemCounts) {
-                $item = new BasketItem($film);
-                $item->setQuantity($itemCounts[$film->filmid]);
-                return $item;
-            }, Film::whereIn('filmid', $basketItems)->get());
-        } else {
-            return false;
-        }
+    public function get() {
+        return Basket::items();
     }
 
     /**
      * @param Request $request
+     *
+     * @return void
      */
     public function add(Request $request) {
-        $filmId = $request->get('filmid');
-
-        if ($_SESSION['basket']) {
-            if ($this->validate($_SESSION['basket'][$filmId] + 1)) {
-                $_SESSION['basket'][$filmId]++;
-            }
-        } else if (is_int((int) $filmId) && $filmId) {
-            $_SESSION['basket'][$filmId] = 1;
-        }
-
+        Basket::add($request->get('filmid'));
         back();
     }
 
     /**
      * @param Request $request
+     *
+     * @return void
      */
     public function remove(Request $request) {
-        $filmId = $request->get('filmid');
-
-        if ($_SESSION['basket']) {
-            if ($this->validate($_SESSION['basket'][$filmId] - 1)) {
-                $_SESSION['basket'][$filmId]--;
-            }
-
-            if ($_SESSION['basket'][$filmId] == 0) {
-                unset($_SESSION['basket'][$filmId]);
-            }
-        }
-
+        Basket::remove($request->get('filmid'));
         back();
     }
 
-    /**
-     * @param int $int
-     *
-     * @return bool
-     */
-    public function validate(int $int) {
-        return $int >= 0 && $int <= 100;
+    public function clear() {
+        Basket::clear();
+        back();
     }
 }

@@ -4,15 +4,24 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    box-shadow: 0 0 40px 10px rgba($primary, .5);
-    z-index: 0;
+    margin: 2rem 0;
+
+    @media only screen and (min-width: map-get($breakpoints, lg)) {
+        background: linear-gradient(#000, #474747, #000);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        margin: 0;
+        z-index: -1;
+        box-shadow: 0 0 2rem .5rem rgba($primary, .5);
+    }
 
     img {
         transition: transform 5s ease-in-out;
 
         &:last-child {
             position: absolute;
-            box-shadow: 0 0 40px 40px rgba($primary, .5);
+            box-shadow: 0 0 4rem .5rem rgba($primary, .5);
             z-index: 1;
         }
 

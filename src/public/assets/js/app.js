@@ -144,7 +144,7 @@ class Slider {
 class Basket {
     static basketRequestUrl = window.basketRequestUrl;
 
-    static basketAddRequesttUrl = window.basketAddRequesttUrl;
+    static basketAddRequestUrl = window.basketAddRequestUrl;
 
     static basketRemoveRequestUrl = window.basketRemoveRequestUrl;
 
@@ -204,7 +204,9 @@ class Basket {
 
                     basketData.forEach(item => {
                         this.addItem(item);
-                    })
+                    });
+
+                    this.addCheckoutButton();
                 } else {
                     this.containerElement.innerText = 'Your basket is currently empty.'
                 }
@@ -245,7 +247,7 @@ class Basket {
 
         const buttons = [
             { 'label': '-', 'action': Basket.basketRemoveRequestUrl },
-            { 'label': '+', 'action': Basket.basketAddRequesttUrl }
+            { 'label': '+', 'action': Basket.basketAddRequestUrl }
         ];
 
         buttons.forEach(button => {
@@ -287,6 +289,15 @@ class Basket {
         this.containerElement.append(el);
     }
 
+    addCheckoutButton() {
+        const checkoutButton = document.createElement('a');
+        checkoutButton.innerText = 'Go to checkout';
+        checkoutButton.href = window.checkoutUrl;
+        checkoutButton.className = 'btn btn--sm btn--block mt';
+
+        this.containerElement.append(checkoutButton);
+    }
+
     updateRequest(action, id) {
         const basketRequest = new XMLHttpRequest();
 
@@ -321,7 +332,7 @@ if (basketBtns) {
             e.preventDefault();
 
             basket.updateRequest(
-                Basket.basketAddRequesttUrl,
+                Basket.basketAddRequestUrl,
                 btn.getAttribute('data-basket-add')
             );
 

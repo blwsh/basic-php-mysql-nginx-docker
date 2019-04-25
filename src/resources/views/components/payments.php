@@ -22,4 +22,6 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+<?php else: ?>
+<p>You currently have no purchase history.</p>
 <?php endif; ?>

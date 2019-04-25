@@ -18,7 +18,7 @@
         <div class="header__actions">
             <ul class="nav nav--actions">
                 <li class="nav__item"><a href="<?= url('/account') ?>" title="Account">👤</a></li>
-                <li class="nav__item"><a id="basket-button" href="javascript:void" title="Basket">🛒</a></li>
+                <li class="nav__item"><a id="basket-button" href="javascript:void(0)" title="Basket">🛒</a></li>
             </ul>
         </div>
     </header>

@@ -1,7 +1,13 @@
 .nav {
     display: flex;
     list-style: none;
+    margin: 0;
+    padding: 0;
     .nav__item {
-        padding: 1rem;
+        padding: .5rem .75rem;
+
+        @media only screen and (min-width: map-get($breakpoints, sm)) {
+            padding: 1rem;
+        }
     }
 }

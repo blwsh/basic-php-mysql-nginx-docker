@@ -81,9 +81,10 @@ class App
     /**
      * @return void
      *
+     * @throws \ReflectionException
      * @throws Exceptions\ControllerMethodNotFoundException
      * @throws Exceptions\FailedRouteResolveException
-     * @throws \ReflectionException
+     * @throws Exceptions\ViewNotFoundException
      */
     public function handle()
     {

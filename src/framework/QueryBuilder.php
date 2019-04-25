@@ -286,7 +286,6 @@ class QueryBuilder
      */
     public function delete() {
         $this->action = 'DELETE';
-
         return $this->instance->exec($this->build());
     }
 
@@ -490,6 +489,13 @@ class QueryBuilder
      */
     public function count() {
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getValues() {
+        return $this->values;
     }
 
     /**

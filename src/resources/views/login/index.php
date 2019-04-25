@@ -5,21 +5,15 @@
 
             <label for="email">
                 <span class="label">Email</span>
-                <input type="email" name="email">
+                <input type="email" name="email" value="<?= $old['email'] ?>" required>
             </label>
 
             <label for="password">
                 <span class="label">Password</span>
-                <input type="password" name="password">
+                <input type="password" name="password" required>
             </label>
 
-            <?php if ($errors): ?>
-            <ul class="errors text--center">
-                <?php foreach ($errors[0] as $error): ?>
-                <li><?= $error ?></li>
-                <?php endforeach; ?>
-            </ul>
-            <? endif; ?>
+            <?= view('components.errors', ['errors' => $errors]) ?>
 
             <div class="text--center">
                 <button type="submit" class="btn btn--wide">Login &#187;</button>

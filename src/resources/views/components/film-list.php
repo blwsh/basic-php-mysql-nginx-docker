@@ -2,7 +2,7 @@
 <div class="product-list">
     <div class="row">
         <?php foreach ($items as $data): ?>
-        <div class="col col--<?= $colWidth ?? 4 ?>/12">
+        <div class="col col--<?= $colWidth ?? 4 ?>/12--md">
             <?= view('components.card', [
                 'title' => $data->filmtitle,
                 'description' => $data->filmdescription,

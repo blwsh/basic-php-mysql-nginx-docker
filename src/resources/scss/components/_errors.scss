@@ -1,10 +1,15 @@
 .errors {
+    border: 1px solid darken($white, 5%);
+    padding: 1rem;
+    margin: 1rem;
     font-size: .8rem;
     color: $error;
     display: block;
     list-style-type: none;
-    padding: 0;
-    margin: .5rem 0;
+
+    li {
+        margin: .5rem 0;
+    }
 
     &:empty, &:blank {
         display: none;

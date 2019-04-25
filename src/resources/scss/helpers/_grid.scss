@@ -8,13 +8,25 @@
 
 .col {
     display: flex;
+    flex-direction: column;
     justify-content: stretch;
+    padding: 0 1rem;
+    flex-basis: 100%;
+    width: 100%;
 
     @for $i from 1 through $grid-columns {
         &--#{$i}\/#{$grid-columns} {
             flex-basis: percentage($i / $grid-columns);
             width: percentage($i / $grid-columns);
-            padding: 0 1rem;
+        }
+
+        @each $size, $value in $breakpoints {
+            @media only screen and (min-width: $value) {
+                &--#{$i}\/#{$grid-columns}--#{$size} {
+                    flex-basis: percentage($i / $grid-columns);
+                    width: percentage($i / $grid-columns);
+                }
+            }
         }
     }
 }
@@ -24,5 +36,29 @@
         &--#{$i}\/#{$grid-columns} {
             padding-left: percentage($i / $grid-columns);
         }
+
+        @each $size, $value in $breakpoints {
+            @media only screen and (min-width: $value) {
+                &--#{$i}\/#{$grid-columns}--#{$size} {
+                    padding-left: percentage($i / $grid-columns);
+
+                    &.offset--border {
+                        border-left: 1px solid $lightgrey;
+                        padding-left: percentage($i / $grid-columns) / 2;
+                        margin-left: percentage($i / $grid-columns) / 2;
+                    }
+                }
+            }
+        }
     }
+}
+
+.border--shadow--left{
+    border-left: 1px solid #dbd8cf;
+    background: linear-gradient(left, #eee  0%, #fff 10%);
+    background: -ms-linear-gradient(left, #eee  0%,#fff 10%);
+    background: -moz-linear-gradient(left, #eee  0%,#fff 10%);
+    background: -webkit-linear-gradient(left, #eee  0%, #fff 10%);
+    box-shadow: -44px 120px 80px -72px #fff inset, -44px -120px 80px -72px #fff inset;
+    min-height: 400px;
 }

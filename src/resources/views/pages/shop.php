@@ -4,7 +4,7 @@
 
         <div class="row">
             <?php foreach ($shops as $shop): ?>
-            <div class="col col--4/12">
+            <div class="col col--4/12--sm">
                 <div class="card">
                     <div class="card__body">
                         <h2 class="card__title"><?= $shop->shopname; ?></h2>

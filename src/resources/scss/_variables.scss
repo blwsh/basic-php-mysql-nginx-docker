@@ -1,3 +1,10 @@
+// Responsive
+$breakpoints: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px
+);
+
 // Grid
 $grid-columns: 12;
 

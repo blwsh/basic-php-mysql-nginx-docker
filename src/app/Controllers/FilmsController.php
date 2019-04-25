@@ -18,7 +18,7 @@ class FilmsController extends Controller
             ->where(['filmid' => $request->get('filmid')])
             ->first()
         ) {
-            $related = Film::limit(4)->orderBy(['RAND()'])->get();
+            $related = Film::limit(3)->orderBy(['RAND()'])->get();
 
             return view('films.view', ['film' => $film, 'related' => $related, 'rating' => rand(1, 5)]);
         }
