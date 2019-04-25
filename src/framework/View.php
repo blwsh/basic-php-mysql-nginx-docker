@@ -2,7 +2,6 @@
 
 namespace Framework;
 
-use function array_merge;
 use Exception;
 use Framework\Exceptions\ViewNotFoundException;
 
@@ -32,7 +31,7 @@ class View
     {
         $this->file = $file;
         $this->vars = $vars;
-        $this->path = $this->path = '/src/resources/views/' . dot($this->file) . '.php';
+        $this->path = $this->path = __DIR__ . '/../resources/views/' . dot($this->file) . '.php';
     }
 
     /**

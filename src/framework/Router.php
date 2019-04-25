@@ -2,8 +2,12 @@
 
 namespace Framework;
 
-use function array_combine;
+
+
 use Framework\Exceptions\FailedRouteResolveException;
+
+
+
 
 /**
  * Class Router
@@ -33,10 +37,22 @@ class Router
      */
     public static function resolve($method, $uri)
     {
-        $path = parse_url($uri)['path'];
+        $root = config('root_dir');
+        $path = '/' . trim(parse_url($uri)['path'], '/') . '/';
+
+        if ($root) {
+            $path = '/' . trim(str_replace($root, null, $path), '/') . '/';
+        }
+
+        if ($path === '//' || $path == '/' || $path == '') {
+            $path = '/';
+        }
 
         if (in_array($method, ['GET', 'POST', 'PUT', 'DELETE'])) {
             foreach (self::$routes[$method] as $route => $controller) {
+                $originalRoute = $route;
+                $route = $route == '/' ? '/' : '/' . trim($route, '/') . '/';
+
                 // Set up for building regex string
                 $regex = preg_replace('/\//', '\/', $route);
 
@@ -66,7 +82,7 @@ class Router
                     preg_match('/(?<=\{)([\w]+)/', $route, $keys);
 
                     return new Route(
-                        self::$routes[$method][$route],
+                        self::$routes[$method][$originalRoute],
                         $keys ? array_combine($keys, $matches) : null
                     );
                 }

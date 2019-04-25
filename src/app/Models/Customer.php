@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use function explode;
+
 use Framework\Model;
-use function redirect;
+
 
 /**
  * Class User

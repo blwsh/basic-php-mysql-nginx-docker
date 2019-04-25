@@ -8,7 +8,7 @@
                     <p class="rating" title="<?= $rating; ?> stars"><?= str_repeat('★', $rating) ?><span class="disabled"><?= str_repeat('★', 5 - $rating) ?></span> (<?= $rating ?>)</p>
                     <p><?= $film->filmdescription ?></p>
 
-                    <form action="/basket/add" method="post">
+                    <form action="<?= url('/basket/add') ?>" method="post">
                         <input type="hidden" name="filmid" value="<?= $film->filmid ?>">
                         <button type="submit" class="btn" data-basket-add="<?= $film->filmid ?>">Add to basket &#187;</button>
                     </form>

@@ -2,7 +2,7 @@
 
 namespace Framework;
 
-use function implode;
+
 use PDO;
 use PDOStatement;
 

@@ -14,7 +14,7 @@
         <?php foreach ($payments as $payment): ?>
         <tr>
             <td><?= $payment->payid ?></td>
-            <td><h3><a href="/films/<?= $payment->filmid ?>"><?= $payment->filmtitle ?></a></h3></td>
+            <td><h3><a href="<?= url('/films/' . $payment->filmid) ?>"><?= $payment->filmtitle ?></a></h3></td>
             <td>&pound;<?= $payment->price ?></td>
             <td><?= $payment->filmrating ?></td>
             <td><?= date("d/m/Y", strtotime($payment->paydate)) ?></td>

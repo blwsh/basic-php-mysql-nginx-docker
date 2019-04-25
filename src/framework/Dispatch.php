@@ -4,7 +4,7 @@ namespace Framework;
 
 use Framework\Exceptions\ControllerMethodNotFoundException;
 use ReflectionClass;
-use function response;
+
 
 class Dispatch {
     /**

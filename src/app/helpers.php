@@ -146,7 +146,7 @@ function set(array &$array, $key, $value)
  * @return mixed
  */
 function config(string $key = null, $default = null) {
-    $config = require '/src/config.php';
+    $config = require __DIR__ . '/../config.php';
 
     if ($key) {
         return get($config, $key);
@@ -203,9 +203,9 @@ function dd($data) {
 /**
  * Displays data passed as param in a styled div.
  *
- * @param mixed $data
+ * @param string $data
  */
-function display($data) {
+function display(string $data) {
     echo "<div style='border: 1px solid; padding: 10px; margin: 10px; font-family: monospace; line-height: 1.5;' '>$data</div>";
 }
 
@@ -218,12 +218,17 @@ function dot(string $string) {
     return str_replace('.', '/', $string);
 }
 
+function url(string $string) {
+    $root = config('root_dir', null);
+    return ($root ? '/' . $root : null) . '/' . trim($string, '/');
+}
+
 /**
  * @param $string
  *
  * @return string
  */
-function slug($string) {
+function slug(string $string) {
     return strtolower(
         trim(
             rtrim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string), '-')
@@ -238,7 +243,7 @@ function slug($string) {
  *
  * @return string
  */
-function getClassName($class) {
+function getClassName(string $class) {
     try {
         return (new ReflectionClass($class))->getShortName();
     } catch (ReflectionException $e) {
@@ -252,6 +257,6 @@ function getClassName($class) {
  *
  * @return \Framework\View
  */
-function view(string $name, $data = []) {
+function view(string $name, array $data = []) {
     return new \Framework\View($name, $data);
 }

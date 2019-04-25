@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Shop;
 use Framework\Controller;
-use function view;
+
 
 class PagesController extends Controller
 {

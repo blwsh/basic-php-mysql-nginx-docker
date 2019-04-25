@@ -2,10 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\Customer;
-use function back;
 use Framework\Request;
-use function redirect;
+use App\Models\Customer;
 
 class AuthController
 {

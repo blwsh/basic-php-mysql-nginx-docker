@@ -142,11 +142,11 @@ class Slider {
 }
 
 class Basket {
-    static basketRequestUrl = '/basket/get';
+    static basketRequestUrl = window.basketRequestUrl;
 
-    static basketAddRequesttUrl = '/basket/add';
+    static basketAddRequesttUrl = window.basketAddRequesttUrl;
 
-    static basketRemoveRequestUrl = '/basket/remove';
+    static basketRemoveRequestUrl = window.basketRemoveRequestUrl;
 
     constructor(buttonElement, containerElement) {
         // Set button element.

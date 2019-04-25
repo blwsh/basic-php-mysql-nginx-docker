@@ -6,7 +6,7 @@ use App\Models\BasketItem;
 use App\Models\Film;
 use Framework\Request;
 use Framework\Controller;
-use function session_destroy;
+
 
 /**
  * Class BasketController

@@ -1,7 +1,7 @@
-<a href="<?= $slug; ?>" class="card <?= $overlay ? 'card--overlay' : null ?>">
+<a href="<?= url($slug); ?>" class="card <?= $overlay ? 'card--overlay' : null ?>">
     <?php if ($img): ?>
     <div class="card__img">
-        <img src="<?= $img; ?>" alt="<?= $title; ?>">
+        <img src="<?= $img ?>" alt="<?= $title ?>">
 
         <?php if ($overlay): ?>
         <p class="card__description"><?= $description ?></p>

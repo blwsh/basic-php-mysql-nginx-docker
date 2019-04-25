@@ -31,7 +31,7 @@
             <?= view('components.payments', ['payments' => $payments]) ?>
 
             <h2>Account actions</h2>
-            <form action="/auth/logout" method="post">
+            <form action="<?= url('/auth/logout') ?>" method="post">
                 <button type="submit" class="btn">Logout</button>
             </form>
         </div>

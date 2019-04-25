@@ -1,6 +1,6 @@
 <content title="Login" template="layout.default">
     <div class="container">
-        <form action="/auth/login" method="post" class="login-container">
+        <form action="<?= url('/auth/login') ?>" method="post" class="login-container">
             <h1 class="title title--divider text--center">Login</h1>
 
             <label for="email">
@@ -23,7 +23,7 @@
 
             <div class="text--center">
                 <button type="submit" class="btn btn--wide">Login &#187;</button>
-                <div><small>or <a href="/register">Register Here</a></small></div>
+                <div><small>or <a href="<?= url('/register') ?>">Register Here</a></small></div>
             </div>
         </form>
     </div>
