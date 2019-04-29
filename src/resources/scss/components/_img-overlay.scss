@@ -8,12 +8,8 @@
 
     @media only screen and (min-width: map-get($breakpoints, lg)) {
         background: linear-gradient(#000, #474747, #000);
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        margin: 0;
         z-index: -1;
-        box-shadow: 0 0 2rem .5rem rgba($primary, .5);
+        box-shadow: 0 0 1rem .25rem rgba($primary, .25);
     }
 
     img {

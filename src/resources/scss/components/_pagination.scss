@@ -1,0 +1,13 @@
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+
+    a {
+        display: inline-block;
+        background-color: $primary;
+        color: $white;
+        padding: .5rem .75rem;
+        margin: .25rem;
+    }
+}

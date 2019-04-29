@@ -71,6 +71,26 @@ th, td {
 }
 
 ol, ul {
-    list-style: none;
-    padding: 0;
+    &:not(.list) {
+        list-style: none;
+        padding: 0;
+    }
+}
+
+pre, code, tt {
+    padding: .125rem .5rem;
+    background-color: $white;
+    border: 1px solid $lightgrey;
+}
+
+pre {
+    padding: 1rem;
+}
+
+.indent {
+    padding: 0 2rem 1rem;
+}
+
+.hidden {
+    visibility: hidden;
 }

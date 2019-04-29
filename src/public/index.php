@@ -1,9 +1,15 @@
 <?php
 
 /**
- * Enable error reporting
+ * Enjingks MVC
+ *
+ * A framework created for Huddersfield University Databases and Web Development
+ * module, assignment 2.
+ *
+ * @author Ben Watson
+ *
+ * @version 1.0.0
  */
-ini_set('display_errors',1); error_reporting(E_ALL);
 
 /**
  * Autoload.

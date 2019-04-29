@@ -4,10 +4,8 @@ namespace App\Controllers;
 
 use App\Models\Basket;
 use App\Models\BasketItem;
-use function back;
 use Framework\Request;
 use Framework\Controller;
-
 
 /**
  * Class BasketController
@@ -19,7 +17,7 @@ class BasketController extends Controller
      * @return BasketItem[]
      */
     public function get() {
-        return Basket::items();
+        return Basket::get();
     }
 
     /**
@@ -28,8 +26,7 @@ class BasketController extends Controller
      * @return void
      */
     public function add(Request $request) {
-        Basket::add($request->get('filmid'));
-        back();
+        back(302, Basket::add($request->get('filmid')) ? null : ['errors' => ['Out of stock.']]);
     }
 
     /**

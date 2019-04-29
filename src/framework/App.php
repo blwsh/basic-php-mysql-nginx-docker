@@ -2,8 +2,8 @@
 
 namespace Framework;
 
-use const E_ERROR;
 use Exception;
+use Framework\Exceptions\FailedRouteResolveException;
 use Framework\Traits\Singleton;
 
 /**
@@ -79,12 +79,13 @@ class App
     }
 
     /**
-     * @return void
+     * Handles requests sent from the browser. The method calls the router resolve
+     * method and dispatches a response based on what the router resolves.
      *
-     * @throws \ReflectionException
-     * @throws Exceptions\ControllerMethodNotFoundException
-     * @throws Exceptions\FailedRouteResolveException
-     * @throws Exceptions\ViewNotFoundException
+     * If the router fails to resolve the handle method returns either a 404 page
+     * or a error page depending on the value of isDebug helper.
+     *
+     * @return void
      */
     public function handle()
     {
@@ -94,8 +95,12 @@ class App
             new Dispatch(
                 $this->router::resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'])
             );
-        } catch (Exceptions\InvalidRequestMethod $e) {
-            http_response_code(404);
+        } catch (FailedRouteResolveException $e) {
+            // Show 404 page or error if debug.
+            !isDebug() ? abort() : error($e);
+        } catch (Exception $e) {
+            // Show 500 page or error if debug.
+            !isDebug() ? fatal() : error($e);
         }
 
         exit;

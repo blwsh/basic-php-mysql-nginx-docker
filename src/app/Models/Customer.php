@@ -5,7 +5,12 @@ namespace App\Models;
 use Framework\Model;
 
 /**
- * Class User
+ * Class Customer
+ *
+ * @property int $custid
+ * @property string $custregdate
+ * @property string $custendreg
+ * @property string $custpassword
  */
 class Customer extends Model {
     /**
@@ -22,6 +27,13 @@ class Customer extends Model {
      * @var Customer
      */
     protected static $current;
+
+    /**
+     * A relation to the person model.
+     */
+    public function person() {
+        return Person::where(['personid' => $this->custid])->first();
+    }
 
     /**
      * @return Customer|Model|bool

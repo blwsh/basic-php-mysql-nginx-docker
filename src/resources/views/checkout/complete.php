@@ -3,7 +3,9 @@
         <div class="content">
             <h1 class="title title--divider">Checkout</h1>
 
-            <form action="<? url('/checkout/submit') ?>" method="post" class="row">
+            <?= view('components.errors', ['errors' => $errors]) ?>
+
+            <form action="<?= url('/checkout/submit') ?>" method="post" class="row">
                 <div class="col col--6/12--md">
                     <h4>Payment Details</h4>
 
@@ -12,9 +14,10 @@
                         <input type="text" name="name" placeholder="John Smith" required>
                     </label>
 
-                    <label for="card_number">
+                    <label for="card_number" class="mb">
                         <span class="label">Card number</span>
                         <input type="number" name="card_number" placeholder="0000 0000 0000 0000" required>
+                        A valid card number is required. It is used to identify the card type. You can <a href="https://www.paypalobjects.com/en_AU/vhelp/paypalmanager_help/credit_card_numbers.htm" target="_blank">use this link to get a test card that will work</a>.
                     </label>
 
                     <div class="row">
@@ -22,7 +25,7 @@
                             <span class="expiry_month">Month</span>
                             <select name="expiry_month" id="expiry_month">
                                 <option value="" disabled selected>Select month</option>
-                                <?= array_map(function($month) { echo "<option value='$month'>" . sprintf("%02d", $month) . "</option>"; }, range(1, 12)) ?>
+                                <?= array_map(function($month) { echo "<option value='" . sprintf("%02d", $month) . "'>" . sprintf("%02d", $month) . "</option>"; }, range(1, 12)) ?>
                             </select>
                         </label>
 
@@ -37,9 +40,9 @@
 
                     <h4>Address</h4>
 
-                    <label for="address">
+                    <label for="street">
                         <span>Address</span>
-                        <input type="text" placeholder="Address line 1, line 2, line 3..." name="address" required>
+                        <input type="text" placeholder="Address line 1, line 2, line 3..." name="street" required>
                     </label>
 
                     <div class="row">
@@ -77,7 +80,7 @@
                             </table>
 
                             <div class="text--center">
-                                <small class="block"><a href="<? url('/') ?>">Continue shopping</a></small>
+                                <small class="block"><a href="<?= url('/films') ?>">Continue shopping</a></small>
                                 <button class="btn btn--wide">Pay now</button>
                                 <div><img src="<?= url('assets/img/cards.png') ?>" alt="Accepted cards" width="120"></div>
                             </div>

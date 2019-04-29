@@ -2,10 +2,14 @@
 
 namespace App\Controllers;
 
+use App\Classes\DB;
 use Exception;
 use Framework\Request;
 use App\Models\Person;
 use App\Models\Customer;
+use function preg_match;
+use function redirect;
+use function urldecode;
 
 /**
  * Class AuthController
@@ -16,9 +20,9 @@ class AuthController
     /**
      * @return \Framework\View
      */
-    public function login() {
+    public function login(Request $request) {
         if (Customer::current()) redirect('/');
-        return view('login.index');
+        return view('login.index', ['next' => $request->get('next')]);
     }
 
     /**
@@ -29,7 +33,13 @@ class AuthController
         $password = $request->get('password');
 
         if (Customer::attemptLogin($email, $password)) {
-            redirect('/account');
+            $next = $request->get('next');
+
+            if ($next && urldecode($next) && !preg_match('/^(http(s)*:)*\/\//', $next, $match)) {
+                redirect($next);
+            } else {
+                redirect('/account');
+            }
         } else {
             back(302, [
                 'old'    => [ 'email' => $request->get('email') ],
@@ -50,42 +60,58 @@ class AuthController
      * @param Request $request
      */
     public function registerAction(Request $request) {
+        $old = ['name' => $request->get('name'), 'email' => $request->get('email'), 'phone' => $request->get('phone')];
         $errors = Customer::validate($request->get());
 
         if (count($errors) < 1) {
+            // Find the person where email is one specified in request and
+            // and redirect back with errors if the email is already taken.
             if (Person::where(['personemail' => $request->get('email')])->first()) {
-                back(302, ['old' => $request->get(), 'errors' => [htmlentities($request->get('email')) . ' is already taken.']]);
+                back(302, ['old' => $old, 'errors' => [htmlentities($request->get('email')) . ' is already taken.']]);
             }
 
-            Person::create($person = array_map(function($item) { return htmlentities($item); }, [
-                'personname' => $request->get('name'),
-                'personemail' => $request->get('email'),
-                'personphone' => $request->get('phone'),
-            ]));
+            // Start database transactions.
+            DB::beginTransaction();
 
-            $person = Person::where($person)->first();
-
+            // Tty to insert data.
             try {
-                $customer = Customer::query();
+                // Create the person record.
+                Person::create($person = array_map(function($item) { return htmlentities($item); }, [
+                    'personname' => $request->get('name'),
+                    'personemail' => $request->get('email'),
+                    'personphone' => $request->get('phone'),
+                ]));
 
-                $customer->insert([
+                // Get the inserted person id using filled model data.
+                $person = Person::where($person)->first();
+
+                // Insert related customer record for customer.
+                Customer::insert([
                     'custid'       => $person->personid,
                     'custregdate'  => date("Y-m-d"),
-                    'custendreg'   => null,
+                    'custendreg'   => date("Y-m-d"),
                     'custpassword' => password_hash($request->get('password'), PASSWORD_BCRYPT)
                 ]);
-            } catch (Exception $exception) {
-                $person->delete();
-                back(302, ['errors' => [$exception->getMessage()]]);
+            } catch (Exception $e) {
+                // Rollback db.
+                DB::rollback();
+
+                // Show error.
+                isDebug() ? error($e) : back(302, ['errors' => [$e->getMessage()]]);
             }
 
-            if (Customer::attemptLogin($request->get('email'), $request->get('password'))) {
-                redirect('/account');
-            } else {
-                back(302, ['errors' => ['Successfully registered but unable to log you in.']]);
-            }
+            // Commit the changes.
+            DB::commit();
         } else {
-            back(302, ['old' => $request->get(), 'errors' => $errors]);
+            back(302, ['errors' => $errors, 'old' => $old]);
+        }
+
+        // Try to login the user using provided email and password and redirect to
+        // account page if success otherwise redirect back with errors if fail to login.
+        if (Customer::attemptLogin($request->get('email'), $request->get('password'))) {
+            redirect(url('/account'));
+        } else {
+            back(302, ['errors' => ['Successfully registered but unable to log you in.']]);
         }
     }
 

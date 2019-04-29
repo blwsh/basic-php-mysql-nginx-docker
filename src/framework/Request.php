@@ -2,13 +2,12 @@
 
 namespace Framework;
 
-
-
-
-
-
 /**
  * Class Request
+ *
+ * Provides useful methods relating to requests. An instantiated instance of this
+ * class is passed to every controller method when called.
+ *
  * @package Framework
  */
 class Request

@@ -2,11 +2,10 @@
     <div class="container">
         <div class="content">
             <h1 class="title title--divider">My Basket</h1>
-
             <?php foreach ($items as $item): ?>
             <div class="checkout-item">
                 <a href="<?= '/films/' . $item->item->filmid ?>">
-                    <img src="<?= 'https://res.cloudinary.com/dvsvyssoa/image/upload/w_60,q_auto/v1555973011/mvc/films/' . slug($item->item->filmtitle ?? 'placeholder') . '.jpg' ?>" alt="<?= $item->item->filmtitle ?>">
+                    <img src="<?= 'https://res.cloudinary.com/dvsvyssoa/image/upload/w_120,q_auto/v1555973011/mvc/films/' . slug($item->item->filmtitle ?? 'placeholder') . '.jpg' ?>" alt="<?= $item->item->filmtitle ?>">
                 </a>
 
                 <h3><?= $item->item->filmtitle ?></h3>

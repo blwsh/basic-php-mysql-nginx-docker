@@ -5,6 +5,13 @@ namespace Framework;
 use PDO;
 
 /**
+ * There should only ever be one instance of this class throughout the entire
+ * application lifecycle. To achieve this, we attach the connection to the App
+ * singleton at boot and retrieve it via the app when needed.
+ *
+ * An example shorthand of retrieving the connection using the app helper (See helpers.php).
+ * app()->getConnection()
+ *
  * Class Connection
  */
 class Connection {
@@ -47,6 +54,9 @@ class Connection {
         $this->handleConnection();
     }
 
+    /**
+     * @return void
+     */
     private function handleConnection() {
         $this->instance->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }

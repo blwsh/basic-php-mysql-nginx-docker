@@ -7,10 +7,10 @@ use Framework\Model;
 /**
  * Class Films
  *
- * @property string filmid
- * @property string filmtitle
- * @property string filmdescription
- * @property string ratid
+ * @property string $filmid
+ * @property string $filmtitle
+ * @property string $filmdescription
+ * @property string $ratid
  */
 class Film extends Model {
     /**

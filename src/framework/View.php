@@ -5,20 +5,45 @@ namespace Framework;
 use Exception;
 use Framework\Exceptions\ViewNotFoundException;
 
+/**
+ * Class View
+ * @package Framework
+ */
 class View
 {
+    /**
+     * @var string
+     */
     protected $path;
 
+    /**
+     * @var
+     */
     protected $file;
 
+    /**
+     * @var
+     */
     protected $fileContents;
 
+    /**
+     * @var
+     */
     protected $renderedContents;
 
+    /**
+     * @var bool
+     */
     protected $isTemplate = false;
 
+    /**
+     * @var array|object
+     */
     protected $vars = [];
 
+    /**
+     * @var
+     */
     protected $template;
 
     /**
@@ -41,6 +66,7 @@ class View
      */
     public function render() {
         if (is_file($this->path)) {
+            $vars = $this->vars;
             extract((array) $this->vars);
             ob_start(); include $this->path; $this->renderedContents = ob_get_clean();
 
@@ -79,6 +105,9 @@ class View
         }
     }
 
+    /**
+     * @param array $data
+     */
     public function inject(array $data) {
         $this->vars = array_merge($this->vars, $data);
     }

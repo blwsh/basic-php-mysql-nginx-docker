@@ -4,6 +4,15 @@ namespace Framework;
 
 /**
  * Class Command
+ *
+ * Usage:
+ *
+ * 1. Create a new class in app/commands and extend this class.
+ * 2. Implement the abstract handle method.
+ * 3. Call the class using command php command <ClassName>
+ *   * To pass arguments to the command just add them after <ClassName>
+ *     E.g: php command <ClassName> <Arg1> <Arg2>
+ *
  * @package Framework
  */
 abstract class Command

@@ -6,8 +6,23 @@ use Exception;
 use App\Models\Film;
 use Framework\Command;
 
+/**
+ * Class GetImages
+ *
+ * Gets images from themoviedb.org.
+ *
+ * Uses the column filmtitle from the table fss_Films table to search the API
+ * for an image. If no results are found, a placeholder image is used instead.
+ *
+ * Usage: php command GetImages
+ *
+ * @package App\Commands
+ */
 class GetImages extends Command
 {
+    /**
+     * @return mixed|void
+     */
     public function handle()
     {
         // Setup

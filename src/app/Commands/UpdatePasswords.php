@@ -5,6 +5,14 @@ namespace App\Commands;
 use Framework\Command;
 use App\Models\Customer;
 
+/**
+ * Class UpdatePasswords
+ *
+ * Encrypts all customer passwords using password_hash method. Will skip a
+ * customer if the password already looks to be encrypted.
+ *
+ * @package App\Commands
+ */
 class UpdatePasswords extends Command
 {
     /**

@@ -2,17 +2,28 @@
 
 namespace Framework;
 
+use function array_diff;
+use function array_filter;
+use function array_intersect;
+use function array_intersect_key;
+use function array_keys;
+use function dd;
+use JsonSerializable;
+use function key;
+
 /**
- * Class Model
- * This model acts as a Data Access Object. Static methods such as get, create
+ * Class Model (DAO)
+ *
+ * This model acts as a Data Access Object (DAO). Static methods such as get, create
  * and delete may be called on classes which extend this one. Each model has a
  * table property which must be set as it determines what table should be used
  * for the particular data access object.
+ *
  * Setting what table a model uses is usually done by extending and overriding
  * the protected $table property but can also be passed in to the class upon
  * construction.
  */
-class Model {
+class Model implements JsonSerializable {
     /**
      * @var Connection
      */
@@ -86,6 +97,15 @@ class Model {
     }
 
     /**
+     * @param array|string $select
+     *
+     * @return QueryBuilder
+     */
+    public static function select($select) {
+        return self::query()->select($select);
+    }
+
+    /**
      * @param        $data
      * @param string $comparator
      *
@@ -95,6 +115,15 @@ class Model {
         return self::query()->where($data, $comparator);
     }
 
+    /**
+     * @param      $table
+     * @param      $key
+     * @param      $operator
+     * @param      $value
+     * @param null $type
+     *
+     * @return QueryBuilder
+     */
     public static function join($table, $key, $operator, $value, $type = null) {
         return self::query()->join($table, $key, $operator, $value, $type = null);
     }
@@ -122,6 +151,7 @@ class Model {
      * @return bool
      */
     public function update($data) {
+        $this->builder->clearValues();
         return $this->builder->update($data);
     }
 
@@ -167,6 +197,15 @@ class Model {
     }
 
     /**
+     * @param string $column
+     *
+     * @return int
+     */
+    public static function count(string $column = '*') {
+        return self::query()->count($column);
+    }
+
+    /**
      * @param array $data
      *
      * @return Model
@@ -182,11 +221,24 @@ class Model {
     }
 
     /**
-     * @param int $int
+     * @param int      $perPage
+     * @param int|null $page
      *
      * @return QueryBuilder
      */
-    public static function limit(int $int) {
-        return self::query()->limit($int);
+    public static function limit(int $perPage, int $page =  null) {
+        return self::query()->limit($perPage, $page);
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return $this->attributes;
     }
 }

@@ -2,12 +2,32 @@
 
 namespace Framework;
 
-
+use function dd;
+use function dump;
+use function is_null;
+use function max;
 use PDO;
 use PDOStatement;
 
 /**
  * Class QueryBuilder
+ *
+ * The query builder, as the name suggests, builds queries. Concatenating strings
+ * can become overwhelming and remembering exact syntax can sometimes be difficult.
+ * A query builder helpers counter this issues by building SQL queries based on
+ * the methods you call.
+ *
+ * There are intermediate methods calls such as where and join and terminal
+ * methods such as get and first which return responses.
+ *
+ * An example usage of a query builder may look something like this:
+ * Model::where(...)->orderBy(...)->join(..., ..., ..., ...)->whereIn(...)->get()
+ *
+ * Notice orderBy is called before join and whereIn. If you did this when building
+ * a query with string concatenation you would recieve an error however, not only
+ * does a query builder construct a query, it does it in the right order regardless
+ * of which methods you call first.
+ *
  */
 class QueryBuilder
 {
@@ -130,20 +150,15 @@ class QueryBuilder
         $joinString = implode(' ', $this->joins);
 
         // Construct the update string.
-        $updateString = $this->updates ?  'SET ' . implode(', ', array_map(function($insert) {
-            if ($insert['value']) {
-                $this->values[] = $insert['value'];
-
-                return $insert['key'] . ' = ?';
-            }
-
-            return null;
+        $updateString = $this->updates ?  'SET ' . implode(', ', array_map(function($update) {
+            $this->values[] = $update['value'];
+            return $update['key'] . ' = ?';
         }, $this->updates)) : null;
 
         // Construct where string and append values for prepared statement.
         $whereString = implode(' ', array_map(
             function($where) {
-                if (!is_null($where['value'])) {
+                if (!$where['raw']) {
                     $this->values[] = $where['value'];
                 }
 
@@ -231,12 +246,31 @@ class QueryBuilder
     }
 
     /**
-     * @return Model|Object
+     * @return Model|Object|bool
      */
     public function first() {
-        return $this->limit(1)->get()[0];
+        $this->limit(1);
+
+        $prepared = $this->instance->prepare($this->build());
+
+        $this->prepared = $prepared->execute($this->values);
+
+        $result = $prepared->fetch(PDO::FETCH_ASSOC);
+
+        if ($result && $this->model) {
+            $this->model->fill($result);
+            return $this->model;
+        }
+
+        return false;
+
     }
 
+    /**
+     * @param $id
+     *
+     * @return bool|Model|Object
+     */
     public function find($id) {
         return $this->where([$builder->model->primaryKey ?? 'id' => $id])->first();
     }
@@ -252,7 +286,7 @@ class QueryBuilder
         foreach ($data as $key => $value) {
             $this->inserts[] = [
                 'key'   => $key,
-                'value' => $value
+                'value' => $value ?? 'null'
             ];
         }
 
@@ -460,13 +494,13 @@ class QueryBuilder
     }
 
     /**
-     * @param int $limit
+     * @param int      $perPage
+     * @param int|null $page
      *
      * @return QueryBuilder
      */
-    public function limit(int $limit) {
-        $this->limit = $limit;
-
+    public function limit(int $perPage, int $page = null) {
+        $this->limit = !is_null($page) ? (max($page - 1, 0) * $perPage) . ",$perPage" : $perPage;
         return $this;
     }
 
@@ -485,10 +519,20 @@ class QueryBuilder
     }
 
     /**
-     * @return QueryBuilder
+     * @param string $column
+     *
+     * @return int
      */
-    public function count() {
-        return $this;
+    public function count(string $column = '*') {
+        $this->action = "SELECT COUNT($column) FROM";
+
+        $prepared = $this->instance->prepare($this->build());
+
+        $this->prepared = $prepared->execute($this->values);
+
+        $result = $prepared->fetch(PDO::FETCH_COLUMN);
+
+        return $result;
     }
 
     /**
@@ -496,6 +540,13 @@ class QueryBuilder
      */
     public function getValues() {
         return $this->values;
+    }
+
+    /**
+     * @return void
+     */
+    public function clearValues() {
+        $this->values = [];
     }
 
     /**

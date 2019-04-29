@@ -10,12 +10,12 @@ use Framework\Model;
  */
 class BasketItem extends Model {
     /**
-     * @var
+     * @varx
      */
     public $quantity;
 
     /**
-     * @var Model
+     * @var Model|Film
      */
     public $item;
 
@@ -27,36 +27,53 @@ class BasketItem extends Model {
     public function __construct(Model $item) {
         parent::__construct();
         $this->item = $item;
+
+        $this->fill(['item' => $item]);
     }
 
     /**
+     * Sets the quantity of this BasketItem
+     *
      * @param int $quantity
      */
     public function setQuantity(int $quantity) {
         if ($this->validateQuantity($quantity)) {
             $this->quantity = $quantity;
+            $this->fill(['quantity' => $this->quantity]);
         }
     }
 
     /**
-     * @param $quantity
+     * Increases the quantity of this basket by the amount specified in the method
+     * parameter.
+     *
+     * @param int $quantity
      */
-    public function increaseQuantity($quantity) {
+    public function increaseQuantity(int $quantity) {
         if ($this->validateQuantity($quantity)) {
             $this->quantity++;
+
+            $this->fill(['quantity' => $this->quantity]);
         }
     }
 
     /**
+     * Decreases the quantity of this basket by the amount specified in the method
+     * parameter.
+     *
      * @param $quantity
      */
     public function decreaseQuantity($quantity) {
         if ($this->validateQuantity($quantity)) {
             $this->quantity++;
+
+            $this->fill(['quantity' => $this->quantity]);
         }
     }
 
     /**
+     * Checks to see if the quantity being set is within the range 0 to 100.
+     *
      * @param int $quantity
      *
      * @return bool

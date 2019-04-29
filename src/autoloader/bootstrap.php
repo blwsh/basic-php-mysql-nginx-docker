@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This file's responsibility is to dynamically include the PHP files for classes
+ * you using in this project.
+ *
+ * Helpers and routes are also included here.
+ */
+
 include_once __DIR__ . '/../app/helpers.php';
 
 spl_autoload_register(function ($class) {

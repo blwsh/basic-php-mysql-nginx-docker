@@ -5,7 +5,12 @@ namespace Framework;
 use Framework\Exceptions\ControllerMethodNotFoundException;
 use ReflectionClass;
 
-
+/**
+ * Handles the calling of controllers and sending appropriate response.
+ *
+ * Class Dispatch
+ * @package Framework
+ */
 class Dispatch {
     /**
      * Dispatch constructor.

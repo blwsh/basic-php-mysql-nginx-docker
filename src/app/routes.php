@@ -14,6 +14,7 @@ Router::post('/auth/logout', 'AuthController@logout');
 
 // Account
 Router::get('/account', 'AccountController@manage');
+Router::post('/account/update', 'AccountController@update');
 
 
 // Pages
@@ -27,11 +28,17 @@ Router::post('/basket/remove', 'BasketController@remove');
 Router::get('/basket/clear', 'BasketController@clear');
 
 // Films
-Router::get('/films', 'Filmscontroller@index');
-Router::get('/films/create', 'FilmsController@create');
+Router::get('/films', 'FilmsController@index');
 Router::get('/films/{filmid([0-9]+)}', 'FilmsController@view');
-Router::post('/films/{filmid([0-9]+)}', 'FilmsController@view');
 
 // Checkout
 Router::get('/checkout', 'CheckoutController@overview');
 Router::get('/checkout/complete', 'CheckoutController@complete');
+Router::get('/checkout/success', 'CheckoutController@success');
+Router::post('/checkout/submit', 'CheckoutController@submit');
+
+// Search
+Router::get('/search', 'SearchController@search');
+
+// Debug toggle
+Router::get('debug', 'DebugController@toggle');

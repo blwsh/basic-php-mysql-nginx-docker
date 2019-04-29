@@ -2,15 +2,18 @@
 
 namespace Framework;
 
-
-
 use Framework\Exceptions\FailedRouteResolveException;
-
-
-
 
 /**
  * Class Router
+ *
+ * This class is reasonable for determining which controller method should be
+ * called based on the request path.
+ *
+ * The main method of this class is the public static function resolve.
+ *
+ * The methods get, post, put and delete are used to add routes to the router.
+ *
  * @package Framework
  */
 class Router
@@ -95,6 +98,8 @@ class Router
     }
 
     /**
+     * Adds a GET request route.
+     *
      * @param $route
      * @param $controller
      */
@@ -104,6 +109,8 @@ class Router
     }
 
     /**
+     * Adds a POST request route.
+     *
      * @param $route
      * @param $controller
      */
@@ -112,6 +119,8 @@ class Router
     }
 
     /**
+     * Adds a PUT request route.
+     *
      * @param $route
      * @param $controller
      */
@@ -120,6 +129,8 @@ class Router
     }
 
     /**
+     * Adds a DELETE request route.
+     *
      * @param $route
      * @param $controller
      */

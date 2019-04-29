@@ -1,13 +1,13 @@
 <?php
 
-use Framework\App;
 
 /**
  * Returns an instance of the app.
- * @return App
+ *
+ * @return \Framework\App
  */
 function app() {
-    return App::getInstance();
+    return \Framework\App::getInstance();
 }
 
 /**
@@ -60,13 +60,40 @@ function jsonResponse ($data = null, $code = 200)
     return json_encode($data ?? []);
 }
 
+/**
+ * @param int $code
+ */
 function abort($code = 404) {
     http_response_code($code);
     echo view('pages.404');
     exit;
 }
 
-function redirect(string $to, int $responseCode = 302) {
+/**
+ * @param int $code
+ */
+function fatal($code = 500) {
+    http_response_code($code);
+    echo view('pages.500');
+    exit;
+}
+
+/**
+ * @param Exception $exception
+ */
+function error(Exception $exception) {
+    print "<strong>{$exception->getMessage()} ({$exception->getFile()}:{$exception->getLine()})</strong>";
+    display($exception->getTraceAsString());
+    exit;
+}
+
+/**
+ * @param string $to
+ * @param int    $responseCode
+ * @param array  $data
+ */
+function redirect(string $to, int $responseCode = 302, $data = []) {
+    $_SESSION['_flash'] = $data;
     header("Location: $to", true, $responseCode);
     exit;
 }
@@ -78,8 +105,7 @@ function redirect(string $to, int $responseCode = 302) {
  * @param array $data
  */
 function back(int $responseCode = 302, $data = []) {
-    $_SESSION['_flash'] = $data;
-    redirect($_SERVER['HTTP_REFERER'] ?? '/', $responseCode ?? 302);
+    redirect($_SERVER['HTTP_REFERER'] ?? '/', $responseCode ?? 302, $data);
 }
 
 /**
@@ -140,6 +166,32 @@ function set(array &$array, $key, $value)
 }
 
 /**
+ * Allows you to pluck pluck from an array and/or objects using dot notation.
+ * Example:
+ *  pluck($array, 'item.attributes.name')
+ *
+ * @param array       $array
+ * @param string|null $key
+ *
+ * @return array
+ */
+function pluck(array $array, string $key = null) {
+    $indexes = explode('.', $key);
+
+    if (isset($indexes[0])) {
+        $plucked = array_column($array, $indexes[0]);
+
+        if (isset($indexes[1])) {
+            array_shift($indexes);
+            return pluck($plucked, implode('.', $indexes));
+        } else {
+            return $plucked;
+        }
+    }
+}
+
+
+/**
  * @param string $key
  * @param mixed  $default
  *
@@ -176,7 +228,7 @@ function env($key = null) {
  * @return bool
  */
 function isDebug() {
-    return env('ENVIRONMENT') === 'development';
+    return env('ENVIRONMENT') === 'development' || $_SESSION['debug'];
 }
 
 /**
@@ -206,7 +258,7 @@ function dd($data) {
  * @param string $data
  */
 function display(string $data) {
-    echo "<div style='border: 1px solid; padding: 10px; margin: 10px; font-family: monospace; line-height: 1.5;' '>$data</div>";
+    echo "<pre style='border: 1px solid #ddd; padding: 20px; margin: 10px; font-family: monospace; line-height: 1.5;' '>$data</pre>";
 }
 
 /**
@@ -218,6 +270,11 @@ function dot(string $string) {
     return str_replace('.', '/', $string);
 }
 
+/**
+ * @param string $string
+ *
+ * @return string
+ */
 function url(string $string) {
     $root = config('root_dir', null);
     return ($root ? '/' . $root : null) . '/' . trim($string, '/');

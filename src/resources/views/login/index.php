@@ -1,6 +1,6 @@
 <content title="Login" template="layout.default">
     <div class="container">
-        <form action="<?= url('/auth/login') ?>" method="post" class="login-container">
+        <form action="<?= url('/auth/login') . ($next ? "?next=$next" : null) ?>" method="post" class="login-container">
             <h1 class="title title--divider text--center">Login</h1>
 
             <label for="email">

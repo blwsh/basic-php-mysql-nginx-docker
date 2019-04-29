@@ -142,13 +142,15 @@ class Slider {
 }
 
 class Basket {
+    static searchRequestUrl = window.searchRequestUrl;
+
     static basketRequestUrl = window.basketRequestUrl;
 
     static basketAddRequestUrl = window.basketAddRequestUrl;
 
     static basketRemoveRequestUrl = window.basketRemoveRequestUrl;
 
-    constructor(buttonElement, containerElement) {
+    constructor(buttonElement, counterElement, containerElement) {
         // Set button element.
         if (typeof buttonElement === "string") {
             this.buttonElement = document.querySelector(buttonElement);
@@ -156,6 +158,15 @@ class Basket {
             this.buttonElement = buttonElement;
         } else {
             throw new Error("Basket button element not specified.");
+        }
+
+        // Set counter element.
+        if (typeof counterElement === "string") {
+            this.counterElement = document.querySelector(counterElement);
+        } else if (typeof counterElement === "object") {
+            this.counterElement = counterElement;
+        } else {
+            throw new Error("Basket counter element not specified.");
         }
 
         // Set container element
@@ -202,13 +213,19 @@ class Basket {
                 if (basketRequest.responseText) {
                     const basketData = JSON.parse(basketRequest.responseText);
 
-                    basketData.forEach(item => {
-                        this.addItem(item);
-                    });
+                    if (basketData.count) {
+                        this.counterElement.innerText = basketData.count > 0 ? basketData.count : null;
 
-                    this.addCheckoutButton();
-                } else {
-                    this.containerElement.innerText = 'Your basket is currently empty.'
+                        if (basketData.items) {
+                            basketData.items.forEach(item => {
+                                this.addItem(item);
+                            });
+                        }
+
+                        this.addCheckoutButton();
+                    } else {
+                        this.containerElement.innerText = 'Your basket is currently empty.'
+                    }
                 }
             }
         }
@@ -227,7 +244,7 @@ class Basket {
         // Name
 
         const nameEl = document.createElement('div');
-        nameEl.innerText = data.item.attributes.filmtitle;
+        nameEl.innerText = data.item.filmtitle;
         nameEl.classList.add('basket__item__name');
         el.append(nameEl);
 
@@ -255,7 +272,7 @@ class Basket {
             // Hidden input
 
             const inputEl = document.createElement('input');
-            inputEl.value = data.item.attributes.filmid;
+            inputEl.value = data.item.filmid;
             inputEl.name = 'filmid';
             inputEl.type = 'hidden';
 
@@ -271,7 +288,7 @@ class Basket {
 
             buttonEl.onclick = (e) => {
                 e.preventDefault();
-                this.updateRequest(button.action, data.item.attributes.filmid);
+                this.updateRequest(button.action, data.item.filmid);
             };
 
             formEl.append(inputEl);
@@ -317,11 +334,74 @@ class Basket {
     }
 }
 
+class Search {
+    constructor() {
+        this.el = document.querySelector('.site-search');
+
+        this.input = this.el.querySelector('input[type="text"]');
+
+        this.stage = this.el.querySelector('.site-search__results');
+
+        this.input.addEventListener('input', this.typeHandler);
+        this.input.addEventListener('propertychange', this.typeHandler);
+        this.input.addEventListener('focusout', e => {
+            setTimeout(() => {
+                this.stage.innerHTML = null
+            }, 600);
+        });
+    }
+
+    typeHandler = e => {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+
+        this.timeout = setTimeout(() => {
+            this.query = e.target.value;
+
+            if (e.target.value.length > 3) {
+                const searchRequest = new XMLHttpRequest();
+
+                searchRequest.open("GET", Basket.searchRequestUrl + "?q=" + encodeURIComponent(e.target.value));
+                searchRequest.send();
+
+                searchRequest.onreadystatechange = (e) => {
+                    if (searchRequest.readyState === 4 && searchRequest.status === 200) {
+                        if (searchRequest.responseText) {
+                            this.stage.innerHTML = null;
+
+                            const searchData = JSON.parse(searchRequest.responseText);
+
+                            if (searchData ) {
+                                searchData.forEach(data => {
+                                    const regex = new RegExp(this.query, 'gi');
+
+                                    const result = document.createElement('a');
+                                    result.innerHTML = data.filmtitle.replace(regex, '<strong>' + `${this.query}` + '</strong>');
+                                    result.href = window.baseUrl + 'films/' + data.filmid;
+
+                                    this.stage.append(result);
+                                })
+                            } else {
+                                this.stage.innerHTML = 'No results found.';
+                            }
+                        }
+                    }
+                }
+            } else {
+                this.stage.innerHTML = null;
+            }
+        }, 200);
+    }
+}
+
 /**
  * App code.
  */
 
-const basket = new Basket('#basket-button', '#basket-container');
+const search = new Search();
+
+const basket = new Basket('#basket-button', '#basket-counter', '#basket-container');
 
 const basketBtns = document.querySelectorAll('[data-basket-add]');
 

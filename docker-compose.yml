@@ -20,6 +20,8 @@ services:
   php:
     build: .
     restart: always
+    ports:
+      - 9000:9000
     volumes:
     - ./src:/src/:rw,delegated
     - ./etc/php.ini:/usr/local/etc/php/conf.d/00_mvc.ini:ro
