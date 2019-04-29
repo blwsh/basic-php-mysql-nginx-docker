@@ -38,7 +38,7 @@ class AuthController
             if ($next && urldecode($next) && !preg_match('/^(http(s)*:)*\/\//', $next, $match)) {
                 redirect($next);
             } else {
-                redirect('/account');
+                redirect(url('/account'));
             }
         } else {
             back(302, [

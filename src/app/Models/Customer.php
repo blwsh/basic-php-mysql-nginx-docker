@@ -89,7 +89,7 @@ class Customer extends Model {
     public static function logout() {
         unset($_SESSION['token']);
         self::$current = null;
-        redirect('/login');
+        redirect(url('/login'));
     }
 
     /**
