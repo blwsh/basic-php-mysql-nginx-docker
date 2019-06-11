@@ -28,6 +28,10 @@
         padding: 1rem 4rem;
     }
 
+    &--warn {
+        background-color: $warn;
+    }
+
     &:disabled {
         background-color: $grey;
         color: $lightgrey;

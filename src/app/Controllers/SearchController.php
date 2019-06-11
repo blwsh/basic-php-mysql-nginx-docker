@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\Film;
 use Framework\Model;
 use Framework\Request;
-use function trim;
 
 /**
  * Class SearchController

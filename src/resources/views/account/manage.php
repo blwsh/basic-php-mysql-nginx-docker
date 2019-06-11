@@ -2,7 +2,7 @@
     <div class="container">
         <div class="content">
             <h1 class="title title--divider">My Account</h1>
-            <strong>Welcome back, <?= $customer->personname ?>.</strong>
+            <strong>Welcome back, <?= htmlentities($customer->personname) ?>.</strong>
             <p>This page provides you with an overview of your account details, past purchase and other information.</p>
 
             <h2>Account</h2>
@@ -50,9 +50,16 @@
             <?php endforeach; ?>
 
             <h2>Account actions</h2>
-            <form action="<?= url('/auth/logout') ?>" method="post">
-                <button type="submit" class="btn">Logout</button>
-            </form>
+
+            <div class="flex">
+                <form action="<?= url('/auth/logout') ?>" method="post">
+                    <button type="submit" class="btn">Logout</button>
+                </form>
+
+                <form action="<?= url('/account/delete') ?>" method="post" class="ml">
+                    <button type="submit" class="btn btn--warn">Delete My Account</button>
+                </form>
+            </div>
         </div>
     </div>
 </content>

@@ -84,12 +84,26 @@ class Customer extends Model {
     }
 
     /**
+     * Logs the customer out.
      *
+     * @param bool|null $redirect - Will not redirect if false, will redirect if
+     *                            has value and if null will redirect to /login
      */
-    public static function logout() {
+    public static function logout($redirect = null) {
         unset($_SESSION['token']);
         self::$current = null;
-        redirect(url('/login'));
+
+        if ($redirect !== false) {
+            redirect($redirect ?? url('/login'));
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function delete()
+    {
+        return self::query()->update(['custendreg' => date("Y-m-d")]);
     }
 
     /**

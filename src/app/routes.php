@@ -15,6 +15,8 @@ Router::post('/auth/logout', 'AuthController@logout');
 // Account
 Router::get('/account', 'AccountController@manage');
 Router::post('/account/update', 'AccountController@update');
+Router::post('/account/delete', 'AccountController@confirmDelete');
+Router::post('/account/delete/confirm', 'AccountController@delete');
 
 
 // Pages

@@ -2,14 +2,7 @@
 
 namespace Framework;
 
-use function array_diff;
-use function array_filter;
-use function array_intersect;
-use function array_intersect_key;
-use function array_keys;
-use function dd;
 use JsonSerializable;
-use function key;
 
 /**
  * Class Model (DAO)
@@ -45,9 +38,14 @@ class Model implements JsonSerializable {
     protected $primaryKey = 'id';
 
     /**
-     * @var
+     * @var array
      */
     public  $attributes = [];
+
+    /**
+     * @var array
+     */
+    public $guard = ['password', 'custpassword'];
 
     /**
      * Model constructor.
@@ -159,8 +157,8 @@ class Model implements JsonSerializable {
      * @return bool
      */
     public function delete() {
-        if ($id = $this->attributes->{$this->primaryKey}) {
-            return $this->builder->where(['id' => $id])->delete();
+        if ($id = $this->attributes[$this->primaryKey]) {
+            return self::query()->where([$this->primaryKey => $id])->delete();
         }
     }
 
@@ -240,5 +238,17 @@ class Model implements JsonSerializable {
     public function jsonSerialize()
     {
         return $this->attributes;
+    }
+
+    public function __debugInfo()
+    {
+        $array = (array) $this;
+
+        $array['attributes'] = array_diff_key(
+            (array) $this->attributes,
+            array_flip($this->guard)
+        );
+
+        return $array;
     }
 }

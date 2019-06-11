@@ -66,8 +66,8 @@ class View
      */
     public function render() {
         if (is_file($this->path)) {
-            $vars = $this->vars;
             extract((array) $this->vars);
+
             ob_start(); include $this->path; $this->renderedContents = ob_get_clean();
 
             if (preg_match('/\<content\ .*\>\n(.+\n*)+<\/content\>/', $this->renderedContents, $matches)) {

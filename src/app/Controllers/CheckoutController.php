@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Classes\DB;
 use App\Classes\PurchaseRequestValidator;
+use App\Classes\CardIdentifier;
 use App\Models\Address;
 use App\Models\Basket;
 use App\Models\CardPayment;
@@ -158,8 +159,8 @@ class CheckoutController extends Controller
 
                     CardPayment::create([
                         'payid' => $payid,
-                        'cno' => $request->get('card_number'),
-                        'ctype' => 'visa',
+                        'cno' => $card = $request->get('card_number'),
+                        'ctype' => CardIdentifier::identify($card) ? CardIdentifier::identify($card) : 'err',
                         'cexpr' => DateTime::createFromFormat('Y-m', $request->get('expiry_year') . '-' . $request->get('expiry_month'))->format('m:y')
                     ]);
 

@@ -4,6 +4,7 @@ namespace App\Classes;
 
 /**
  * Class CardIdentifier
+ *
  * @package App\Classes
  */
 class CardIdentifier
@@ -21,7 +22,7 @@ class CardIdentifier
     /**
      * @param $number
      *
-     * @return string
+     * @return string|bool
      */
     public static function identify($number)
     {
@@ -29,6 +30,7 @@ class CardIdentifier
         else if (preg_match(self::$cardTypes['mastercard'], $number)) return 'mastercard';
         else if (preg_match(self::$cardTypes['amex'], $number)) return 'amex';
         else if (preg_match(self::$cardTypes['discover'], $number)) return 'discover';
+        else return false;
     }
 
 }

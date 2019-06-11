@@ -20,3 +20,4 @@ $dark: $primary;
 $light: $grey;
 $red: #ff0033;
 $error: $red;
+$warn: lighten($red, 10%);

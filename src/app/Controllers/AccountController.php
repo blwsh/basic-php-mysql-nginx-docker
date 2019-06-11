@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\OnlinePayment;
 use Framework\Controller;
 use Framework\Request;
+use function view;
 
 class AccountController extends Controller
 {
@@ -51,11 +52,22 @@ class AccountController extends Controller
         $person = $customer->person();
 
         $person->update([
-           'personname' => $request->get('personname'),
-           'personphone' => $request->get('personphone'),
-           'personemail' => $request->get('personemail'),
+           'personname' => strip_tags($request->get('personname')),
+           'personphone' => strip_tags($request->get('personphone')),
+           'personemail' => strip_tags($request->get('personemail')),
         ]);
 
         back();
+    }
+
+    public function confirmDelete() {
+        return view('account.confirm-delete');
+    }
+
+    public function delete() {
+        Customer::current()->delete();
+        Customer::logout(false);
+
+        return view('account.delete-success');
     }
 }

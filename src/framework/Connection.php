@@ -92,5 +92,12 @@ class Connection {
     {
         return $this->user;
     }
+
+    public function __debugInfo()
+    {
+        return [
+            'name' => $this->name
+        ];
+    }
 }
 

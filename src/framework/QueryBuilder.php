@@ -2,10 +2,6 @@
 
 namespace Framework;
 
-use function dd;
-use function dump;
-use function is_null;
-use function max;
 use PDO;
 use PDOStatement;
 
@@ -320,7 +316,11 @@ class QueryBuilder
      */
     public function delete() {
         $this->action = 'DELETE';
-        return $this->instance->exec($this->build());
+        $this->select(null);
+
+        $prepared = $this->instance->prepare($this->build());
+
+        return $this->prepared = $prepared->execute($this->values);
     }
 
     /**

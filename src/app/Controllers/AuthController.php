@@ -7,9 +7,6 @@ use Exception;
 use Framework\Request;
 use App\Models\Person;
 use App\Models\Customer;
-use function preg_match;
-use function redirect;
-use function urldecode;
 
 /**
  * Class AuthController
