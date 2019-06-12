@@ -13,7 +13,7 @@
 
                 <span><?= $item->quantity ?></span>
 
-                <strong>&pound;<?= number_format($item->quantity * 9.99, 2) ?></strong>
+                <strong>&pound;<?= number_format($item->quantity * config('base_price', 9.99), 2) ?></strong>
 
                 <div>
                     <form action="<?= url('/basket/remove') ?>" method="post">

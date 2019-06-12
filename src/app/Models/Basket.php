@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use function config;
 use Framework\Traits\Singleton;
 
 /**
@@ -47,7 +48,7 @@ class Basket {
      * @return float|int
      */
     public static function subtotal() {
-        return array_sum(array_map(function($item) { return $item->quantity * 9.99; }, self::items()));
+        return array_sum(array_map(function($item) { return $item->quantity * config('base_price', 9.99); }, self::items()));
     }
 
 

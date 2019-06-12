@@ -151,7 +151,7 @@ class CheckoutController extends Controller
                     Payment::create([
                         'shopid'  => 1, // Online
                         'paydate' => date('Y-m-d'),
-                        'amount' => 9.99,
+                        'amount' => config('base_price', 9.99),
                         'ptid' => 2 // Card
                     ]);
 
@@ -173,7 +173,7 @@ class CheckoutController extends Controller
                         'payid' => $payid,
                         'filmid' => $item->item->filmid,
                         'shopid' => 1,
-                        'price' => 9.99
+                        'price' => config('base_price', 9.99)
                     ]);
 
                     OnlinePurchase::create([

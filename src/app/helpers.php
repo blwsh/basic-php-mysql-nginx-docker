@@ -200,13 +200,16 @@ function pluck(array $array, string $key = null) {
 function config(string $key = null, $default = null) {
     $config = require __DIR__ . '/../config.php';
 
-    if ($key) {
-        return get($config, $key);
-    } else if (is_null($default)) {
+    if ($value = get($config, $key)) {
+        return $value;
+    } else if (!is_null($default)) {
         return $default;
     }
 
-    return $config;
+    // Return the entire config if nothing is passed to function.
+    if (is_null($key) && is_null($default)) return $config;
+
+    return false;
 }
 
 /**
