@@ -8,10 +8,16 @@ use App\Models\Customer;
 use App\Models\OnlinePayment;
 use Framework\Controller;
 use Framework\Request;
-use function view;
 
+/**
+ * Class AccountController
+ * @package App\Controllers
+ */
 class AccountController extends Controller
 {
+    /**
+     * @return \Framework\View
+     */
     public function manage() {
         if ($customer = Customer::current()) {
             $addresses = Address
@@ -41,6 +47,9 @@ class AccountController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     */
     public function update(Request $request) {
         $validator = new AccountUpdateValidator($request->get());
 
@@ -60,10 +69,16 @@ class AccountController extends Controller
         back();
     }
 
+    /**
+     * @return \Framework\View
+     */
     public function confirmDelete() {
         return view('account.confirm-delete');
     }
 
+    /**
+     * @return \Framework\View
+     */
     public function delete() {
         Customer::current()->delete();
         Customer::logout(false);

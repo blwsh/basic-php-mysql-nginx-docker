@@ -24,6 +24,7 @@ use PDOStatement;
  * does a query builder construct a query, it does it in the right order regardless
  * of which methods you call first.
  *
+ * @package Framework
  */
 class QueryBuilder
 {
@@ -268,7 +269,7 @@ class QueryBuilder
      * @return bool|Model|Object
      */
     public function find($id) {
-        return $this->where([$builder->model->primaryKey ?? 'id' => $id])->first();
+        return $this->where([($this->model && $this->model->getPrimaryKey()) ?? 'id' => $id])->first();
     }
 
     /**

@@ -34,7 +34,7 @@ trait Singleton
     }
 
     /**
-     * Allows you to call App methods without first having to call
+     * Allows you to call singleton methods without first having to call
      * getInstance.
      *
      * e.g: Instead of App::getInstance()->getConnection() just do App::getConnection()

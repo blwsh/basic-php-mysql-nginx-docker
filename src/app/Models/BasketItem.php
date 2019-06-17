@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Framework\Model;
 
 /**
@@ -24,11 +25,20 @@ class BasketItem extends Model {
      *
      * @param $item
      */
-    public function __construct(Model $item) {
+    public function __construct(Model $item = null) {
         parent::__construct();
         $this->item = $item;
 
         $this->fill(['item' => $item]);
+    }
+
+    /**
+     * @return Model|Model[]|void
+     * @throws Exception
+     */
+    public static function get()
+    {
+        throw new Exception('This class does not support the get method.');
     }
 
     /**

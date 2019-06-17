@@ -20,6 +20,12 @@ class Request
      * @var array
      */
     protected $data;
+
+    /**
+     * @var App
+     */
+    protected $app;
+
     /**
      * @var array
      */
@@ -44,6 +50,7 @@ class Request
      */
     public function __construct($inject = []) {
         $this->data = $_REQUEST;
+        $this->app = &app();
         $this->server = $_SERVER;
         $this->session = $_SESSION;
         $this->files = $_FILES;

@@ -24,6 +24,13 @@ class Customer extends Model {
     protected $primaryKey = 'custid';
 
     /**
+     * @var array
+     */
+    protected $hidden = [
+        'custpassword'
+    ];
+
+    /**
      * @var Customer
      */
     protected static $current;

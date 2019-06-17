@@ -39,6 +39,9 @@ class BasketController extends Controller
         back();
     }
 
+    /**
+     * @return void
+     */
     public function clear() {
         Basket::clear();
         back();

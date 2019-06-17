@@ -5,6 +5,8 @@ namespace Framework;
 use PDO;
 
 /**
+ * Class Connection
+ *
  * There should only ever be one instance of this class throughout the entire
  * application lifecycle. To achieve this, we attach the connection to the App
  * singleton at boot and retrieve it via the app when needed.
@@ -12,7 +14,7 @@ use PDO;
  * An example shorthand of retrieving the connection using the app helper (See helpers.php).
  * app()->getConnection()
  *
- * Class Connection
+ * @package Framework
  */
 class Connection {
     /**

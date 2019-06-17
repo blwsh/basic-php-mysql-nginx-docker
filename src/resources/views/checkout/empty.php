@@ -1,4 +1,4 @@
-<content title="Review Basket" template="layout.default">
+<content title="Your basket is empty" template="layout.default">
     <div class="container">
         <div class="content">
             <h1 class="title title--divider">My Basket</h1>

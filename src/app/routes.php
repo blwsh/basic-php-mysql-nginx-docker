@@ -43,4 +43,9 @@ Router::post('/checkout/submit', 'CheckoutController@submit');
 Router::get('/search', 'SearchController@search');
 
 // Debug toggle
-Router::get('debug', 'DebugController@toggle');
+Router::get('/debug', 'DebugController@toggle');
+
+// Api
+Router::get('/api/{model}/get', 'ApiController@get');
+Router::get('/api/{model}/first/{id([0-9]+)}', 'ApiController@find');
+Router::get('/api/{api(.*)}', 'ApiController@dump');

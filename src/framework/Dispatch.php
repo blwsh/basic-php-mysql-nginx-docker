@@ -6,9 +6,10 @@ use Framework\Exceptions\ControllerMethodNotFoundException;
 use ReflectionClass;
 
 /**
+ * Class Dispatch
+ *
  * Handles the calling of controllers and sending appropriate response.
  *
- * Class Dispatch
  * @package Framework
  */
 class Dispatch {
@@ -34,7 +35,7 @@ class Dispatch {
 
             echo response($result, 200);
         } else {
-            throw new ControllerMethodNotFoundException("The controller method ($controller()->$method()) could not be found.");
+            throw new ControllerMethodNotFoundException("The controller method ($reflection->name::{$route->getMethod()} could not be found.");
         }
     }
 }

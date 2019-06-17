@@ -17,10 +17,10 @@ $app = app();
  */
 $app->setConnection(
     new Framework\Connection(
-        'magento',
-        'db',
-        'root',
-        'root'
+        config('db.name', 'mvc'),
+        config('db.host', 'db'),
+        config('db.user', 'root'),
+        config('db.password', 'root')
     )
 );
 

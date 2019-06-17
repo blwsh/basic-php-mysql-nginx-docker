@@ -24,4 +24,12 @@ class CardPayment extends Model
      * @var string
      */
     protected $primaryKey = 'payid';
+
+    /**
+     * @var array
+     */
+    protected $hidden = [
+        'cno',
+        'cexpr'
+    ];
 }

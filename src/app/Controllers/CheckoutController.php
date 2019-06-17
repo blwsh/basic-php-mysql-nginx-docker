@@ -206,6 +206,9 @@ class CheckoutController extends Controller
         redirect(url('/checkout/success'));
     }
 
+    /**
+     * @return \Framework\View
+     */
     public function success() {
         return view('checkout/success');
     }

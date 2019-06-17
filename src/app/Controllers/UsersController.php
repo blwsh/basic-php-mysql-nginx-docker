@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use Framework\Controller;
 
-class UsersController extends Controller
-{
-}
+/**
+ * Class UsersController
+ * @package App\Controllers
+ */
+class UsersController extends Controller {}

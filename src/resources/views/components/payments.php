@@ -2,7 +2,7 @@
 <table>
     <thead>
         <tr>
-            <th><strong>#</strong></th>
+            <th title="id"><strong>#</strong></th>
             <th>Film</th>
             <th>Price</th>
             <th>Rating</th>

@@ -15,6 +15,8 @@ use JsonSerializable;
  * Setting what table a model uses is usually done by extending and overriding
  * the protected $table property but can also be passed in to the class upon
  * construction.
+ *
+ * @package Framework
  */
 class Model implements JsonSerializable {
     /**
@@ -40,7 +42,12 @@ class Model implements JsonSerializable {
     /**
      * @var array
      */
-    public  $attributes = [];
+    public $attributes = [];
+
+    /**
+     * @var array
+     */
+    protected $hidden = [];
 
     /**
      * @var array
@@ -79,6 +86,13 @@ class Model implements JsonSerializable {
         foreach ($data as $key => $value) {
             $this->attributes[$key] = $value;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrimaryKey(): string {
+        return $this->primaryKey ?? 'id';
     }
 
     /**
@@ -237,7 +251,7 @@ class Model implements JsonSerializable {
      */
     public function jsonSerialize()
     {
-        return $this->attributes;
+        return array_diff_key($this->attributes, array_flip($this->hidden) ?? []);
     }
 
     public function __debugInfo()

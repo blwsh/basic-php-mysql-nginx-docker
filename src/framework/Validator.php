@@ -2,6 +2,11 @@
 
 namespace Framework;
 
+/**
+ * Class Validator
+ *
+ * @package Framework
+ */
 abstract class Validator
 {
     /**

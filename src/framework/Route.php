@@ -4,6 +4,7 @@ namespace Framework;
 
 /**
  * Class Route
+ *
  * @package Framework
  */
 class Route

@@ -53,11 +53,11 @@ function jsonResponse ($data = null, $code = 200)
 
     header('Status: '.$status[$code]);
     header("Cache-Control: no-transform,public,max-age=0,s-maxage=0");
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
 
     http_response_code($code);
 
-    return json_encode($data ?? []);
+    return json_encode($data ?? [], isDebug() ? JSON_PRETTY_PRINT : null);
 }
 
 /**
@@ -157,7 +157,7 @@ function set(array &$array, $key, $value)
             $array[$key] = array();
         }
 
-        $array =& $array[$key];
+        $array = &$array[$key];
     }
 
     $array[array_shift($keys)] = $value;
@@ -250,7 +250,8 @@ function dump($data) {
  *
  * @param mixed $data
  */
-function dd($data) {
+function dd(...$data) {
+    $data = count($data) <= 1 ? $data[0] : $data;
     dump($data);
     die;
 }

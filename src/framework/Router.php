@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Framework\Exceptions\FailedRouteResolveException;
+use JsonSerializable;
 
 /**
  * Class Router
@@ -16,7 +17,7 @@ use Framework\Exceptions\FailedRouteResolveException;
  *
  * @package Framework
  */
-class Router
+class Router implements JsonSerializable
 {
     /**
      * @var array
@@ -82,11 +83,11 @@ class Router
                 $regex = "/^" . $regex . "$/m";
 
                 if (preg_match($regex, $path, $matches)) {
-                    preg_match('/(?<=\{)([\w]+)/', $route, $keys);
+                    preg_match_all('/(?<=\{)([\w]+)/', $route, $keys);
 
                     return new Route(
                         self::$routes[$method][$originalRoute],
-                        $keys ? array_combine($keys, $matches) : null
+                        $keys ? array_combine($keys[0], (array_splice($matches, 1))) : null
                     );
                 }
             }
@@ -136,5 +137,22 @@ class Router
      */
     public static function delete($route, $controller) {
         self::$routes['DELETE'][$route] = $controller;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return self::$routes;
+    }
+
+    public function __debugInfo()
+    {
+        self::$routes;
     }
 }

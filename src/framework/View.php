@@ -7,6 +7,7 @@ use Framework\Exceptions\ViewNotFoundException;
 
 /**
  * Class View
+ *
  * @package Framework
  */
 class View

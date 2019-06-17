@@ -113,7 +113,7 @@ class AuthController
     }
 
     /**
-     *
+     * @return void
      */
     public function logout() {
         Customer::logout();

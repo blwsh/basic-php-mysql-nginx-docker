@@ -11,12 +11,12 @@ use Framework\Traits\Singleton;
  * that can be accessed and modified through the app.
  */
 class Basket {
+    use Singleton;
+
     /**
      * @var BasketItem[]
      */
     protected static $items;
-
-    use Singleton;
 
     /**
      * Returns a list of basket items.

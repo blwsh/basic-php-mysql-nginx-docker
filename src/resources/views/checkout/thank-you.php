@@ -1,4 +1,4 @@
-<content title="Review Basket" template="layout.default">
+<content title="Order Placed!" template="layout.default">
     <div class="container">
         <div class="content">
             <h1 class="title title--divider">Thank you!</h1>

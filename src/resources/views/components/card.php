@@ -2,7 +2,6 @@
     <?php if ($img): ?>
     <div class="card__img">
         <img src="<?= $img ?>" alt="<?= $title ?>">
-
         <?php if ($overlay): ?>
         <p class="card__description"><?= $description ?></p>
         <?php endif; ?>
