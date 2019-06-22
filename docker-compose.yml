@@ -15,8 +15,6 @@ services:
     volumes:
     - ./src:/src/:rw,delegated
     - ./etc/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    environment:
-    - ENVIRONMENT="development"
   php:
     build: .
     restart: always

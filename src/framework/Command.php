@@ -2,17 +2,14 @@
 
 namespace Framework;
 
-/**
+use function is_null;/**
  * Class Command
- *
  * Usage:
- *
  * 1. Create a new class in app/commands and extend this class.
  * 2. Implement the abstract handle method.
  * 3. Call the class using command php command <ClassName>
  *   * To pass arguments to the command just add them after <ClassName>
  *     E.g: php command <ClassName> <Arg1> <Arg2>
- *
  * @package Framework
  */
 abstract class Command
@@ -21,6 +18,15 @@ abstract class Command
      * @var
      */
     protected $args;
+
+    /**
+     * Command constructor.
+     *
+     * @param array $args
+     */
+    public function __construct(array $args) {
+        $this->args = $args;
+    }
 
     /**
      * @return mixed
@@ -42,7 +48,7 @@ abstract class Command
      * @return mixed
      */
     public function argument($key = null) {
-        if ($key) {
+        if (!is_null($key)) {
             return get($this->args, $key);
         }
 

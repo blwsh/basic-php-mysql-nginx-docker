@@ -237,12 +237,15 @@ function isDebug() {
 /**
  * Dumps data.
  *
- * @param mixed $data
+ * @param      $data
+ * @param bool $wrap
  */
-function dump($data) {
-    echo "<pre>";
+function dump($data, $wrap = true) {
+    if (php_sapi_name() == 'cli') $wrap = false;
+
+    echo $wrap ? "<pre>" : null;
     var_dump($data);
-    echo "</pre>";
+    echo $wrap ? "</pre>" : null;
 }
 
 /**

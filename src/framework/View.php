@@ -13,6 +13,21 @@ use Framework\Exceptions\ViewNotFoundException;
 class View
 {
     /**
+     * @var int
+     */
+    protected static $count = 0;
+
+    /**
+     * @var View
+     */
+    protected static $root;
+
+    /**
+     * @var View
+     */
+    protected static $current;
+
+    /**
      * @var string
      */
     protected $path;
@@ -48,24 +63,55 @@ class View
     protected $template;
 
     /**
+     * @var bool
+     */
+    protected $useCache;
+
+    /**
+     * @var bool
+     */
+    protected $cached = false;
+
+    /**
      * View constructor.
      *
      * @param              $file
      * @param array|object $vars
+     * @param bool         $useCached
      */
-    public function __construct($file, $vars = [])
+    public function __construct($file, $vars = [], bool $useCached = true)
     {
         $this->file = $file;
         $this->vars = $vars;
         $this->path = $this->path = __DIR__ . '/../resources/views/' . dot($this->file) . '.php';
+        $this->useCache = $useCached;
+        if (!self::$root) self::$root = $this;
+        self::$current = $this;
+        self::$count++;
     }
 
     /**
      * @return string
      *
+     * @note IMPORTANT! Unless in development mode (Or you specify no cache in
+     *       the constructor), there will only be a new cache hit if the vars
+     *       property of this view is different. This means if data is retrieved
+     *       in the view, it will not be reflected. To avoid stale views being
+     *       rendered, always pass data to views and never retrieve inside a view.
+     *
+     *       You can trigger an artificial cache miss by passing random data to
+     *       the view but this is not recommended.
+     *
      * @throws ViewNotFoundException
      */
     public function render() {
+        if (!isDebug() && $this->useCache && $cachedView = Cache::get(json_encode([$this->path, $this->vars]), 'framework/views')) {
+            $this->cached = true;
+            return $cachedView;
+        } else {
+            unset($cachedView);
+        }
+
         if (is_file($this->path)) {
             extract((array) $this->vars);
 
@@ -100,6 +146,10 @@ class View
                 }
             }
 
+            if ($this === View::getRoot()) {
+                Cache::put(json_encode([$this->path, $this->vars]), $this->renderedContents, 'framework/views');
+            }
+
             return $this->renderedContents;
         } else {
             throw new ViewNotFoundException('Unable to find view with name ' . $this->file . ' at path ' . $this->path .')');
@@ -111,6 +161,78 @@ class View
      */
     public function inject(array $data) {
         $this->vars = array_merge($this->vars, $data);
+    }
+
+    /**
+     * @return int
+     */
+    public static function getCount(): int
+    {
+        return self::$count;
+    }
+
+    /**
+     * @return View
+     */
+    public static function getRoot(): View
+    {
+        return self::$root;
+    }
+
+    /**
+     * @return View
+     */
+    public static function getCurrent()
+    {
+        return self::$current;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileContents()
+    {
+        return $this->fileContents;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRenderedContents()
+    {
+        return $this->renderedContents;
+    }
+
+    /**
+     * @return array|object
+     */
+    public function getVars()
+    {
+        return $this->vars;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemplate()
+    {
+        return $this->template;
     }
 
     /**

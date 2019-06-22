@@ -32,13 +32,11 @@ if (count($argv) < 2) {
 }
 
 try {
+    $args = count($argv) ? array_slice($argv, 2) : null;
     $reflection = new ReflectionClass($commandsNamespace . $argv[1]);
-
-    $command = $reflection->newInstance();
-
+    $command = $reflection->newInstance($args);
     $method = $reflection->getMethod('handle');
-
-    $method->invoke($command, count($argv) ? array_slice($argv, 2) : null);
+    $method->invoke($command, $args);
 } catch (ReflectionException $e) {
     echo "Command not found. ($commandsNamespace" . "$argv[1]) \n";
 }
