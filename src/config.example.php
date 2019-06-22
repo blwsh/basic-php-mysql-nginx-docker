@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Rename this file to config.php
+ *
+ * This file contains config values which can be accessed using the config() 
+ * helper function anywhere in the application.
+ */
+
 return [
     'site'           => 'University of Huddersfield',
     'app_key'        => 'BHHlBd0GnuA3pcMckaS6rmAszZdbdk7q',

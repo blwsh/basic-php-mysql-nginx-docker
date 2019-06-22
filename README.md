@@ -10,7 +10,7 @@ MVC Framework
 * docker-compose - Used for local development server. 
 * Sass/scss - A css precompiler which offers additional functionality to css
 * Browsersync - A tool used to auto-reload and auto-inject changes in to the browser
-* Gulp - A tool which runs recitatives tasks for you automatically.
+* Gulp - A tool which runs repetative tasks for you automatically.
 
 ## Notes
 
