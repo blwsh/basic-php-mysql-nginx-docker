@@ -1,7 +1,13 @@
+# IDE's
 /.env
 /.idea
 /.vscode
-/src/config.php
+
+# Package managers
 node_modules/
 vendor/
 package-lock.json
+
+# Application
+/src/config.php
+src/queue.json

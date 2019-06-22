@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use function config;
 use Framework\Traits\Singleton;
 
 /**

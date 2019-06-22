@@ -3,6 +3,8 @@
 namespace Framework;
 
 use Exception;
+use app\Jobs\CacheView;
+use Framework\Util\HtmlMinifier;
 use Framework\Exceptions\ViewNotFoundException;
 
 /**
@@ -26,6 +28,11 @@ class View
      * @var View
      */
     protected static $current;
+
+    /**
+     * @var bool
+     */
+    protected $isRoot;
 
     /**
      * @var string
@@ -86,6 +93,7 @@ class View
         $this->path = $this->path = __DIR__ . '/../resources/views/' . dot($this->file) . '.php';
         $this->useCache = $useCached;
         if (!self::$root) self::$root = $this;
+        $this->isRoot = $this === View::getRoot();
         self::$current = $this;
         self::$count++;
     }
@@ -146,11 +154,14 @@ class View
                 }
             }
 
-            if ($this === View::getRoot()) {
-                Cache::put(json_encode([$this->path, $this->vars]), $this->renderedContents, 'framework/views');
+            $contents = !isDebug() ? (new HtmlMinifier([]))->minify($this->renderedContents) : $this->renderedContents;
+
+            // Was going to dispatch the cache operation but it's way quicker to just handle here.
+            if ($this->shouldCache() && $this->isRoot()) {
+                Cache::put(json_encode([$this->getPath(), $this->getVars()]), (new HtmlMinifier([]))->minify($this->renderedContents), 'framework/views');
             }
 
-            return $this->renderedContents;
+            return $contents;
         } else {
             throw new ViewNotFoundException('Unable to find view with name ' . $this->file . ' at path ' . $this->path .')');
         }
@@ -185,6 +196,14 @@ class View
     public static function getCurrent()
     {
         return self::$current;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRoot(): bool
+    {
+        return $this->isRoot;
     }
 
     /**
@@ -241,6 +260,14 @@ class View
     public function isTemplate(): bool
     {
         return $this->isTemplate;
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldCache(): bool
+    {
+        return $this->useCache;
     }
 
     /**

@@ -31,10 +31,10 @@ class CheckoutController extends Controller
      */
     public function overview() {
         if (Basket::items()) {
-            return view('checkout.overview', ['items' => Basket::items(), 'subtotal' => Basket::subtotal()]);
+            return view('checkout.overview', ['items' => Basket::items(), 'subtotal' => Basket::subtotal()], false);
         }
 
-        return view('checkout.empty');
+        return view('checkout.empty', [], false);
     }
 
     /**
@@ -50,10 +50,10 @@ class CheckoutController extends Controller
         }
 
         if (Basket::items()) {
-            return view('checkout.complete', ['items' => Basket::items(), 'subtotal' => Basket::subtotal(), 'customer' => Customer::current()]);
+            return view('checkout.complete', ['items' => Basket::items(), 'subtotal' => Basket::subtotal(), 'customer' => Customer::current()], false);
         }
 
-        return view('checkout.empty');
+        return view('checkout.empty', [], false);
     }
 
     /**
@@ -210,6 +210,6 @@ class CheckoutController extends Controller
      * @return \Framework\View
      */
     public function success() {
-        return view('checkout/success');
+        return view('checkout/success', [], false);
     }
 }

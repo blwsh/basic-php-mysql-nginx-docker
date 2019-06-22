@@ -318,9 +318,10 @@ function getClassName(string $class) {
 /**
  * @param string $name
  * @param array  $data
+ * @param bool   $cache
  *
  * @return \Framework\View
  */
-function view(string $name, array $data = []) {
-    return new \Framework\View($name, $data);
+function view(string $name, array $data = [], bool $cache = true) {
+    return new \Framework\View($name, $data, $cache);
 }

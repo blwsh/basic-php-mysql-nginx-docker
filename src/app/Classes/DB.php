@@ -2,15 +2,21 @@
 
 namespace App\Classes;
 
+use Framework\QueryBuilder;
+
 /**
  * A simple helper class that provides static methods for calling transaction
  * methods on the app database connection.
- *
  * Class DB
  * @package App\Classes
  */
 class DB
 {
+    public static function count()
+    {
+        return QueryBuilder::executedCount();
+    }
+
     /**
      * @param string|null $name
      *

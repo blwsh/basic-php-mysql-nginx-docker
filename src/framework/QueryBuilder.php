@@ -28,6 +28,8 @@ use PDOStatement;
  */
 class QueryBuilder
 {
+    public static $executedCount;
+
     /**
      * @var Connection
      */
@@ -128,6 +130,10 @@ class QueryBuilder
         if ($model) {
             $this->model = $model;
         }
+    }
+
+    public static function executedCount() {
+        return self::$executedCount;
     }
 
     /**
@@ -232,6 +238,7 @@ class QueryBuilder
         $prepared = $this->instance->prepare($this->build());
 
         $this->prepared = $prepared->execute($this->values);
+        self::$executedCount++;
 
         $results = $prepared->fetchAll(PDO::FETCH_CLASS);
 
@@ -251,6 +258,7 @@ class QueryBuilder
         $prepared = $this->instance->prepare($this->build());
 
         $this->prepared = $prepared->execute($this->values);
+        self::$executedCount++;
 
         $result = $prepared->fetch(PDO::FETCH_ASSOC);
 
@@ -290,6 +298,7 @@ class QueryBuilder
         $this->prepared = $prepared = $this->instance->prepare($this->build());
 
         return $prepared->execute($this->values);
+        self::$executedCount++;
     }
 
     /**
@@ -310,6 +319,7 @@ class QueryBuilder
         $this->prepared = $prepared = $this->instance->prepare($this->build());
 
         return $prepared->execute($this->values);
+        self::$executedCount++;
     }
 
     /**
@@ -322,6 +332,7 @@ class QueryBuilder
         $prepared = $this->instance->prepare($this->build());
 
         return $this->prepared = $prepared->execute($this->values);
+        self::$executedCount++;
     }
 
     /**
@@ -530,6 +541,7 @@ class QueryBuilder
         $prepared = $this->instance->prepare($this->build());
 
         $this->prepared = $prepared->execute($this->values);
+        self::$executedCount++;
 
         $result = $prepared->fetch(PDO::FETCH_COLUMN);
 
@@ -564,5 +576,15 @@ class QueryBuilder
     public function __toString()
     {
         return $this->toString();
+    }
+
+    public function __sleep()
+    {
+        return ['connection'];
+    }
+
+    public function __wakeup()
+    {
+        $this->connection;
     }
 }

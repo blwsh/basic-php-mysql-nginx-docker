@@ -101,5 +101,15 @@ class Connection {
             'name' => $this->name
         ];
     }
+
+    public function __sleep()
+    {
+        return ['connection'];
+    }
+
+    public function __wakeup()
+    {
+        $this->instance;
+    }
 }
 

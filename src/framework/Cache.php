@@ -2,7 +2,6 @@
 
 namespace Framework;
 
-use function crc32;
 use Exception;
 
 /**

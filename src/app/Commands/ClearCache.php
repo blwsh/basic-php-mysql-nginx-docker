@@ -25,7 +25,7 @@ class ClearCache extends Command
      */
     private function clearDirectory(DirectoryIterator $iterator)
     {
-        $this->info('Clearing ' . $iterator->getPath());
+        $this->info('Scanning ' . $iterator->getRealPath());
 
         foreach ($iterator as $fileInfo) {
             if ($fileInfo->isFile()) {
