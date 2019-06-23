@@ -6,7 +6,6 @@ services:
     restart: always
     ports:
     - "80:80"
-    - "443:443"
     links:
     - "php"
     - "db"
@@ -23,9 +22,17 @@ services:
     volumes:
     - ./src:/src/:rw,delegated
     - ./etc/php.ini:/usr/local/etc/php/conf.d/00_mvc.ini:ro
-    - ~/.ssh:/root/.ssh:ro
     env_file:
     - "./.env"
+  worker:
+    build: .
+    restart: always
+    volumes:
+    - ./src:/src/:rw,delegated
+    - ./etc/php.ini:/usr/local/etc/php/conf.d/00_worker.ini:ro
+    env_file:
+    - "./.env"
+    command: php command queue work
   db:
     image: mysql:5.6.41
     ports:
