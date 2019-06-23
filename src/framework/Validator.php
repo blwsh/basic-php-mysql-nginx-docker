@@ -52,7 +52,7 @@ abstract class Validator
      * @return bool
      */
     public function hasErrors() : bool {
-        return count($this->errors) > 0;
+        return $this->errors && count($this->errors) > 0;
     }
 
     /**

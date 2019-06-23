@@ -11,4 +11,11 @@ namespace Framework;
  *
  * @package Framework
  */
-class Controller {}
+class Controller {
+    /**
+     * Controller constructor.
+     */
+    public function __construct() {
+
+    }
+}

@@ -325,3 +325,10 @@ function getClassName(string $class) {
 function view(string $name, array $data = [], bool $cache = true) {
     return new \Framework\View($name, $data, $cache);
 }
+
+/**
+ * @param \Framework\Queueable $object
+ */
+function dispatch(Framework\Queueable $object) {
+    Framework\Queue::dispatch($object);
+}

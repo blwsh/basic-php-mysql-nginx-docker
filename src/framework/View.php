@@ -113,7 +113,7 @@ class View
      * @throws ViewNotFoundException
      */
     public function render() {
-        if (!isDebug() && $this->useCache && $cachedView = Cache::get(json_encode([$this->path, $this->vars]), 'framework/views')) {
+        if (!isDebug() && $this->useCache && $this->isRoot && $cachedView = Cache::get(json_encode([$this->path, $this->vars]), 'framework/views')) {
             $this->cached = true;
             return $cachedView;
         } else {
@@ -154,14 +154,10 @@ class View
                 }
             }
 
-            $contents = !isDebug() ? (new HtmlMinifier([]))->minify($this->renderedContents) : $this->renderedContents;
+            // Cache this page
+            dispatch(new CacheView($this));
 
-            // Was going to dispatch the cache operation but it's way quicker to just handle here.
-            if ($this->shouldCache() && $this->isRoot()) {
-                Cache::put(json_encode([$this->getPath(), $this->getVars()]), (new HtmlMinifier([]))->minify($this->renderedContents), 'framework/views');
-            }
-
-            return $contents;
+            return !isDebug() ? (new HtmlMinifier([]))->minify($this->renderedContents) : $this->renderedContents;
         } else {
             throw new ViewNotFoundException('Unable to find view with name ' . $this->file . ' at path ' . $this->path .')');
         }

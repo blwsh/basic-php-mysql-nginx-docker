@@ -19,8 +19,10 @@ class Cache
     public static function get($key, string $dir = null) {
         $dir = rtrim(implode('/', [__DIR__ . '/../cache', $dir]), '/') . '/';
 
-        if (is_dir($dir) && is_writable($dir)) {
-            return file_get_contents($dir . crc32($key));
+        if (is_dir($dir)) {
+            if (is_file($dir . crc32($key))) {
+                return @file_get_contents($dir . crc32($key));
+            }
         }
     }
 

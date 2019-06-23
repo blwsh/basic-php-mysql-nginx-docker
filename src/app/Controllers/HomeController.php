@@ -3,12 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Film;
+use Framework\Controller;
 
 /**
  * Class HomeController
  * @package App\Controllers
  */
-class HomeController
+class HomeController extends Controller
 {
     /**
      * @return \Framework\View

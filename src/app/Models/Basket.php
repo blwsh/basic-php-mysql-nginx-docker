@@ -57,7 +57,7 @@ class Basket {
      * @return BasketItem[]
      */
     public static function items() {
-        $basketItems = array_keys($_SESSION['basket']);
+        $basketItems = array_keys($_SESSION['basket'] ?? []);
         $itemCounts = $_SESSION['basket'];
 
         if ($basketItems) {

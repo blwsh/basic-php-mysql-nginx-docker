@@ -35,7 +35,7 @@ class CacheView extends Queueable
     public function handle()
     {
         if ($this->view->shouldCache() && $this->view->isRoot()) {
-            Cache::put(json_encode([$this->view->getPath(), $this->view->getVars()]), (new HtmlMinifier([]))->minify($this->renderedContents), 'framework/views');
+            Cache::put(json_encode([$this->view->getPath(), $this->view->getVars()]), (new HtmlMinifier([]))->minify($this->view->getRenderedContents()), 'framework/views');
         }
     }
 }

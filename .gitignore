@@ -10,4 +10,4 @@ package-lock.json
 
 # Application
 /src/config.php
-src/queue.json
+/src/queue.json
