@@ -6,6 +6,7 @@ use Exception;
 use app\Jobs\CacheView;
 use Framework\Util\HtmlMinifier;
 use Framework\Exceptions\ViewNotFoundException;
+use Framework\Util\Str;
 
 /**
  * Class View
@@ -90,7 +91,7 @@ class View
     {
         $this->file = $file;
         $this->vars = $vars;
-        $this->path = $this->path = __DIR__ . '/../resources/views/' . dot($this->file) . '.php';
+        $this->path = $this->path = __DIR__ . '/../resources/views/' . Str::dot($this->file) . '.php';
         $this->useCache = $useCached;
         if (!self::$root) self::$root = $this;
         $this->isRoot = $this === View::getRoot();

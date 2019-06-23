@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Framework\Traits\Singleton;
+use function json_encode;
 
 /**
  * Class Basket
@@ -65,7 +66,7 @@ class Basket {
                 $item = new BasketItem($film);
                 $item->setQuantity($itemCounts[$film->filmid]);
                 return $item;
-            }, Film::whereIn('filmid', $basketItems)->get());
+            }, Film::select(['filmtitle', 'filmid'])->whereIn('filmid', $basketItems)->get());
         } else {
             return [];
         }

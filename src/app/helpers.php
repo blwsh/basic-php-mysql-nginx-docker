@@ -1,20 +1,21 @@
 <?php
 
+use framework\Util\Arr;
 
 /**
  * Returns an instance of the app.
  *
- * @return \Framework\App
+ * @return Framework\App
  */
 function app() {
-    return \Framework\App::getInstance();
+    return Framework\App::getInstance();
 }
 
 /**
- * @return \Framework\Request
+ * @return Framework\Request
  */
 function request() {
-    return \Framework\Request::capture();
+    return Framework\Request::capture();
 };
 
 /**
@@ -22,11 +23,12 @@ function request() {
  * @param int $code
  *
  * @return false|string
- * @throws \Framework\Exceptions\ViewNotFoundException
+ *
+ * @throws Framework\Exceptions\ViewNotFoundException
  */
 function response($response, $code = 200) {
     // Inject flash data in to view
-    if ($response instanceof \Framework\View) {
+    if ($response instanceof Framework\View) {
         if ($_SESSION['_flash'] && !is_null($_SESSION['_flash'])) {
             $response->inject($_SESSION['_flash']);
             unset($_SESSION['_flash']);
@@ -109,89 +111,6 @@ function back(int $responseCode = 302, $data = []) {
 }
 
 /**
- * @param array $data
- * @param       $key
- * @param null  $default
- *
- * @return mixed
- */
-function get(array $data, $key, $default = null)
-{
-    if (!is_string($key) || empty($key) || !count($data)) return $default;
-
-    if (strpos($key, '.') !== false) {
-        $keys = explode('.', $key);
-        foreach ($keys as $innerKey) {
-            if (!array_key_exists($innerKey, $data)) {
-                return $default;
-            }
-
-            $data = $data[$innerKey];
-        }
-
-        return $data;
-    }
-
-    return array_key_exists($key, $data) ? $data[$key] : $default;
-}
-
-/**
- * @param $array
- * @param $key
- * @param $value
- *
- * @return mixed
- */
-function set(array &$array, $key, $value)
-{
-    if (is_null($key)) return $array = $value;
-
-    $keys = explode('.', $key);
-
-    while (count($keys) > 1)
-    {
-        $key = array_shift($keys);
-
-        if ( ! isset($array[$key]) || ! is_array($array[$key]))
-        {
-            $array[$key] = array();
-        }
-
-        $array = &$array[$key];
-    }
-
-    $array[array_shift($keys)] = $value;
-
-    return $array;
-}
-
-/**
- * Allows you to pluck pluck from an array and/or objects using dot notation.
- * Example:
- *  pluck($array, 'item.attributes.name')
- *
- * @param array       $array
- * @param string|null $key
- *
- * @return array
- */
-function pluck(array $array, string $key = null) {
-    $indexes = explode('.', $key);
-
-    if (isset($indexes[0])) {
-        $plucked = array_column($array, $indexes[0]);
-
-        if (isset($indexes[1])) {
-            array_shift($indexes);
-            return pluck($plucked, implode('.', $indexes));
-        } else {
-            return $plucked;
-        }
-    }
-}
-
-
-/**
  * @param string $key
  * @param mixed  $default
  *
@@ -200,7 +119,7 @@ function pluck(array $array, string $key = null) {
 function config(string $key = null, $default = null) {
     $config = require __DIR__ . '/../config.php';
 
-    if ($value = get($config, $key)) {
+    if ($value = Arr::get($config, $key)) {
         return $value;
     } else if (!is_null($default)) {
         return $default;
@@ -269,38 +188,6 @@ function display(string $data) {
 }
 
 /**
- * @param string $string
- *
- * @return mixed
- */
-function dot(string $string) {
-    return str_replace('.', '/', $string);
-}
-
-/**
- * @param string $string
- *
- * @return string
- */
-function url(string $string) {
-    $root = config('root_dir', null);
-    return ($root ? '/' . $root : null) . '/' . trim($string, '/');
-}
-
-/**
- * @param $string
- *
- * @return string
- */
-function slug(string $string) {
-    return strtolower(
-        trim(
-            rtrim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string), '-')
-        )
-    );
-}
-
-/**
  * Tries to strip the namespace from a class and just return the name.
  *
  * @param $class
@@ -316,18 +203,36 @@ function getClassName(string $class) {
 }
 
 /**
+ * @param string $string
+ *
+ * @return string
+ */
+function slug(string $string) {
+    return Framework\Util\Str::slug($string);
+}
+
+/**
+ * @param string $string
+ *
+ * @return string
+ */
+function url(string $string) {
+    return Framework\Util\Str::url($string);
+}
+
+/**
  * @param string $name
  * @param array  $data
  * @param bool   $cache
  *
- * @return \Framework\View
+ * @return Framework\View
  */
 function view(string $name, array $data = [], bool $cache = true) {
-    return new \Framework\View($name, $data, $cache);
+    return new Framework\View($name, $data, $cache);
 }
 
 /**
- * @param \Framework\Queueable $object
+ * @param Framework\Queueable $object
  */
 function dispatch(Framework\Queueable $object) {
     Framework\Queue::dispatch($object);

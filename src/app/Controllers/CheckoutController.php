@@ -19,6 +19,7 @@ use DateTime;
 use Exception;
 use Framework\Controller;
 use Framework\Request;
+use framework\Util\Arr;
 
 /**
  * Class CheckoutController
@@ -88,10 +89,10 @@ class CheckoutController extends Controller
         }
 
         // Map dvd stocks in to array where key is id and value is quantity.
-        $currentStock = DVDStock::where(['shopid' => 1])->whereIn('filmid', pluck($basketItems,'item.attributes.filmid'))->get();
+        $currentStock = DVDStock::where(['shopid' => 1])->whereIn('filmid', Arr::pluck($basketItems,'item.attributes.filmid'))->get();
         $currentStock = array_combine(
-            pluck($currentStock, 'attributes.filmid'),
-            pluck($currentStock, 'attributes.stocklevel')
+            Arr::pluck($currentStock, 'attributes.filmid'),
+            Arr::pluck($currentStock, 'attributes.stocklevel')
         );
 
         // Validate all basket items do not exceed stock levels before

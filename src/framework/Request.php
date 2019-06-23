@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use Framework\Util\Arr;
+
 /**
  * Class Request
  *
@@ -55,6 +57,7 @@ class Request
         $this->session = $_SESSION;
         $this->files = $_FILES;
         $this->cookies = $_COOKIE;
+        $this->method = $_SERVER['REQUEST_METHOD'];
 
         if ($inject) {
             $this->data = array_merge($this->data, $inject);
@@ -73,7 +76,7 @@ class Request
     /**
      * @return array
      */
-    public function getMethod()
+    public function method()
     {
         return $this->method;
     }
@@ -86,7 +89,7 @@ class Request
     public function get(string $key = null)
     {
         if ($key) {
-            return get($this->data, $key);
+            return Arr::get($this->data, $key);
         }
 
         return $this->data;
@@ -110,7 +113,7 @@ class Request
         if (!is_null($value)) {
 
         } else if ($key) {
-            return get($this->server, $key);
+            return Arr::get($this->server, $key);
         }
 
         return $this->server;
@@ -127,7 +130,7 @@ class Request
         if (!is_null($value)) {
 
         } else if ($key) {
-            return get($this->files, $key);
+            return Arr::get($this->files, $key);
         }
 
         return $this->files;
@@ -142,9 +145,9 @@ class Request
     public function session(string $key, $value = null)
     {
         if (!is_null($value)) {
-            return set($this->session, $key, $value);
+            return Arr::set($this->session, $key, $value);
         } else if ($key) {
-            return get($this->session, $key);
+            return Arr::get($this->session, $key);
         }
 
         return $this->session;
@@ -159,9 +162,9 @@ class Request
     public function cookies(string $key, $value)
     {
         if (!is_null($value)) {
-            return set($this->cookies, $key, $value);
+            return Arr::set($this->cookies, $key, $value);
         } else if ($key) {
-            return get($this->cookies, $key);
+            return Arr::get($this->cookies, $key);
         }
 
         return $this->cookies;

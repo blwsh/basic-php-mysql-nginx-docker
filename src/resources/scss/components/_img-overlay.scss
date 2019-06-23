@@ -4,13 +4,18 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    margin: 2rem 0;
 
     @media only screen and (min-width: map-get($breakpoints, lg)) {
+        margin: 2rem 0;
+    }
+
+    @media only screen and (min-width: map-get($breakpoints, md)) {
         background: linear-gradient(#000, #474747, #000);
         z-index: -1;
         box-shadow: 0 0 1rem .25rem rgba($primary, .25);
     }
+
+
 
     img {
         transition: transform 5s ease-in-out;

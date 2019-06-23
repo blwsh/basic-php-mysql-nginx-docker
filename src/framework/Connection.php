@@ -21,18 +21,22 @@ class Connection {
      * @var PDO
      */
     protected $instance;
+
     /**
      * @var string
      */
     protected $name;
+
     /**
      * @var string
      */
     protected $host;
+
     /**
      * @var string
      */
     protected $user;
+
     /**
      * @var string
      */
