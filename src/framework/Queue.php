@@ -2,14 +2,7 @@
 
 namespace Framework;
 
-use function array_pop;
-use function dump;
-use Exception;
-use function file_put_contents;
 use Framework\Traits\Singleton;
-use function serialize;
-use stdClass;
-use function unserialize;
 
 /**
  * Class Queue
@@ -91,40 +84,34 @@ class Queue
     }
 
     /**
-     * @return bool|int
+     * @return int
      */
     public function length() {
-        if ($json = file_get_contents($path = '../queue.json')) {
+        if ($json = file_get_contents($path = __DIR__ . '/../queue.json')) {
             return count(json_decode($json));
         }
 
-        return false;
+        return 0;
     }
 
     /**
-     * @return bool|int
+     * @return int
      */
     public function processing() {
-        if ($json = file_get_contents($path = '../queue.json')) {
-            return count(array_filter(json_decode($json) ?? [], function($item) {
-                return $item['processing'];
-            }));
-        }
-
-        return false;
+        return min($this->perBatch, $this->length());
     }
 
     /**
-     * @return bool|int
+     * @return int
      */
     public function processed() {
-        if ($json = file_get_contents($path = '../queue.json')) {
+        if ($json = file_get_contents($path = __DIR__ .'/../queue.json')) {
             return count(array_filter(json_decode($json) ?? [], function($item) {
                 return $item['processed'];
             }));
         }
 
-        return false;
+        return 0;
     }
 
     /**

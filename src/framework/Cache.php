@@ -2,7 +2,10 @@
 
 namespace Framework;
 
+use function dump;
 use Exception;
+use function serialize;
+use function unserialize;
 
 /**
  * Class Cache
@@ -14,33 +17,33 @@ class Cache
      * @param $key
      * @param $dir
      *
-     * @return false|string
+     * @return mixed
      */
     public static function get($key, string $dir = null) {
         $dir = rtrim(implode('/', [__DIR__ . '/../cache', $dir]), '/') . '/';
 
         if (is_dir($dir)) {
             if (is_file($dir . crc32($key))) {
-                return @file_get_contents($dir . crc32($key));
+                return unserialize(@file_get_contents($dir . crc32($key)));
             }
         }
     }
 
     /**
      * @param string $key
-     * @param string $value
+     * @param mixed $value
      * @param string $dir
      *
-     * @return bool
-     * @throws Exception
+     * @return mixed
      */
-    public static function put(string $key, string $value, string $dir = 'null') {
+    public static function put(string $key, $value, string $dir = null) {
         $dir = rtrim(implode('/', [__DIR__ . '/../cache', $dir]), '/') . '/';
 
+
         if (is_dir($dir) && is_writable($dir)) {
-            return file_put_contents($dir . crc32($key), $value) != false;
-        } else {
-            throw new Exception('Unable to write to cache');
+            file_put_contents($dir . crc32($key), serialize($value));
         }
+
+        return $value;
     }
 }

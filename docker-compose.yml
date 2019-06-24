@@ -24,6 +24,8 @@ services:
     - ./etc/php.ini:/usr/local/etc/php/conf.d/00_mvc.ini:ro
     env_file:
     - "./.env"
+    depends_on:
+      - db
   worker:
     build: .
     restart: always
@@ -33,6 +35,8 @@ services:
     env_file:
     - "./.env"
     command: php command queue work
+    depends_on:
+      - db
   db:
     image: mysql:5.6.41
     ports:

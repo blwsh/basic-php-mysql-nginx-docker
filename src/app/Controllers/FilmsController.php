@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Film;
+use Framework\Cache;
 use Framework\Controller;
 use Framework\Request;
 
@@ -16,14 +17,16 @@ class FilmsController extends Controller
      * @param Request $request
      *
      * @return \Framework\View
+     *
+     * @throws \Exception
      */
     public function index(Request $request) {
         $page = (int) $request->get('page');
         $perPage = 15;
 
         return view('films.index', [
-            'films' => Film::limit($perPage, $page)->get(),
-            'count' => Film::count(),
+            'films' => Cache::get('films.index') ?? Cache::put('films.index', Film::limit($perPage, $page)->get()),
+            'count' => Cache::get('films.index.count') ?? Cache::put('films.index.count', Film::count()),
             'perPage' => $perPage,
             'page' => $page
         ]);

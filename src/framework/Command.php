@@ -2,7 +2,9 @@
 
 namespace Framework;
 
-use Framework\Util\Arr;/**
+use Framework\Util\Arr;
+
+/**
  * Class Command
  * Usage:
  * 1. Create a new class in app/commands and extend this class.
@@ -15,9 +17,14 @@ use Framework\Util\Arr;/**
 abstract class Command
 {
     /**
-     * @var
+     * @var array
      */
     protected $args;
+
+    /**
+     * @var array
+     */
+    protected $modifiers = [];
 
     /**
      * Command constructor.
@@ -25,6 +32,17 @@ abstract class Command
      * @param array $args
      */
     public function __construct(array $args = []) {
+        $modifiers = array_merge($this->modifiers, ['--help']);
+
+        foreach ($args as $key => $arg) {
+            if (in_array($arg, $modifiers)) {
+                $this->modifiers[] = $arg;
+                unset($args[$key]);
+            } else if (preg_match('/-{1,2}.*/', $arg)) {
+                unset($args[$key]);
+            }
+        }
+
         $this->args = $args;
     }
 

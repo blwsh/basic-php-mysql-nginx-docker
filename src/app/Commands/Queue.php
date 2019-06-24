@@ -43,7 +43,7 @@ class Queue extends Command
      */
     public function work() {
         while (true) {
-            $this->info('Processing');
+            $this->info("Processing ({$this->queue->processing()}/{$this->queue->length()})");
 
             try {
                 $this->queue->process();
