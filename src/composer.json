@@ -3,6 +3,7 @@
         "ext-pdo": "*",
         "ext-json": "*",
         "ext-curl": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-apcu": "*"
     }
 }

@@ -70,13 +70,8 @@ class Queue
             $count = 0;
 
             foreach ($queued as $key => $item) {
-                unserialize($item->object)->handle();
-
-                $count++;
-
-                unset($queued[$key]);
-
-                if ($count >= $this->perBatch) break;
+                unserialize($item->object)->handle(); unset($queued[$key]);
+                if (++$count >= $this->perBatch) break;
             }
 
             file_put_contents($path, $queued);
