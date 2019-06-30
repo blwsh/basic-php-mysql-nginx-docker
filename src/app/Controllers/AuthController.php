@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Classes\DB;
 use Exception;
+use App\Classes\DB;
 use Framework\Request;
 use App\Models\Person;
 use App\Models\Customer;
@@ -15,6 +15,8 @@ use App\Models\Customer;
 class AuthController
 {
     /**
+     * @param Request $request
+     *
      * @return \Framework\View
      */
     public function login(Request $request) {

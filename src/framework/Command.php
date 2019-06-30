@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Framework\Util\Arr;
+use Framework\Traits\LogsToConsole;
 
 /**
  * Class Command
@@ -16,6 +17,8 @@ use Framework\Util\Arr;
  */
 abstract class Command
 {
+    use LogsToConsole;
+
     /**
      * @var array
      */
@@ -71,19 +74,5 @@ abstract class Command
         }
 
         return $this->args;
-    }
-
-    /**
-     * @param $string
-     */
-    protected function info($string) {
-        echo "\e[0;30;42m$string\e[0m\n";
-    }
-
-    /**
-     * @param $string
-     */
-    protected function error($string) {
-        echo "\e[0;31;42m$string\e[0m\n";
     }
 }

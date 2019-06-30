@@ -3,10 +3,10 @@
 namespace Framework;
 
 use Exception;
-use app\Jobs\CacheView;
+use Framework\Util\Str;
+use App\Jobs\CacheView;
 use Framework\Util\HtmlMinifier;
 use Framework\Exceptions\ViewNotFoundException;
-use Framework\Util\Str;
 
 /**
  * Class View

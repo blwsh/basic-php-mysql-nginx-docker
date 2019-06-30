@@ -4,6 +4,18 @@
         "ext-json": "*",
         "ext-curl": "*",
         "ext-openssl": "*",
-        "ext-apcu": "*"
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "fabpot/goutte": "^3.2"
+    },
+    "autoload": {
+        "files": [
+            "app/helpers.php",
+            "app/routes.php"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Framework\\": "framework/"
+        }
     }
 }

@@ -1,0 +1,88 @@
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync
+          ok  Starting native_osx for sync app-sync
+          ok  app-sync container still running, restarting unison in container
+     command  docker exec app-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of app-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: app-sync

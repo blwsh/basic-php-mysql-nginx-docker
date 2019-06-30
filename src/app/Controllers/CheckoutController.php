@@ -19,7 +19,7 @@ use DateTime;
 use Exception;
 use Framework\Controller;
 use Framework\Request;
-use framework\Util\Arr;
+use Framework\Util\Arr;
 
 /**
  * Class CheckoutController

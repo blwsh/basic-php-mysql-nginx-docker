@@ -1,6 +1,6 @@
 <?php
 
-use framework\Util\Arr;
+use Framework\Util\Arr;
 
 /**
  * Returns an instance of the app.

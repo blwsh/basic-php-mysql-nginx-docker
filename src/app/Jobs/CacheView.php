@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Jobs;
+namespace App\Jobs;
 
 use Framework\Cache;
 use Framework\Queueable;
@@ -9,7 +9,7 @@ use Framework\View;
 
 /**
  * Class CacheView
- * @package app\Jobs
+ * @package App\Jobs
  */
 class CacheView extends Queueable
 {
