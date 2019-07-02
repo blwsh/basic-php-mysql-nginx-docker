@@ -12,10 +12,10 @@ function app() {
 }
 
 /**
- * @return Framework\Request
+ * @return Framework\Http\Request
  */
 function request() {
-    return Framework\Request::capture();
+    return Framework\Http\Request::capture();
 };
 
 /**
@@ -28,7 +28,7 @@ function request() {
  */
 function response($response, $code = 200) {
     // Inject flash data in to view
-    if ($response instanceof Framework\View) {
+    if ($response instanceof Framework\Http\View) {
         if ($_SESSION['_flash'] && !is_null($_SESSION['_flash'])) {
             $response->inject($_SESSION['_flash']);
             unset($_SESSION['_flash']);
@@ -225,15 +225,19 @@ function url(string $string) {
  * @param array  $data
  * @param bool   $cache
  *
- * @return Framework\View
+ * @return Framework\Http\View
  */
 function view(string $name, array $data = [], bool $cache = true) {
-    return new Framework\View($name, $data, $cache);
+    return new Framework\Http\View($name, $data, $cache);
+}
+
+function cache() {
+    return app()->getCache();
 }
 
 /**
- * @param Framework\Queueable $object
+ * @param Framework\Queue\Queueable $object
  */
-function dispatch(Framework\Queueable $object) {
-    Framework\Queue::dispatch($object);
+function dispatch(Framework\Queue\Queueable $object) {
+    Framework\Queue\Queue::dispatch($object);
 }

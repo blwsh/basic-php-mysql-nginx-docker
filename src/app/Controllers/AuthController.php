@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Exception;
 use App\Classes\DB;
-use Framework\Request;
+use Framework\Http\Request;
 use App\Models\Person;
 use App\Models\Customer;
 
@@ -17,7 +17,7 @@ class AuthController
     /**
      * @param Request $request
      *
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function login(Request $request) {
         if (Customer::current()) redirect('/');
@@ -48,7 +48,7 @@ class AuthController
     }
 
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function register() {
         if (Customer::current()) redirect('/');

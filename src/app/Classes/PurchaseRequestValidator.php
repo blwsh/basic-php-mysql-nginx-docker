@@ -2,7 +2,7 @@
 
 namespace App\Classes;
 
-use Framework\Validator;
+use Framework\Util\Validator;
 
 /**
  * Class PurchaseRequestValidator

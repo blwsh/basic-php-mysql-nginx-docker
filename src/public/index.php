@@ -25,7 +25,7 @@ $app = app();
  * Set the connection for the app.
  */
 $app->setConnection(
-    new Framework\Connection(
+    new Framework\Database\Connection(
         config('db.name', 'mvc'),
         config('db.host', 'db'),
         config('db.user', 'root'),
@@ -34,9 +34,14 @@ $app->setConnection(
 );
 
 /**
+ * Set the cache driver. Must implement Framework\Contracts\Cache.
+ */
+$app->setCache(new Framework\Cache\FilesystemCache());
+
+/**
  * Add routes for the app.
  */
-$app->setRouter(new Framework\Router());
+$app->setRouter(new Framework\Http\Router);
 
 /**
  * Handle the request.

@@ -1,9 +1,13 @@
 <?php
 
-namespace Framework;
+namespace Framework\Queue;
 
-use Framework\Exceptions\ControllerMethodNotFoundException;
 use ReflectionClass;
+use Framework\Http\Route;
+use Framework\Http\Request;
+use Framework\Exceptions;
+use Framework\Http\Controller;
+use Framework\Exceptions\ControllerMethodNotFoundException;
 
 /**
  * Class Dispatch

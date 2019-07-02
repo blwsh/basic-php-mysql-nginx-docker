@@ -4,7 +4,7 @@ namespace App\Commands;
 
 use Exception;
 use Framework\Command;
-use Framework\Queue as Worker;
+use Framework\Queue\Queue as Worker;
 
 /**
  * Class Queue

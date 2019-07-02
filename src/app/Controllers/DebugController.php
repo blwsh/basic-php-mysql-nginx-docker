@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Framework\Controller;
+use Framework\Http\Controller;
 
 /**
  * Class DebugController

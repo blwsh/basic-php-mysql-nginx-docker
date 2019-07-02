@@ -1,8 +1,9 @@
 <?php
 
-namespace Framework;
+namespace Framework\Http;
 
 use Framework\Util\Arr;
+use Framework\Contracts\App;
 
 /**
  * Class Request

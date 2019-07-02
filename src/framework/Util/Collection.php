@@ -2,8 +2,6 @@
 
 namespace framework\Util;
 
-use function array_push;
-
 /**
  * Class Collection
  * @package framework\Util

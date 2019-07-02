@@ -2,8 +2,7 @@
 
 namespace App\Jobs;
 
-use function dump;
-use Framework\Queueable;
+use Framework\Queue\Queueable;
 
 class SayHello extends Queueable
 {

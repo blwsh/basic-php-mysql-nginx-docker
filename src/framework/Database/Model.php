@@ -1,7 +1,10 @@
 <?php
 
-namespace Framework;
+namespace Framework\Database;
 
+use Framework\App;
+use Framework\Database\Connection;
+use Framework\Database\QueryBuilder;
 use JsonSerializable;
 
 /**

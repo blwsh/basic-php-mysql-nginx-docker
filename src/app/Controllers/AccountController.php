@@ -6,8 +6,8 @@ use App\Classes\AccountUpdateValidator;
 use App\Models\Address;
 use App\Models\Customer;
 use App\Models\OnlinePayment;
-use Framework\Controller;
-use Framework\Request;
+use Framework\Http\Controller;
+use Framework\Http\Request;
 
 /**
  * Class AccountController
@@ -16,7 +16,7 @@ use Framework\Request;
 class AccountController extends Controller
 {
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function manage() {
         if ($customer = Customer::current()) {
@@ -70,14 +70,14 @@ class AccountController extends Controller
     }
 
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function confirmDelete() {
         return view('account.confirm-delete');
     }
 
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function delete() {
         Customer::current()->delete();

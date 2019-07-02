@@ -1,9 +1,10 @@
 <?php
 
-namespace Framework;
+namespace Framework\Http;
 
-use Framework\Exceptions\FailedRouteResolveException;
 use JsonSerializable;
+use Framework\Exceptions;
+use Framework\Exceptions\FailedRouteResolveException;
 
 /**
  * Class Router

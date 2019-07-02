@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Film;
-use Framework\Cache;
-use Framework\Controller;
+use Framework\Cache\FilesystemCache;
+use Framework\Http\Controller;
 
 /**
  * Class HomeController
@@ -13,12 +13,12 @@ use Framework\Controller;
 class HomeController extends Controller
 {
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function index() {
         return view('home.index', [
-            'films' => Cache::get('home.films') ?? Cache::put('home.films', Film::limit(12)->get()),
-            'classics' => Cache::get('home.classics') ?? Cache::put('home.classics', Film::limit(4)->get())
+            'films' => FilesystemCache::get('home.films') ?? FilesystemCache::put('home.films', Film::limit(12)->get()),
+            'classics' => FilesystemCache::get('home.classics') ?? FilesystemCache::put('home.classics', Film::limit(4)->get())
         ]);
     }
 }

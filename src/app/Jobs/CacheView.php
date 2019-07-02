@@ -2,10 +2,9 @@
 
 namespace App\Jobs;
 
-use Framework\Cache;
-use Framework\Queueable;
+use Framework\Http\View;
+use Framework\Queue\Queueable;
 use Framework\Util\HtmlMinifier;
-use Framework\View;
 
 /**
  * Class CacheView
@@ -35,7 +34,7 @@ class CacheView extends Queueable
     public function handle()
     {
         if ($this->view->shouldCache() && $this->view->isRoot()) {
-            Cache::put(json_encode([$this->view->getPath(), $this->view->getVars()]), (new HtmlMinifier([]))->minify($this->view->getRenderedContents()), 'framework/views');
+            cache()::put(json_encode([$this->view->getPath(), $this->view->getVars()]), (new HtmlMinifier([]))->minify($this->view->getRenderedContents()), ['dir' => 'framework/views']);
         }
     }
 }

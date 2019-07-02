@@ -3,8 +3,12 @@
 namespace Framework;
 
 use Exception;
-use Framework\Exceptions\FailedRouteResolveException;
+use Framework\Http\Router;
+use Framework\Queue\Dispatch;
+use Framework\Contracts\Cache;
 use Framework\Traits\Singleton;
+use Framework\Database\Connection;
+use Framework\Exceptions\FailedRouteResolveException;
 
 /**
  * Class App
@@ -14,6 +18,11 @@ use Framework\Traits\Singleton;
 class App
 {
     use Singleton;
+
+    /**
+     *
+     */
+    private $root;
 
     /**
      * @var Connection
@@ -26,9 +35,29 @@ class App
     private $router;
 
     /**
+     * @var Cache;
+     */
+    private $cache;
+
+    /**
      * @var Dispatch
      */
     private $dispatcher;
+
+    /**
+     * App constructor.
+     */
+    public function __construct() {
+        $this->root = $_SERVER["PWD"];
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
 
     /**
      * @return Connection
@@ -60,6 +89,22 @@ class App
     public function setRouter($router)
     {
         $this->router = $router;
+    }
+
+    /**
+     * @return Cache
+     */
+    public function getCache(): Cache
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param Cache $cache
+     */
+    public function setCache(Cache $cache)
+    {
+        $this->cache = $cache;
     }
 
     /**
@@ -106,6 +151,9 @@ class App
         exit;
     }
 
+    /**
+     *
+     */
     public function boot() {
         // Start session
         session_start();

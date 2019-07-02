@@ -6,7 +6,8 @@
         "ext-openssl": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "fabpot/goutte": "^3.2"
+        "ext-apcu": "*",
+        "ext-zend-opcache": "*"
     },
     "autoload": {
         "files": [

@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework;
+namespace Framework\Http;
 
 use Exception;
-use Framework\Util\Str;
 use App\Jobs\CacheView;
+use Framework\Util\Str;
 use Framework\Util\HtmlMinifier;
 use Framework\Exceptions\ViewNotFoundException;
 
@@ -91,7 +91,7 @@ class View
     {
         $this->file = $file;
         $this->vars = $vars;
-        $this->path = $this->path = __DIR__ . '/../resources/views/' . Str::dot($this->file) . '.php';
+        $this->path = $this->path = app()->getRoot() . '/resources/views/' . Str::dot($this->file) . '.php';
         $this->useCache = $useCached;
         if (!self::$root) self::$root = $this;
         $this->isRoot = $this === View::getRoot();
@@ -114,7 +114,7 @@ class View
      * @throws ViewNotFoundException
      */
     public function render() {
-        if (!isDebug() && $this->useCache && $this->isRoot && $cachedView = Cache::get(json_encode([$this->path, $this->vars]), 'framework/views')) {
+        if (!isDebug() && $this->useCache && $this->isRoot && $cachedView = cache()::get(json_encode([$this->path, $this->vars]), ['dir' => 'framework/views'])) {
             $this->cached = true;
             return $cachedView;
         } else {

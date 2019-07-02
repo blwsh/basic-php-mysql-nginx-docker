@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework;
+namespace Framework\Queue;
 
 use Framework\Traits\Singleton;
 
@@ -12,6 +12,11 @@ use Framework\Traits\Singleton;
 class Queue
 {
     use Singleton;
+
+    /**
+     * Path to the file that stores queue state.
+     */
+    const file = 'queue.json';
 
     /**
      * @var int
@@ -43,7 +48,7 @@ class Queue
      */
     public function dispatch(Queueable $object)
     {
-        if ($json = file_get_contents($path = __DIR__ .'/../queue.json')) {
+        if ($json = file_get_contents($path = app()->getRoot() . '/' . self::file)) {
             $array = json_decode($json);
 
             array_push($array, [
@@ -63,9 +68,10 @@ class Queue
     /**
      *
      */
-    public function process() {
+    public function process()
+    {
 
-        if ($json = file_get_contents($path = __DIR__ .'/../queue.json')) {
+        if ($json = file_get_contents($path = app()->getRoot() . '/' . self::file)) {
             $queued = json_decode($json);
             $count = 0;
 
@@ -81,8 +87,9 @@ class Queue
     /**
      * @return int
      */
-    public function length() {
-        if ($json = file_get_contents($path = __DIR__ . '/../queue.json')) {
+    public function length()
+    {
+        if ($json = file_get_contents($path = app()->getRoot() . '/queue.json')) {
             return count(json_decode($json));
         }
 
@@ -92,15 +99,17 @@ class Queue
     /**
      * @return int
      */
-    public function processing() {
+    public function processing()
+    {
         return min($this->perBatch, $this->length());
     }
 
     /**
      * @return int
      */
-    public function processed() {
-        if ($json = file_get_contents($path = __DIR__ .'/../queue.json')) {
+    public function processed()
+    {
+        if ($json = file_get_contents($path = app()->getRoot() . '/' . self::file)) {
             return count(array_filter(json_decode($json) ?? [], function($item) {
                 return $item['processed'];
             }));
@@ -112,7 +121,8 @@ class Queue
     /**
      *
      */
-    public function nextBatch() {
+    public function nextBatch()
+    {
 
     }
 }

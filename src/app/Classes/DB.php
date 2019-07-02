@@ -2,7 +2,7 @@
 
 namespace App\Classes;
 
-use Framework\QueryBuilder;
+use Framework\Database\QueryBuilder;
 
 /**
  * A simple helper class that provides static methods for calling transaction

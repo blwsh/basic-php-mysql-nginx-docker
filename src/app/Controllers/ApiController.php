@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Classes\APIResponse;
-use Framework\Controller;
-use Framework\Model;
-use Framework\Request;
+use Framework\Http\Controller;
+use Framework\Database\Model;
+use Framework\Http\Request;
 use ReflectionClass;
 use ReflectionException;
 

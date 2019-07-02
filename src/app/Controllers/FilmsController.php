@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\Film;
-use Framework\Cache;
-use Framework\Controller;
-use Framework\Request;
+use Framework\Cache\FilesystemCache;
+use Framework\Http\Controller;
+use Framework\Http\Request;
 
 /**
  * Class FilmsController
@@ -16,8 +16,7 @@ class FilmsController extends Controller
     /**
      * @param Request $request
      *
-     * @return \Framework\View
-     *
+     * @return \Framework\Http\View
      * @throws \Exception
      */
     public function index(Request $request) {
@@ -25,8 +24,8 @@ class FilmsController extends Controller
         $perPage = 15;
 
         return view('films.index', [
-            'films' => Cache::get('films.index') ?? Cache::put('films.index', Film::limit($perPage, $page)->get()),
-            'count' => Cache::get('films.index.count') ?? Cache::put('films.index.count', Film::count()),
+            'films' => FilesystemCache::get('films.index') ?? FilesystemCache::put('films.index', Film::limit($perPage, $page)->get()),
+            'count' => FilesystemCache::get('films.index.count') ?? FilesystemCache::put('films.index.count', Film::count()),
             'perPage' => $perPage,
             'page' => $page
         ]);
@@ -35,7 +34,7 @@ class FilmsController extends Controller
     /**
      * @param Request $request
      *
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function view(Request $request) {
         if ($film = Film
@@ -53,7 +52,7 @@ class FilmsController extends Controller
     }
 
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function create() {
         return view('films.create');

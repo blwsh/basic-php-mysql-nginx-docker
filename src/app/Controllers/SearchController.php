@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Film;
-use Framework\Model;
-use Framework\Request;
+use Framework\Database\Model;
+use Framework\Http\Request;
 
 /**
  * Class SearchController

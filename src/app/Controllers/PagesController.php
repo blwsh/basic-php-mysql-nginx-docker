@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Shop;
-use Framework\Controller;
+use Framework\Http\Controller;
 
 /**
  * Class PagesController
@@ -12,14 +12,14 @@ use Framework\Controller;
 class PagesController extends Controller
 {
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function about() {
         return view('pages.about');
     }
 
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function shops() {
         return view('pages.shop', ['shops' => Shop::get()]);

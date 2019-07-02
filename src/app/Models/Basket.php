@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Framework\Traits\Singleton;
-use function json_encode;
 
 /**
  * Class Basket

@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use App\Models\Basket;
 use App\Models\BasketItem;
-use Framework\Request;
-use Framework\Controller;
+use Framework\Http\Request;
+use Framework\Http\Controller;
 
 /**
  * Class BasketController

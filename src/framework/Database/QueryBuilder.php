@@ -1,9 +1,10 @@
 <?php
 
-namespace Framework;
+namespace Framework\Database;
 
 use PDO;
 use PDOStatement;
+use Framework\Database\Model;
 
 /**
  * Class QueryBuilder

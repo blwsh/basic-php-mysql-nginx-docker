@@ -17,8 +17,8 @@ use App\Models\OnlinePurchase;
 use App\Models\Payment;
 use DateTime;
 use Exception;
-use Framework\Controller;
-use Framework\Request;
+use Framework\Http\Controller;
+use Framework\Http\Request;
 use Framework\Util\Arr;
 
 /**
@@ -28,7 +28,7 @@ use Framework\Util\Arr;
 class CheckoutController extends Controller
 {
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function overview() {
         if (Basket::items()) {
@@ -39,7 +39,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function complete() {
         // Get current customer.
@@ -208,7 +208,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @return \Framework\View
+     * @return \Framework\Http\View
      */
     public function success() {
         return view('checkout/success', [], false);

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Exception;
-use Framework\Model;
+use Framework\Database\Model;
 
 /**
  * Class BasketItem

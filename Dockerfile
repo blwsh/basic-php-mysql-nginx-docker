@@ -9,14 +9,10 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 # Build Args
 ARG ENVIRONMENT
 
-# Permissions Fix
-RUN apk --no-cache add shadow && \
-    usermod -u 1000 www-data && \
-    groupmod -g 1000 www-data
-
 # Install extensions
-RUN apk update && apk add libzip-dev \
+RUN apk update && apk add libzip-dev php7-pecl-apcu php7-opcache \
     && docker-php-ext-install zip \
+    && docker-php-ext-install opcache \
     && docker-php-ext-install pdo pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 

@@ -4,7 +4,7 @@ namespace App\Classes;
 
 use App\Models\Customer;
 use App\Models\Person;
-use Framework\Validator;
+use Framework\Util\Validator;
 
 /**
  * Class AccountUpdateValidator

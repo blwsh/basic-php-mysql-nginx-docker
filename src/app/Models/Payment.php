@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Framework\Model;
+use Framework\Database\Model;
 
 /**
  * Class Payment

@@ -1,6 +1,6 @@
 <?php
 
-use Framework\Router;
+use Framework\Http\Router;
 
 // Home
 Router::get('/', 'HomeController@index');
