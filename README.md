@@ -13,7 +13,9 @@ MVC Framework
 
 * Install docker 
     * Install docker-compose and docker-sync 
-    * Run docker-compose up and go to localhost 
+    * Run docker-compose up
+    * Run docker-compose up exec php composer Install
+    * Go to local host in your browser 
 
 ### To make Scss changes 
 
