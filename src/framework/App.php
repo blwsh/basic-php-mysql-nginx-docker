@@ -124,13 +124,19 @@ class App
     }
 
     /**
+     * @return bool
+     */
+    public function isDebug(): bool {
+        return env('ENVIRONMENT') === 'development' || $_SESSION['debug'];
+    }
+
+    /**
      * Handles requests sent from the browser. The method calls the router resolve
      * method and dispatches a response based on what the router resolves.
-     *
      * If the router fails to resolve the handle method returns either a 404 page
      * or a error page depending on the value of isDebug helper.
-     *
      * @return void
+     * @throws Exception
      */
     public function handle()
     {
@@ -145,7 +151,11 @@ class App
             !isDebug() ? abort() : error($e);
         } catch (Exception $e) {
             // Show 500 page or error if debug.
-            !isDebug() ? fatal() : error($e);
+            if (!isDebug()) {
+                fatal();
+            } else {
+                throw $e;
+            }
         }
 
         exit;
@@ -160,6 +170,10 @@ class App
 
         // Enable error reporting
         if (isDebug()) {
+            $whoops = new \Whoops\Run;
+            $whoops->appendHandler(new \Whoops\Handler\PrettyPageHandler);
+            $whoops->register();
+
             ini_set('display_errors',1); error_reporting(E_ERROR);
         }
     }

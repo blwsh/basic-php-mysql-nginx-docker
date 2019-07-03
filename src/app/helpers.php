@@ -23,81 +23,35 @@ function request() {
  * @param int $code
  *
  * @return false|string
- *
- * @throws Framework\Exceptions\ViewNotFoundException
+ * @throws \Framework\Exceptions\ViewNotFoundException
  */
 function response($response, $code = 200) {
-    // Inject flash data in to view
-    if ($response instanceof Framework\Http\View) {
-        if ($_SESSION['_flash'] && !is_null($_SESSION['_flash'])) {
-            $response->inject($_SESSION['_flash']);
-            unset($_SESSION['_flash']);
-        }
-
-        // Render the view
-        return $response->render();
-    } else if($response) {
-        return jsonResponse($response, $code);
-    }
-}
-
-/**
- * @param null $data
- * @param int  $code
- *
- * @return false|string
- */
-function jsonResponse ($data = null, $code = 200)
-{
-    header_remove();
-
-    $status = [200 => '200 OK', 400 => '400 Bad Request', 422 => 'Unprocessable Entity', 500 => '500 Internal Server Error'];
-
-    header('Status: '.$status[$code]);
-    header("Cache-Control: no-transform,public,max-age=0,s-maxage=0");
-    header('Content-Type: application/json; charset=utf-8');
-
-    http_response_code($code);
-
-    return json_encode($data ?? [], isDebug() ? JSON_PRETTY_PRINT : null);
+    return (new Framework\Http\Response($response, $code))->send();
 }
 
 /**
  * @param int $code
+ *
+ * @return string|void
  */
 function abort($code = 404) {
-    http_response_code($code);
-    echo view('pages.404');
-    exit;
+    (new Framework\Http\AbortResponse(null, $code))->send();
 }
 
 /**
  * @param int $code
  */
 function fatal($code = 500) {
-    http_response_code($code);
-    echo view('pages.500');
-    exit;
-}
-
-/**
- * @param Exception $exception
- */
-function error(Exception $exception) {
-    print "<strong>{$exception->getMessage()} ({$exception->getFile()}:{$exception->getLine()})</strong>";
-    display($exception->getTraceAsString());
-    exit;
+    (new Framework\Http\FatalResponse(null, $code))->send();
 }
 
 /**
  * @param string $to
- * @param int    $responseCode
+ * @param int    $code
  * @param array  $data
  */
-function redirect(string $to, int $responseCode = 302, $data = []) {
-    $_SESSION['_flash'] = $data;
-    header("Location: $to", true, $responseCode);
-    exit;
+function redirect(string $to, int $code = 302, $data = []) {
+    (new Framework\Http\Response($data, $code))->redirect($to, $data);
 }
 
 /**
@@ -149,8 +103,8 @@ function env($key = null) {
 /**
  * @return bool
  */
-function isDebug() {
-    return env('ENVIRONMENT') === 'development' || $_SESSION['debug'];
+function isDebug(): bool {
+    return app()->isDebug();
 }
 
 /**

@@ -45,5 +45,7 @@ $app->setRouter(new Framework\Http\Router);
 
 /**
  * Handle the request.
+ *
+ * @noinspection PhpUnhandledExceptionInspection - Caught by flip/whoops package.
  */
 $app->handle();

@@ -6,7 +6,6 @@
         "ext-openssl": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "ext-apcu": "*",
         "ext-zend-opcache": "*"
     },
     "autoload": {
@@ -18,5 +17,8 @@
             "App\\": "app/",
             "Framework\\": "framework/"
         }
+    },
+    "require-dev": {
+        "filp/whoops": "^2.4"
     }
 }
