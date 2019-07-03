@@ -20,8 +20,8 @@ MVC Framework
 ### To make Scss changes 
 
 * Install node 10
-* Install gulp
-* Install browserify (Optional)
+* Install gulp globally
+* Install browserify globally (Optional)
 * Run gulp watch and make changes to scss files. 
 
 ## Notes
