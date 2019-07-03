@@ -131,6 +131,13 @@ class App
     }
 
     /**
+     * @return bool
+     */
+    public function isCli(): bool {
+        return php_sapi_name() == 'cli';
+    }
+
+    /**
      * Handles requests sent from the browser. The method calls the router resolve
      * method and dispatches a response based on what the router resolves.
      * If the router fails to resolve the handle method returns either a 404 page

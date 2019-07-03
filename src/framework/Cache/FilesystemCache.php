@@ -2,7 +2,11 @@
 
 namespace Framework\Cache;
 
+use function app;
+use DirectoryIterator;
+use Exception;
 use Framework\Contracts\Cache;
+use Framework\Traits\LogsToConsole;
 
 /**
  * Class Cache
@@ -10,6 +14,8 @@ use Framework\Contracts\Cache;
  */
 class FilesystemCache implements Cache
 {
+    use LogsToConsole;
+
     /**
      * @param $key
      * @param $dir
@@ -45,10 +51,37 @@ class FilesystemCache implements Cache
     }
 
     /**
+     * @param int                    $minutes
+     * @param DirectoryIterator|null $iterator
+     *
      * @return bool
      */
-    public static function clear(): bool
+    public static function clear(int $minutes = null, DirectoryIterator $iterator = null): bool
     {
+        try {
+            if (!$iterator) {
+                $iterator = new DirectoryIterator(app()->getRoot() . '/cache');
+            }
 
+            self::info('Scanning ' . $iterator->getRealPath());
+
+            foreach ($iterator as $fileInfo) {
+                if ($fileInfo->isFile()) {
+                    $minutes = (int)$minutes[0] ?? 0;
+                    if ($fileInfo->getFilename() != '.gitignore' && time() - $fileInfo->getCTime() >= $minutes * 60) {
+                        self::info(' - Removing ' . $fileInfo->getFilename());
+                        unlink($fileInfo->getRealPath());
+                    }
+                } else if ($fileInfo->isDir() && !$fileInfo->isDot()) {
+                    self::clear($minutes, new DirectoryIterator($fileInfo->getRealPath()));
+                } else {
+                    continue;
+                }
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
     }
 }
