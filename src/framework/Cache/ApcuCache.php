@@ -17,7 +17,7 @@ class ApcuCache implements Cache
      * @return mixed
      */
     public static function get(string $key, array $options = []) {
-        apcu_fetch($key);
+        return apcu_fetch($key);
     }
 
     /**
@@ -28,7 +28,7 @@ class ApcuCache implements Cache
      * @return mixed
      */
     public static function put(string $key, $value, array $options = null) {
-        apcu_add($key, $value);
+        return apcu_add($key, $value);
     }
 
     /**

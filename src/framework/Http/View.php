@@ -114,7 +114,11 @@ class View
      * @throws ViewNotFoundException
      */
     public function render() {
-        if (!isDebug() && $this->useCache && $this->isRoot && $cachedView = cache()::get(json_encode([$this->path, $this->vars]), ['dir' => 'framework/views'])) {
+        if (!isDebug()
+            && $this->useCache
+            && $this->isRoot
+            && $cachedView = cache()::get(json_encode([$this->path, $this->vars]), ['dir' => 'framework/views'])
+        ) {
             $this->cached = true;
             return $cachedView;
         } else {

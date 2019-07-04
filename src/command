@@ -16,7 +16,7 @@ $app = app();
  * Set the connection for the app.
  */
 $app->setConnection(
-    new \Framework\Database\Connection(
+    new Framework\Database\Connection(
         config('db.name', 'mvc'),
         config('db.host', 'db'),
         config('db.user', 'root'),

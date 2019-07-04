@@ -10,7 +10,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 ARG ENVIRONMENT
 
 # Install extensions
-RUN apk update && apk add libzip-dev php7-pecl-apcu php7-opcache \
+RUN apk update && apk add libzip-dev php7-opcache \
     && docker-php-ext-install zip \
     && docker-php-ext-install opcache \
     && docker-php-ext-install pdo pdo_mysql \

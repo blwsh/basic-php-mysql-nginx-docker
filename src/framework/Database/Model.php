@@ -5,6 +5,7 @@ namespace Framework\Database;
 use Framework\App;
 use Framework\Database\Connection;
 use Framework\Database\QueryBuilder;
+use function get_called_class;
 use JsonSerializable;
 
 /**
@@ -64,7 +65,7 @@ class Model implements JsonSerializable {
      */
     public function __construct($table = null) {
         //  Set table for model
-        $this->table = $table ? $table : $this->table ? $this->table : $table = strtolower(get_called_class());
+        $this->table = $table ? $table : $this->table ? $this->table : $table = strtolower(substr(strrchr(get_called_class(), "\\"), 1));
 
         // Create connection
         $this->connection = App::getInstance()->getConnection();
@@ -89,6 +90,13 @@ class Model implements JsonSerializable {
         foreach ($data as $key => $value) {
             $this->attributes[$key] = $value;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getTable(): string {
+        return $this->table;
     }
 
     /**
