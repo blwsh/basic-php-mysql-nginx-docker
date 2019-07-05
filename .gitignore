@@ -3,6 +3,9 @@
 /.idea
 /.vscode
 
+# Docker
+/.docker-sync
+
 # Package managers
 node_modules/
 vendor/

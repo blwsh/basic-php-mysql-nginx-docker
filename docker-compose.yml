@@ -4,26 +4,32 @@ services:
   web:
     image: nginx:latest
     restart: always
-    ports:
-      - "80:80"
+    expose:
+      - 80
+    environment:
+      - VIRTUAL_HOST=mvc.local.parallax.dev
+      - CERT_NAME=local.parallax.dev
     volumes:
       - ./src:/src/:rw,cached
       - ./etc/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     env_file:
-      - "./.env"
+      - ./.env
     links:
-      - "php"
-      - "db"
+      - php
+      - db
   php:
     build: .
     restart: always
-    ports:
-      - 9000:9000
+    expose:
+      - 9000
+    environment:
+      - VIRTUAL_PORT=9000
+      - VIRTUAL_PROTO=fastcgi
     volumes:
       - ./src:/src/:rw,cached
       - ./etc/php.ini:/usr/local/etc/php/conf.d/00_mvc.ini:ro
     env_file:
-      - "./.env"
+      - ./.env
     depends_on:
       - db
   worker:
@@ -33,19 +39,21 @@ services:
       - ./src:/src/:rw,cached
       - ./etc/php.ini:/usr/local/etc/php/conf.d/00_worker.ini:ro
     env_file:
-      - "./.env"
+      - ./.env
     command: php command Queue work
     depends_on:
       - db
   db:
     image: mysql:5.6.41
-    ports:
-      - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql/data
     env_file:
-      - "./.env"
+      - ./.env
 volumes:
   db-data:
   app-sync:
     external: true
+networks:
+  default:
+    external:
+      name: parallax-proxy
