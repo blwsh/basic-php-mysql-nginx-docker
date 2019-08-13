@@ -36,7 +36,7 @@ $app->setConnection(
 /**
  * Set the cache driver. Must implement Framework\Contracts\Cache.
  */
-$app->setCache(new Framework\Cache\FilesystemCache());
+$app->setCache(new Framework\Cache\FilesystemCache);
 
 /**
  * Add routes for the app.
