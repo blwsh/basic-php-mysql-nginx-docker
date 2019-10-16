@@ -1,6 +1,3 @@
-# Setup
-FROM composer
-
 FROM php:7.3-fpm-alpine
 
 # Intall composer
