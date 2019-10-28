@@ -75,7 +75,7 @@ class BasketItem extends Model {
      */
     public function decreaseQuantity($quantity) {
         if ($this->validateQuantity($quantity)) {
-            $this->quantity++;
+            $this->quantity--;
 
             $this->fill(['quantity' => $this->quantity]);
         }
