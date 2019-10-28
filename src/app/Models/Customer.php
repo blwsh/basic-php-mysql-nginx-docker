@@ -47,7 +47,7 @@ class Customer extends Model {
      */
     public static function current() {
         // Use cached if set.
-        if (self::$current) self::$current;
+        if (self::$current) return self::$current;
 
         // Otherwise try to find current use using token.
         if ($token = $_SESSION['token']) {
