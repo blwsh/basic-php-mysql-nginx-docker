@@ -2,8 +2,9 @@
 
 namespace Framework\Traits;
 
-use function app;/**
+/**
  * Trait LogsToConsole
+ *
  * @package Framework\Traits
  */
 trait LogsToConsole
