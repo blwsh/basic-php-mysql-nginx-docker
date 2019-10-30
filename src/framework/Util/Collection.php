@@ -1,9 +1,10 @@
 <?php
 
-namespace framework\Util;
+namespace Framework\Util;
 
 /**
  * Class Collection
+ *
  * @package framework\Util
  */
 class Collection
